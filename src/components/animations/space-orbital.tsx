@@ -104,4 +104,4 @@ const SpaceOrbital = () => {
   )
 }
 
-export default SpaceOrbital
+export { SpaceOrbital }

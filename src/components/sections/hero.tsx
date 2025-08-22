@@ -1,6 +1,6 @@
 'use client'
 
-import SpaceOrbital from '@/components/shared/space-orbital'
+import { SpaceOrbital } from '@/components/animations'
 import { Button } from '@/components/ui/button'
 import { heroStats, personalInfo } from '@/lib/data'
 import { ArrowDown, Mail, MapPin } from 'lucide-react'
