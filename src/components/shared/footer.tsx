@@ -13,7 +13,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className='bg-space-deep border-t border-purple-500/20'>
+    <footer className='bg-space-deep relative z-10 border-t border-purple-500/20'>
       <div className='container mx-auto px-6 py-12'>
         <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
           {/* Brand Section */}
@@ -21,12 +21,12 @@ const Footer = () => {
             <div className='flex items-center space-x-2'>
               <Rocket className='text-space-gold animate-float h-8 w-8' />
               <span className='text-xl font-bold text-white'>
-                Zahid<span className='text-space-gold'>Space</span>
+                zahidshaikh<span className='text-space-gold'>.space</span>
               </span>
             </div>
             <p className='max-w-sm text-gray-400'>
-              Exploring the digital cosmos and building stellar web experiences
-              that launch businesses to new heights.
+              Building modern web experiences and crafting innovative solutions
+              that drive business growth.
             </p>
             <div className='flex items-center space-x-2 text-gray-400'>
               <MapPin className='h-4 w-4' />
@@ -100,7 +100,7 @@ const Footer = () => {
         <div className='mt-8 flex flex-col items-center justify-between border-t border-purple-500/20 pt-8 md:flex-row'>
           <p className='text-sm text-gray-400'>
             © {currentYear} Zahid Shaikh. All rights reserved. Built with
-            cosmic energy ✨
+            passion ✨
           </p>
           <div className='mt-4 flex items-center space-x-4 md:mt-0'>
             <span className='text-sm text-gray-400'>Made with</span>

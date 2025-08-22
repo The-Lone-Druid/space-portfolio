@@ -102,34 +102,60 @@ const Contact = () => {
     <section id='contact' className='py-20'>
       <div className='container mx-auto px-6'>
         {/* Section Header */}
-        <div className='mb-16 text-center'>
-          <h2 className='mb-4 text-4xl font-bold text-white md:text-5xl'>
-            Launch{' '}
-            <span className='bg-gradient-stellar bg-clip-text text-transparent'>
-              Your Mission
+        <div className='mb-20 text-center'>
+          <div className='mb-6'>
+            <span className='text-space-gold text-lg font-medium'>
+              💫 Ready to collaborate?
+            </span>
+          </div>
+          <h2 className='mb-6 text-4xl font-bold text-white md:text-5xl lg:text-6xl'>
+            Let&apos;s{' '}
+            <span className='text-space-gold animate-pulse-cosmic'>
+              Work Together
             </span>
           </h2>
-          <div className='bg-gradient-stellar mx-auto mb-6 h-1 w-24'></div>
-          <p className='mx-auto max-w-3xl text-lg text-gray-400'>
-            Ready to embark on a digital journey together? Let&apos;s connect
-            and create something extraordinary that will reach new heights in
-            the digital cosmos.
+          <div className='via-space-gold mx-auto mb-8 h-0.5 w-32 bg-gradient-to-r from-transparent to-transparent'></div>
+          <p className='mx-auto max-w-3xl text-xl leading-relaxed text-gray-300'>
+            Ready to bring your vision to life? I&apos;d love to hear about your
+            project and explore how we can create something extraordinary
+            together.
           </p>
+
+          {/* Quick stats */}
+          <div className='mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3'>
+            <div className='text-center'>
+              <div className='text-space-gold text-3xl font-bold'>24h</div>
+              <p className='text-sm text-gray-400'>Response Time</p>
+            </div>
+            <div className='text-center'>
+              <div className='text-space-gold text-3xl font-bold'>100+</div>
+              <p className='text-sm text-gray-400'>Projects Delivered</p>
+            </div>
+            <div className='text-center'>
+              <div className='text-space-gold text-3xl font-bold'>5★</div>
+              <p className='text-sm text-gray-400'>Client Satisfaction</p>
+            </div>
+          </div>
         </div>
 
-        <div className='grid grid-cols-1 gap-12 lg:grid-cols-2'>
+        <div className='mb-20 grid grid-cols-1 gap-16 lg:grid-cols-2'>
           {/* Contact Form */}
-          <div>
-            <Card className='glass-cosmic border-purple-500/20'>
-              <CardHeader>
-                <h3 className='flex items-center text-2xl font-bold text-white'>
-                  <Send className='text-space-gold mr-3 h-8 w-8' />
-                  Send Message to Mission Control
-                </h3>
-                <p className='text-gray-400'>
-                  Fill out the form below and I&apos;ll get back to you at warp
-                  speed!
-                </p>
+          <div className='order-2 lg:order-1'>
+            <Card className='glass-cosmic border-purple-500/30 shadow-2xl backdrop-blur-xl'>
+              <CardHeader className='pb-8'>
+                <div className='flex items-center space-x-4'>
+                  <div className='bg-gradient-cosmic flex h-16 w-16 items-center justify-center rounded-2xl'>
+                    <Send className='h-8 w-8 text-white' />
+                  </div>
+                  <div>
+                    <h3 className='mb-2 text-2xl font-bold text-white'>
+                      Send Me a Message
+                    </h3>
+                    <p className='text-gray-400'>
+                      Let&apos;s discuss your next big idea!
+                    </p>
+                  </div>
+                </div>
               </CardHeader>
 
               <CardContent>
@@ -143,8 +169,8 @@ const Contact = () => {
                       <Input
                         id='firstName'
                         {...register('firstName')}
-                        className='bg-space-cosmic/50 focus:border-space-gold border-purple-500/30 text-white placeholder:text-gray-400'
-                        placeholder='Enter your first name'
+                        className='bg-space-cosmic/30 focus:border-space-gold focus:bg-space-cosmic/50 h-12 rounded-xl border-purple-500/40 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400'
+                        placeholder='Your first name'
                       />
                       {errors.firstName && (
                         <p className='text-sm text-red-400'>
@@ -160,8 +186,8 @@ const Contact = () => {
                       <Input
                         id='lastName'
                         {...register('lastName')}
-                        className='bg-space-cosmic/50 focus:border-space-gold border-purple-500/30 text-white placeholder:text-gray-400'
-                        placeholder='Enter your last name'
+                        className='bg-space-cosmic/30 focus:border-space-gold focus:bg-space-cosmic/50 h-12 rounded-xl border-purple-500/40 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400'
+                        placeholder='Your last name'
                       />
                       {errors.lastName && (
                         <p className='text-sm text-red-400'>
@@ -180,8 +206,8 @@ const Contact = () => {
                       id='email'
                       type='email'
                       {...register('email')}
-                      className='bg-space-cosmic/50 focus:border-space-gold border-purple-500/30 text-white placeholder:text-gray-400'
-                      placeholder='your.email@galaxy.com'
+                      className='bg-space-cosmic/30 focus:border-space-gold focus:bg-space-cosmic/50 h-12 rounded-xl border-purple-500/40 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400'
+                      placeholder='your.email@example.com'
                     />
                     {errors.email && (
                       <p className='text-sm text-red-400'>
@@ -199,7 +225,7 @@ const Contact = () => {
                       id='phone'
                       type='tel'
                       {...register('phone')}
-                      className='bg-space-cosmic/50 focus:border-space-gold border-purple-500/30 text-white placeholder:text-gray-400'
+                      className='bg-space-cosmic/30 focus:border-space-gold focus:bg-space-cosmic/50 h-12 rounded-xl border-purple-500/40 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400'
                       placeholder='+1 (555) 123-4567'
                     />
                     {errors.phone && (
@@ -218,8 +244,8 @@ const Contact = () => {
                       id='message'
                       {...register('message')}
                       rows={6}
-                      className='bg-space-cosmic/50 focus:border-space-gold resize-none border-purple-500/30 text-white placeholder:text-gray-400'
-                      placeholder="Tell me about your project... What's your vision? What problems are you trying to solve? Let's make it happen! 🚀"
+                      className='bg-space-cosmic/30 focus:border-space-gold focus:bg-space-cosmic/50 resize-none rounded-xl border-purple-500/40 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400'
+                      placeholder="Tell me about your project vision, goals, timeline, and what success looks like to you. I'm excited to hear your ideas! ✨"
                     />
                     {errors.message && (
                       <p className='text-sm text-red-400'>
@@ -302,41 +328,39 @@ const Contact = () => {
                 })}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Social Links */}
-            <div>
-              <h3 className='mb-4 text-xl font-bold text-white'>
-                Connect in the{' '}
-                <span className='text-space-gold'>Digital Universe</span>
-              </h3>
+        {/* Social Links */}
+        <div>
+          <h3 className='mb-4 text-xl font-bold text-white'>
+            Connect in the{' '}
+            <span className='text-space-gold'>Digital Universe</span>
+          </h3>
 
-              <div className='flex space-x-4'>
-                {socialLinks.map((social, index) => {
-                  const IconComponent = social.icon
-                  return (
-                    <a
-                      key={index}
-                      href={social.url}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='group'
-                    >
-                      <Card className='glass-nebula hover:border-space-gold/50 border-purple-500/20 transition-all duration-300 group-hover:scale-105'>
-                        <CardContent className='p-6 text-center'>
-                          <IconComponent className='group-hover:text-space-gold mx-auto mb-3 h-8 w-8 text-gray-400 transition-colors duration-300' />
-                          <h4 className='mb-1 text-sm font-semibold text-white'>
-                            {social.name}
-                          </h4>
-                          <p className='text-xs text-gray-400'>
-                            {social.username}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </a>
-                  )
-                })}
-              </div>
-            </div>
+          <div className='flex space-x-4'>
+            {socialLinks.map((social, index) => {
+              const IconComponent = social.icon
+              return (
+                <a
+                  key={index}
+                  href={social.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='group'
+                >
+                  <Card className='glass-nebula hover:border-space-gold/50 border-purple-500/20 transition-all duration-300 group-hover:scale-105'>
+                    <CardContent className='p-6 text-center'>
+                      <IconComponent className='group-hover:text-space-gold mx-auto mb-3 h-8 w-8 text-gray-400 transition-colors duration-300' />
+                      <h4 className='mb-1 text-sm font-semibold text-white'>
+                        {social.name}
+                      </h4>
+                      <p className='text-xs text-gray-400'>{social.username}</p>
+                    </CardContent>
+                  </Card>
+                </a>
+              )
+            })}
 
             {/* Availability Status */}
             <Card className='glass-cosmic border-purple-500/20'>

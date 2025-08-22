@@ -35,10 +35,7 @@ const Services = () => {
         {/* Section Header */}
         <div className='mb-16 text-center'>
           <h2 className='mb-4 text-4xl font-bold text-white md:text-5xl'>
-            Services I{' '}
-            <span className='bg-gradient-stellar bg-clip-text text-transparent'>
-              Offer
-            </span>
+            Services I <span className='text-space-gold'>Offer</span>
           </h2>
           <div className='bg-gradient-stellar mx-auto mb-6 h-1 w-24'></div>
           <p className='mx-auto max-w-3xl text-lg text-gray-400'>

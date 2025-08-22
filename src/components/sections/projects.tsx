@@ -30,16 +30,12 @@ const Projects = () => {
         {/* Section Header */}
         <div className='mb-16 text-center'>
           <h2 className='mb-4 text-4xl font-bold text-white md:text-5xl'>
-            My{' '}
-            <span className='bg-gradient-stellar bg-clip-text text-transparent'>
-              Project Galaxy
-            </span>
+            My <span className='text-space-gold'>Featured Projects</span>
           </h2>
           <div className='bg-gradient-stellar mx-auto mb-6 h-1 w-24'></div>
           <p className='mx-auto max-w-3xl text-lg text-gray-400'>
-            Explore the constellation of applications I&apos;ve launched into
-            the digital universe, each one solving real-world problems with
-            innovative solutions
+            Explore a collection of applications I&apos;ve built, each one
+            solving real-world problems with innovative technology solutions
           </p>
         </div>
 
@@ -52,7 +48,7 @@ const Projects = () => {
               onClick={() => setFilter(category)}
               className={`capitalize ${
                 filter !== category
-                  ? 'border-space-gold/30 hover:text-space-gold hover:border-space-gold text-gray-400'
+                  ? 'border-space-gold/50 text-space-gold/70 hover:text-space-gold hover:border-space-gold hover:bg-space-gold/10'
                   : ''
               }`}
             >
@@ -102,13 +98,13 @@ const Projects = () => {
                     {project.github_link && (
                       <Button
                         size='sm'
-                        variant='outline'
+                        variant='stellar'
                         onClick={() =>
                           window.open(project.github_link, '_blank')
                         }
-                        className='border-white text-white hover:bg-white hover:text-black'
+                        className='group'
                       >
-                        <Github className='h-4 w-4' />
+                        <Github className='h-4 w-4 transition-transform duration-300 group-hover:scale-110' />
                       </Button>
                     )}
                   </div>
@@ -135,7 +131,7 @@ const Projects = () => {
                     <Badge
                       key={skill.id}
                       variant='outline'
-                      className='border-space-accent/30 text-space-accent hover:border-space-gold hover:text-space-gold text-xs transition-colors duration-300'
+                      className='border-space-gold/70 bg-space-gold/20 hover:border-space-gold hover:bg-space-gold/30 text-xs font-medium text-white transition-all duration-300'
                     >
                       {skill.name}
                     </Badge>
@@ -143,7 +139,7 @@ const Projects = () => {
                   {project.skills_utilized.length > 4 && (
                     <Badge
                       variant='outline'
-                      className='border-gray-500 text-xs text-gray-500'
+                      className='border-gray-500 bg-gray-700/50 text-xs text-gray-200 hover:bg-gray-600/50'
                     >
                       +{project.skills_utilized.length - 4} more
                     </Badge>
@@ -183,11 +179,11 @@ const Projects = () => {
                   {project.github_link && (
                     <Button
                       size='sm'
-                      variant='outline'
+                      variant='stellar'
                       onClick={() => window.open(project.github_link, '_blank')}
-                      className='border-space-gold text-space-gold hover:bg-space-gold hover:text-space-deep'
+                      className='group'
                     >
-                      <Github className='h-4 w-4' />
+                      <Github className='h-4 w-4 transition-transform duration-300 group-hover:scale-110' />
                     </Button>
                   )}
                 </div>

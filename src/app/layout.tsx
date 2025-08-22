@@ -1,10 +1,10 @@
+import SpaceBackground from '@/components/shared/background'
+import Footer from '@/components/shared/footer'
+import Header from '@/components/shared/header'
+import { Toaster } from '@/components/ui/sonner'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import SpaceBackground from '@/components/shared/background'
-import Header from '@/components/shared/header'
-import Footer from '@/components/shared/footer'
-import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -71,9 +71,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en' className='scroll-smooth'>
+    <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} relative min-h-screen antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative min-h-screen overflow-x-hidden antialiased`}
       >
         <SpaceBackground />
         <Header />

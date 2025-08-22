@@ -144,6 +144,11 @@
 }
 
 @layer base {
+  html,
+  body {
+    scroll-behavior: smooth;
+    min-height: 100vh;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -161,6 +166,53 @@
   50% {
     transform: translateY(-10px);
   }
+}
+
+/* Asteroid Ring Animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes bounce-subtle {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-90deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-90deg);
+  }
+}
+
+/* Additional background gradients */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Asteroid Ring Classes */
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 15s linear infinite;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
 }
 
 @keyframes twinkle {
@@ -278,13 +330,11 @@
 
 /* Glass Morphism for Space Cards */
 .glass-cosmic {
-  background: rgba(26, 26, 46, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(26, 26, 46, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .glass-nebula {
-  background: rgba(22, 33, 62, 0.2);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(83, 52, 131, 0.3);
+  background: rgba(22, 33, 62, 0.4);
+  border: 1px solid rgba(83, 52, 131, 0.4);
 }

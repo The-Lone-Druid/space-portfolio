@@ -1,5 +1,6 @@
 'use client'
 
+import SpaceOrbital from '@/components/shared/space-orbital'
 import { Button } from '@/components/ui/button'
 import { heroStats, personalInfo } from '@/lib/data'
 import { ArrowDown, Mail, MapPin } from 'lucide-react'
@@ -56,14 +57,33 @@ const Hero = () => {
   const scrollToProjects = () => {
     const element = document.querySelector('#projects')
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      })
     }
   }
 
   const scrollToContact = () => {
     const element = document.querySelector('#contact')
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      })
+    }
+  }
+
+  const scrollToNext = () => {
+    const element = document.querySelector('#about')
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      })
     }
   }
 
@@ -72,7 +92,7 @@ const Hero = () => {
   return (
     <section
       id='home'
-      className='flex min-h-screen items-center justify-center pt-20'
+      className='relative flex min-h-screen items-center justify-center pt-20'
     >
       <div className='container mx-auto px-6'>
         <div className='grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
@@ -80,14 +100,12 @@ const Hero = () => {
           <div className='space-y-6'>
             <div className='space-y-4'>
               <p className='text-space-gold text-lg font-medium'>
-                👋 Greetings from the digital cosmos
+                👋 Hello! Welcome to my portfolio
               </p>
 
               <h1 className='text-4xl leading-tight font-bold text-white md:text-6xl lg:text-7xl'>
                 I&apos;m{' '}
-                <span className='bg-gradient-stellar animate-pulse-cosmic bg-clip-text text-transparent'>
-                  {personalInfo.name}
-                </span>
+                <span className='text-space-gold'>{personalInfo.name}</span>
               </h1>
 
               <h2 className='text-xl font-medium text-gray-300 md:text-2xl lg:text-3xl'>
@@ -124,18 +142,18 @@ const Hero = () => {
                 onClick={scrollToProjects}
                 className='group'
               >
-                Explore My Universe
+                View My Work
                 <ArrowDown className='ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-y-1' />
               </Button>
 
               <Button
-                variant='outline'
+                variant='stellar'
                 size='lg'
                 onClick={scrollToContact}
-                className='border-space-gold text-space-gold hover:bg-space-gold hover:text-space-deep'
+                className='group'
               >
-                <Mail className='mr-2 h-5 w-5' />
-                Launch Mission
+                <Mail className='mr-2 h-5 w-5 transition-transform duration-300 group-hover:scale-110' />
+                Get In Touch
               </Button>
             </div>
           </div>
@@ -144,32 +162,27 @@ const Hero = () => {
           <div className='space-y-8'>
             {/* Main Visual Element */}
             <div className='relative'>
-              <div className='bg-gradient-cosmic animate-pulse-cosmic glass-cosmic mx-auto flex h-64 w-64 items-center justify-center rounded-full'>
-                <div className='text-center'>
-                  <div className='mb-2 text-6xl'>🚀</div>
-                  <p className='font-semibold text-white'>Ready for Launch</p>
-                </div>
-              </div>
+              <SpaceOrbital />
 
               {/* Floating elements around the main circle */}
-              <div className='animate-float absolute top-10 right-10'>
-                <div className='bg-space-accent flex h-12 w-12 items-center justify-center rounded-full text-2xl'>
+              <div className='animate-float absolute top-10 right-10 z-30'>
+                <div className='bg-space-accent flex h-12 w-12 items-center justify-center rounded-full text-2xl shadow-lg shadow-purple-500/30'>
                   ⭐
                 </div>
               </div>
               <div
-                className='animate-float absolute bottom-10 left-10'
+                className='animate-float absolute bottom-10 left-10 z-30'
                 style={{ animationDelay: '1s' }}
               >
-                <div className='bg-space-gold flex h-10 w-10 items-center justify-center rounded-full text-xl'>
+                <div className='bg-space-gold flex h-10 w-10 items-center justify-center rounded-full text-xl shadow-lg shadow-yellow-500/30'>
                   🌟
                 </div>
               </div>
               <div
-                className='animate-float absolute top-1/2 right-0'
+                className='animate-float absolute top-1/2 right-0 z-30'
                 style={{ animationDelay: '2s' }}
               >
-                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-lg'>
+                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-lg shadow-lg shadow-blue-500/30'>
                   ✨
                 </div>
               </div>
@@ -203,10 +216,16 @@ const Hero = () => {
 
         {/* Scroll indicator */}
         <div className='absolute bottom-8 left-1/2 -translate-x-1/2 transform animate-bounce'>
-          <div className='flex flex-col items-center space-y-2 text-gray-400'>
-            <span className='text-sm'>Scroll to explore</span>
-            <ArrowDown className='h-5 w-5' />
-          </div>
+          <button
+            onClick={scrollToNext}
+            className='hover:text-space-gold group flex cursor-pointer flex-col items-center space-y-2 text-gray-400 transition-all duration-300 hover:scale-110'
+            aria-label='Scroll to next section'
+          >
+            <span className='group-hover:text-space-gold text-sm transition-colors duration-300'>
+              Scroll to explore
+            </span>
+            <ArrowDown className='h-5 w-5 transition-transform duration-300 group-hover:translate-y-1' />
+          </button>
         </div>
       </div>
     </section>

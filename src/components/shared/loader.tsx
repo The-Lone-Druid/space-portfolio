@@ -22,7 +22,7 @@ const SpaceLoader = () => {
 
         {/* Loading Text */}
         <h2 className='mb-4 text-2xl font-bold text-white'>
-          Initiating <span className='text-space-gold'>Space</span> Sequence
+          Loading <span className='text-space-gold'>Portfolio</span>
         </h2>
 
         {/* Loading Animation */}
@@ -37,7 +37,7 @@ const SpaceLoader = () => {
         </div>
 
         {/* Status Text */}
-        <p className='text-sm text-gray-400'>Preparing cosmic experience...</p>
+        <p className='text-sm text-gray-400'>Preparing your experience...</p>
       </div>
 
       {/* Background Stars */}

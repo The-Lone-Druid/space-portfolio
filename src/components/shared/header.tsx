@@ -29,7 +29,11 @@ const Header = () => {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      })
     }
     setIsMobileMenuOpen(false)
   }
@@ -48,7 +52,7 @@ const Header = () => {
           <div className='flex items-center space-x-2'>
             <Rocket className='text-space-gold animate-float h-8 w-8' />
             <span className='text-xl font-bold text-white'>
-              Zahid<span className='text-space-gold'>Space</span>
+              zahidshaikh<span className='text-space-gold'>.space</span>
             </span>
           </div>
 
@@ -73,7 +77,7 @@ const Header = () => {
               onClick={() => scrollToSection('#contact')}
               className='relative'
             >
-              Launch Mission
+              Get In Touch
             </Button>
           </div>
 
@@ -108,7 +112,7 @@ const Header = () => {
                 onClick={() => scrollToSection('#contact')}
                 className='mt-4'
               >
-                Launch Mission
+                Get In Touch
               </Button>
             </div>
           </div>

@@ -1,19 +1,31 @@
-import Hero from '@/components/sections/hero'
 import About from '@/components/sections/about'
-import Projects from '@/components/sections/projects'
-import Skills from '@/components/sections/skills'
-import Services from '@/components/sections/services'
 import Contact from '@/components/sections/contact'
+import Hero from '@/components/sections/hero'
+import Projects from '@/components/sections/projects'
+import Services from '@/components/sections/services'
+import Skills from '@/components/sections/skills'
 
 export default function Page() {
   return (
     <div className='min-h-screen'>
-      <Hero />
-      <About />
-      <Projects />
-      <Skills />
-      <Services />
-      <Contact />
+      <div data-scroll-section>
+        <Hero />
+      </div>
+      <div data-scroll-section>
+        <About />
+      </div>
+      <div data-scroll-section>
+        <Projects />
+      </div>
+      <div data-scroll-section>
+        <Skills />
+      </div>
+      <div data-scroll-section>
+        <Services />
+      </div>
+      <div data-scroll-section>
+        <Contact />
+      </div>
     </div>
   )
 }

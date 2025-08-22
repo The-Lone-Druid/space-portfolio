@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { heroStats } from '@/lib/data'
-import { Code, Download, Rocket, Star, Zap } from 'lucide-react'
+import { Code, Mail, Rocket, Star, Zap } from 'lucide-react'
 
 const About = () => {
   const highlights = [
@@ -49,16 +49,24 @@ const About = () => {
     { label: 'Coffee Consumed', value: '∞', icon: '☕' },
   ]
 
+  const scrollToContact = () => {
+    const element = document.querySelector('#contact')
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      })
+    }
+  }
+
   return (
     <section id='about' className='py-20'>
       <div className='container mx-auto px-6'>
         {/* Section Header */}
         <div className='mb-16 text-center'>
           <h2 className='mb-4 text-4xl font-bold text-white md:text-5xl'>
-            About My{' '}
-            <span className='bg-gradient-stellar bg-clip-text text-transparent'>
-              Journey
-            </span>
+            About My <span className='text-space-gold'>Journey</span>
           </h2>
           <div className='bg-gradient-stellar mx-auto mb-6 h-1 w-24'></div>
           <p className='mx-auto max-w-3xl text-lg text-gray-400'>
@@ -98,9 +106,14 @@ const About = () => {
               </div>
 
               <div className='mt-6'>
-                <Button variant='stellar' className='group'>
-                  <Download className='mr-2 h-5 w-5 group-hover:animate-bounce' />
-                  Download Resume
+                <Button
+                  variant='stellar'
+                  size='lg'
+                  onClick={scrollToContact}
+                  className='group'
+                >
+                  <Mail className='mr-2 h-5 w-5 transition-transform duration-300 group-hover:scale-110' />
+                  Get In Touch
                 </Button>
               </div>
             </div>

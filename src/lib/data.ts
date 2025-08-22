@@ -1,11 +1,11 @@
-import { Hero, Project, Skill, Service, PersonalInfo } from '@/types'
+import { Hero, PersonalInfo, Project, Service, Skill } from '@/types'
 
 export const personalInfo: PersonalInfo = {
   name: 'Zahid Shaikh',
-  title: 'Full Stack Developer & Space Code Explorer',
-  bio: 'I navigate through the digital cosmos, building stellar web experiences and launching applications into the stratosphere of user satisfaction. With a passion for clean code and innovative solutions, I explore new frontiers in web development.',
+  title: 'Full Stack Developer & Tech Innovator',
+  bio: 'I craft modern web experiences and build scalable applications that drive user satisfaction. With a passion for clean code and innovative solutions, I transform ideas into powerful digital products.',
   email: 'reachtozahid@gmail.com',
-  location: 'Earth, Milky Way Galaxy',
+  location: 'Mumbai, Maharashtra',
   resume_url: '#',
   social_links: [
     {

@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -21,13 +21,13 @@ const buttonVariants = cva(
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         cosmic:
-          'bg-gradient-cosmic text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-500/20',
+          'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-500/30 hover:from-purple-500 hover:to-blue-500',
         stellar:
-          'bg-gradient-stellar text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-400/30',
+          'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-amber-400/30 hover:from-amber-400 hover:to-orange-500',
         nebula:
-          'bg-gradient-nebula text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-400/30',
+          'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-cyan-400/30 hover:from-cyan-400 hover:to-blue-500',
         space:
-          'bg-space-accent text-white shadow-lg hover:bg-space-stellar transition-all duration-300 hover:scale-105 animate-cosmic-glow',
+          'bg-space-accent text-white shadow-lg hover:bg-space-stellar transition-all duration-300 hover:scale-105',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
