@@ -62,40 +62,70 @@ const Contact = () => {
       subtitle="Ready to bring your vision to life? I'd love to hear about your project and explore how we can create something extraordinary together."
       badge={{ text: 'Ready to collaborate?', emoji: '💫' }}
     >
-      {/* Quick stats */}
-      <div className='mt-12 mb-20 grid grid-cols-1 gap-8 sm:grid-cols-3'>
-        <div className='text-center' ref={responseTimeCounter.ref}>
-          <div className='text-space-gold text-3xl font-bold'>
-            {responseTimeCounter.count}
+      {/* Quick stats with improved visual appeal and responsive design */}
+      <div className='relative mb-12 md:mb-16'>
+        <div className='glass-cosmic rounded-2xl p-6 shadow-2xl md:rounded-3xl md:p-8'>
+          <div className='grid grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8'>
+            <div className='group text-center' ref={responseTimeCounter.ref}>
+              <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
+                <div className='text-xl font-bold text-white md:text-2xl'>
+                  {responseTimeCounter.count}
+                </div>
+              </div>
+              <h4 className='text-base font-semibold text-white md:text-lg'>
+                Response Time
+              </h4>
+              <p className='text-xs text-gray-400 md:text-sm'>
+                Lightning fast replies
+              </p>
+            </div>
+            <div className='group text-center' ref={projectsCounter.ref}>
+              <div className='bg-gradient-nebula group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
+                <div className='text-xl font-bold text-white md:text-2xl'>
+                  {projectsCounter.count}
+                </div>
+              </div>
+              <h4 className='text-base font-semibold text-white md:text-lg'>
+                Projects Delivered
+              </h4>
+              <p className='text-xs text-gray-400 md:text-sm'>
+                Successful launches
+              </p>
+            </div>
+            <div className='group text-center' ref={satisfactionCounter.ref}>
+              <div className='bg-gradient-stellar group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
+                <div className='text-xl font-bold text-white md:text-2xl'>
+                  {satisfactionCounter.count}
+                </div>
+              </div>
+              <h4 className='text-base font-semibold text-white md:text-lg'>
+                Client Satisfaction
+              </h4>
+              <p className='text-xs text-gray-400 md:text-sm'>Perfect rating</p>
+            </div>
           </div>
-          <p className='text-sm text-gray-400'>Response Time</p>
-        </div>
-        <div className='text-center' ref={projectsCounter.ref}>
-          <div className='text-space-gold text-3xl font-bold'>
-            {projectsCounter.count}
-          </div>
-          <p className='text-sm text-gray-400'>Projects Delivered</p>
-        </div>
-        <div className='text-center' ref={satisfactionCounter.ref}>
-          <div className='text-space-gold text-3xl font-bold'>
-            {satisfactionCounter.count}
-          </div>
-          <p className='text-sm text-gray-400'>Client Satisfaction</p>
         </div>
       </div>
 
-      <div className='mb-20 grid grid-cols-1 gap-16 lg:grid-cols-2'>
-        {/* Contact Form */}
-        <div className='order-2 lg:order-1'>
-          <ContactForm />
+      <div className='grid grid-cols-1 gap-6 lg:gap-8 xl:grid-cols-3 xl:gap-12'>
+        {/* Contact Form - Takes 2 columns on xl screens */}
+        <div className='xl:col-span-2'>
+          <div className='glass-cosmic rounded-2xl p-6 shadow-2xl md:rounded-3xl md:p-8'>
+            <ContactForm />
+          </div>
         </div>
 
-        {/* Contact Information */}
-        <div className='order-1 space-y-8 lg:order-2'>
+        {/* Contact Information - Takes 1 column on xl screens */}
+        <div className='space-y-4 md:space-y-6'>
           {/* Contact Methods */}
-          <div className='space-y-6'>
-            <h3 className='text-2xl font-bold text-white'>Get in Touch</h3>
-            <div className='grid gap-4'>
+          <div className='glass-cosmic rounded-xl p-4 shadow-xl md:rounded-2xl md:p-6'>
+            <h3 className='mb-4 flex items-center text-lg font-bold text-white md:mb-6 md:text-xl'>
+              <div className='bg-gradient-cosmic mr-2 flex h-7 w-7 items-center justify-center rounded-lg shadow-md md:mr-3 md:h-8 md:w-8'>
+                <Mail className='h-3.5 w-3.5 text-white md:h-4 md:w-4' />
+              </div>
+              Get in Touch
+            </h3>
+            <div className='space-y-2 md:space-y-3'>
               {contactMethods.map(method => (
                 <ContactMethodCard
                   key={method.label}
@@ -110,9 +140,14 @@ const Contact = () => {
           </div>
 
           {/* Social Links */}
-          <div className='space-y-6'>
-            <h3 className='text-2xl font-bold text-white'>Connect With Me</h3>
-            <div className='grid gap-4'>
+          <div className='glass-cosmic rounded-xl p-4 shadow-xl md:rounded-2xl md:p-6'>
+            <h3 className='mb-4 flex items-center text-lg font-bold text-white md:mb-6 md:text-xl'>
+              <div className='bg-gradient-nebula mr-2 flex h-7 w-7 items-center justify-center rounded-lg shadow-md md:mr-3 md:h-8 md:w-8'>
+                <Github className='h-3.5 w-3.5 text-white md:h-4 md:w-4' />
+              </div>
+              Connect With Me
+            </h3>
+            <div className='space-y-2 md:space-y-3'>
               {socialLinks.map(social => (
                 <SocialLinkCard
                   key={social.name}
@@ -126,16 +161,19 @@ const Contact = () => {
           </div>
 
           {/* Availability Status */}
-          <div className='rounded-2xl border border-green-500/30 bg-green-500/10 p-6 text-center'>
-            <div className='mb-3 flex items-center justify-center'>
-              <div className='mr-3 h-3 w-3 animate-pulse rounded-full bg-green-500'></div>
-              <span className='font-medium text-green-400'>
+          <div className='glass-cosmic rounded-xl border border-green-500/30 bg-gradient-to-br from-green-500/10 to-emerald-500/5 p-4 shadow-xl md:rounded-2xl md:p-6'>
+            <div className='text-center'>
+              <div className='mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-green-400 to-emerald-400 shadow-lg md:mb-4 md:h-16 md:w-16'>
+                <div className='h-2.5 w-2.5 animate-pulse rounded-full bg-white shadow-sm md:h-3 md:w-3'></div>
+              </div>
+              <h4 className='mb-2 text-base font-semibold text-green-400 md:text-lg'>
                 Currently Available
-              </span>
+              </h4>
+              <p className='text-xs leading-relaxed text-gray-300 md:text-sm'>
+                Ready to take on new projects and collaborations. Let&apos;s
+                create something amazing together!
+              </p>
             </div>
-            <p className='mb-4 text-sm text-gray-300'>
-              Ready to take on new projects and collaborations
-            </p>
           </div>
         </div>
       </div>
