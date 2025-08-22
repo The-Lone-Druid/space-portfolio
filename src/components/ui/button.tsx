@@ -20,6 +20,14 @@ const buttonVariants = cva(
         ghost:
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
+        cosmic:
+          'bg-gradient-cosmic text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-500/20',
+        stellar:
+          'bg-gradient-stellar text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-400/30',
+        nebula:
+          'bg-gradient-nebula text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-400/30',
+        space:
+          'bg-space-accent text-white shadow-lg hover:bg-space-stellar transition-all duration-300 hover:scale-105 animate-cosmic-glow',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',

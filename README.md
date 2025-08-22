@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Space Portfolio - Zahid Shaikh
 
-## Getting Started
+A stellar portfolio website built with cutting-edge technologies, featuring a cosmic theme that showcases projects, skills, and services in an immersive space-themed interface.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **🎨 Space-Themed Design**: Immersive cosmic interface with animated stars, floating particles, and stellar gradients
+- **⚡ Modern Tech Stack**: Built with Next.js 15, React 19, TypeScript, and Tailwind CSS v4
+- **🎭 Interactive Components**: Smooth animations, hover effects, and responsive design
+- **📱 Mobile-First**: Fully responsive across all devices
+- **🎯 Performance Optimized**: Fast loading times and smooth interactions
+- **♿ Accessibility**: WCAG compliant with proper semantic HTML
+- **🔍 SEO Optimized**: Meta tags, Open Graph, and structured data
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Frontend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4 + Custom CSS Variables
+- **UI Components**: shadcn/ui with custom space variants
+- **Icons**: Lucide React
+- **Animations**: Custom CSS animations + React hooks
 
-## Learn More
+### Development Tools
 
-To learn more about Next.js, take a look at the following resources:
+- **Linting**: ESLint + Prettier
+- **Type Checking**: TypeScript strict mode
+- **Git Hooks**: Husky + lint-staged
+- **Package Manager**: npm
+- **Build Tool**: Turbopack (Next.js 15)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- Node.js 18+
+- npm or yarn
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/zahidshaikh/space-portfolio.git
+   cd space-portfolio
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🎯 Key Sections
+
+1. **🏠 Hero**: Animated introduction with stats and CTAs
+2. **👨‍🚀 About**: Personal story and achievements
+3. **🛰️ Projects**: Portfolio showcase with live demos
+4. **⭐ Skills**: Technology constellation with categorization
+5. **🔧 Services**: Professional services with process flow
+6. **📞 Contact**: Interactive contact form with validation
+
+## 📞 Contact
+
+- **Email**: reachtozahid@gmail.com
+- **Portfolio**: [zahidshaikh.space](https://zahidshaikh.space)
+- **GitHub**: [@zahidshaikh](https://github.com/zahidshaikh)
+
+---
+
+**Built with cosmic energy ✨ and lots of ☕**
+
+_Ready to launch your own space mission? 🚀_

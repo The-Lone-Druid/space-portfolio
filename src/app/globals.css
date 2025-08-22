@@ -76,6 +76,37 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
+
+  /* Space Theme Variables */
+  --space-deep: #0a0a0f;
+  --space-cosmic: #1a1a2e;
+  --space-nebula: #16213e;
+  --space-stellar: #533483;
+  --space-accent: #7209b7;
+  --space-gold: #ffd700;
+  --space-silver: #c0c0c0;
+
+  /* Space Gradients */
+  --gradient-cosmic: linear-gradient(
+    135deg,
+    var(--space-deep),
+    var(--space-cosmic)
+  );
+  --gradient-nebula: linear-gradient(
+    135deg,
+    var(--space-nebula),
+    var(--space-stellar)
+  );
+  --gradient-stellar: linear-gradient(
+    135deg,
+    var(--space-stellar),
+    var(--space-accent)
+  );
+  --gradient-cosmic-gold: linear-gradient(
+    135deg,
+    var(--space-accent),
+    var(--space-gold)
+  );
 }
 
 .dark {
@@ -119,4 +150,141 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Space Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes cosmic-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--space-accent);
+  }
+  50% {
+    box-shadow:
+      0 0 40px var(--space-accent),
+      0 0 60px var(--space-stellar);
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateX(-100px) translateY(-100px);
+  }
+  25% {
+    transform: translateX(100px) translateY(-80px);
+  }
+  50% {
+    transform: translateX(80px) translateY(100px);
+  }
+  75% {
+    transform: translateX(-80px) translateY(80px);
+  }
+  100% {
+    transform: translateX(-100px) translateY(-100px);
+  }
+}
+
+@keyframes pulse-cosmic {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Space Animation Classes */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+.animate-twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+.animate-cosmic-glow {
+  animation: cosmic-glow 2s ease-in-out infinite;
+}
+.animate-drift {
+  animation: drift 20s linear infinite;
+}
+.animate-pulse-cosmic {
+  animation: pulse-cosmic 3s ease-in-out infinite;
+}
+
+/* Space Backgrounds */
+.bg-space-deep {
+  background-color: var(--space-deep);
+}
+.bg-space-cosmic {
+  background-color: var(--space-cosmic);
+}
+.bg-space-nebula {
+  background-color: var(--space-nebula);
+}
+.bg-space-stellar {
+  background-color: var(--space-stellar);
+}
+.bg-space-accent {
+  background-color: var(--space-accent);
+}
+.bg-space-gold {
+  background-color: var(--space-gold);
+}
+
+.bg-gradient-cosmic {
+  background: var(--gradient-cosmic);
+}
+.bg-gradient-nebula {
+  background: var(--gradient-nebula);
+}
+.bg-gradient-stellar {
+  background: var(--gradient-stellar);
+}
+.bg-gradient-cosmic-gold {
+  background: var(--gradient-cosmic-gold);
+}
+
+/* Space Text Colors */
+.text-space-gold {
+  color: var(--space-gold);
+}
+.text-space-silver {
+  color: var(--space-silver);
+}
+.text-space-accent {
+  color: var(--space-accent);
+}
+
+/* Glass Morphism for Space Cards */
+.glass-cosmic {
+  background: rgba(26, 26, 46, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-nebula {
+  background: rgba(22, 33, 62, 0.2);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(83, 52, 131, 0.3);
 }
