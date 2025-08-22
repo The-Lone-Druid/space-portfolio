@@ -63,3 +63,6 @@ pids
 # Package-lock
 package-lock.json
 yarn.lock
+
+# Auto-generated files
+CHANGELOG.md

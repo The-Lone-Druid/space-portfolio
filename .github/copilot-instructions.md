@@ -28,6 +28,14 @@ npm run lint:fix     # ESLint + auto-fix
 npm run format       # Prettier with Tailwind class sorting
 ```
 
+### Versioning & Releases
+
+```bash
+npm run release      # Auto-bump version from conventional commits
+npm run release:minor # Force minor version bump
+npm run release:patch # Force patch version bump
+```
+
 **Git hooks auto-run**: `lint-staged` on pre-commit + `commitlint` validation
 
 ### VS Code Integration
@@ -73,7 +81,7 @@ src/
 - **Import order**: React/Next → 3rd party → internal → types
 - **Component props**: Always use interfaces, prefer `ComponentNameProps`
 
-## Commit Convention (Enforced)
+## Commit Message Convention (Enforced)
 
 ```
 feat: add space navigation component
@@ -83,6 +91,8 @@ style: format with prettier
 ```
 
 Types: `feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert`
+
+**Beautiful changelog**: Auto-generated with emojis and space theme formatting
 
 ## Space Theme Context
 

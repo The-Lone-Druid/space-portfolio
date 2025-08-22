@@ -1,0 +1,97 @@
+{
+  "types": [
+    {
+      "type": "feat",
+      "section": "✨ New Features",
+      "description": "A new feature"
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes",
+      "description": "A bug fix"
+    },
+    {
+      "type": "perf",
+      "section": "⚡ Performance Improvements",
+      "description": "A code change that improves performance"
+    },
+    {
+      "type": "refactor",
+      "section": "♻️ Code Refactoring",
+      "hidden": false,
+      "description": "A code change that neither fixes a bug nor adds a feature"
+    },
+    {
+      "type": "style",
+      "section": "💎 Styling & UI",
+      "hidden": false,
+      "description": "Changes that affect the meaning of the code (white-space, formatting, missing semi-colons, etc)"
+    },
+    {
+      "type": "docs",
+      "section": "📚 Documentation",
+      "hidden": false,
+      "description": "Documentation only changes"
+    },
+    {
+      "type": "test",
+      "section": "🧪 Tests",
+      "hidden": false,
+      "description": "Adding missing tests or correcting existing tests"
+    },
+    {
+      "type": "build",
+      "section": "🏗️ Build System",
+      "hidden": false,
+      "description": "Changes that affect the build system or external dependencies"
+    },
+    {
+      "type": "ci",
+      "section": "🔧 Continuous Integration",
+      "hidden": false,
+      "description": "Changes to our CI configuration files and scripts"
+    },
+    {
+      "type": "chore",
+      "section": "🔨 Maintenance",
+      "hidden": false,
+      "description": "Other changes that don't modify src or test files"
+    },
+    {
+      "type": "revert",
+      "section": "⏪ Reverts",
+      "hidden": false,
+      "description": "Reverts a previous commit"
+    }
+  ],
+  "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
+  "userUrlFormat": "{{host}}/{{user}}",
+  "releaseCommitMessageFormat": "chore(release): 🚀 v{{currentTag}}",
+  "issuePrefixes": ["#"],
+  "preMajor": false,
+  "tagPrefix": "v",
+  "skip": {
+    "changelog": false,
+    "commit": false,
+    "tag": false
+  },
+  "header": "# 🚀 Space Portfolio Changelog\n\n> **Exploring the cosmos, one commit at a time** ✨\n\nAll notable changes to this space-themed portfolio project will be documented in this file.\n\nThe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n---\n\n",
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "package-lock.json",
+      "type": "json"
+    }
+  ]
+}

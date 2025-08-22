@@ -33,6 +33,16 @@ npm start
 - `npm run type-check` - Run TypeScript type checking
 - `npm run pre-commit` - Run lint-staged (automatically runs on commit)
 
+### Versioning & Releases
+
+- `npm run release` - Auto-bump version based on conventional commits
+- `npm run release:patch` - Force patch version bump (0.1.0 → 0.1.1)
+- `npm run release:minor` - Force minor version bump (0.1.0 → 0.2.0)
+- `npm run release:major` - Force major version bump (0.1.0 → 1.0.0)
+- `npm run release:pre` - Create pre-release version (0.1.0 → 0.1.1-0)
+- `npm run release:alpha` - Create alpha pre-release (0.1.0 → 0.1.1-alpha.0)
+- `npm run release:beta` - Create beta pre-release (0.1.0 → 0.1.1-beta.0)
+
 ## 🛠️ Development Environment
 
 ### VS Code Setup
@@ -119,6 +129,78 @@ type(scope): description
 
 [optional footer]
 ```
+
+## 🏷️ Versioning & Releases
+
+This project follows [Semantic Versioning](https://semver.org/) (SemVer):
+
+### Version Format
+
+- **MAJOR.MINOR.PATCH** (e.g., 1.2.3)
+- **MAJOR**: Breaking changes
+- **MINOR**: New features (backward compatible)
+- **PATCH**: Bug fixes (backward compatible)
+
+### Release Process
+
+1. **Automatic Versioning**: Use `npm run release` for automatic version bumping based on commit messages
+2. **Manual Versioning**: Use specific release commands for manual control
+3. **Changelog**: Automatically generated from conventional commit messages
+4. **Git Tags**: Automatically created and pushed with each release
+
+### Release Workflow
+
+```bash
+# Make your changes and commit with conventional messages
+git add .
+git commit -m "feat: add new space component"
+
+# Create a release (auto-detects version bump needed)
+npm run release
+
+# Or manually specify version type
+npm run release:minor  # for new features
+npm run release:patch  # for bug fixes
+npm run release:major  # for breaking changes
+```
+
+### Pre-releases
+
+For testing purposes, you can create pre-release versions:
+
+```bash
+npm run release:pre    # 1.0.0 → 1.0.1-0
+npm run release:alpha  # 1.0.0 → 1.0.1-alpha.0
+npm run release:beta   # 1.0.0 → 1.0.1-beta.0
+```
+
+### What Happens During Release
+
+1. **Version Bump**: Updates version in `package.json`
+2. **Changelog Update**: Generates/updates `CHANGELOG.md` with beautiful formatting
+3. **Git Tag**: Creates annotated git tag (e.g., `v1.0.0`)
+4. **Git Commit**: Commits the changes with release message
+
+### Changelog Features
+
+The generated changelog includes:
+
+- **🚀 Beautiful header** with space theme
+- **📊 Categorized sections** with emojis for easy scanning:
+  - ✨ New Features
+  - 🐛 Bug Fixes
+  - ⚡ Performance Improvements
+  - ♻️ Code Refactoring
+  - 💎 Styling & UI
+  - 📚 Documentation
+  - 🧪 Tests
+  - 🏗️ Build System
+  - 🔧 Continuous Integration
+  - 🔨 Maintenance
+  - ⏪ Reverts
+- **🔗 Clickable commit links** for easy navigation
+- **📅 Release dates** and version comparisons
+- **📝 Detailed descriptions** for major releases
 
 ## 🎨 Styling Guidelines
 
