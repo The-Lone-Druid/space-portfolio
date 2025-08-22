@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+
+### 0.1.1 (2025-08-22)
+
+
+### ✨ New Features
+
+* enhance space portfolio with advanced animations and improvements a88df65
+* implement complete space-themed portfolio website 0260a1d
+* setup automated versioning with beautiful changelog generation d3dbafa
+* setup complete development environment with shadcn/ui integration c9a7ac9
+
 ## [0.1.0](https://github.com/user/space-portfolio/releases/tag/v0.1.0) (2025-08-22)
 
 ### ✨ New Features
