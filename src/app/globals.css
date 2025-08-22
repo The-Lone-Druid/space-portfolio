@@ -331,10 +331,18 @@
 /* Glass Morphism for Space Cards */
 .glass-cosmic {
   background: rgba(26, 26, 46, 0.3);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .glass-nebula {
   background: rgba(22, 33, 62, 0.4);
+  backdrop-filter: blur(15px);
   border: 1px solid rgba(83, 52, 131, 0.4);
+}
+
+/* Non-blur version for SpaceOrbital component */
+.glass-cosmic-clear {
+  background: rgba(26, 26, 46, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }

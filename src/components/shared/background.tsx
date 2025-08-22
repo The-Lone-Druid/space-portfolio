@@ -5,9 +5,41 @@ import { useEffect, useRef, useState } from 'react'
 const SpaceBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isClient, setIsClient] = useState(false)
+  const animationIdRef = useRef<number>(0)
+  const spawnTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const lastTimeRef = useRef<number>(0)
+  const isVisibleRef = useRef<boolean>(true)
 
   useEffect(() => {
     setIsClient(true)
+
+    // Handle visibility changes to prevent asteroid buildup
+    const handleVisibilityChange = () => {
+      isVisibleRef.current = !document.hidden
+
+      if (document.hidden) {
+        // Clear any pending spawn timeout when tab becomes hidden
+        if (spawnTimeoutRef.current) {
+          clearTimeout(spawnTimeoutRef.current)
+          spawnTimeoutRef.current = null
+        }
+      } else {
+        // Reset spawn timing when tab becomes visible again
+        lastTimeRef.current = Date.now()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      if (spawnTimeoutRef.current) {
+        clearTimeout(spawnTimeoutRef.current)
+      }
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -115,22 +147,48 @@ const SpaceBackground = () => {
       })
     }
 
-    // Spawn asteroids randomly
+    // Spawn asteroids randomly - with visibility control
     const spawnAsteroid = () => {
-      if (Math.random() < 0.8) {
-        // 80% chance every interval (increased from 30%)
+      // Only spawn if tab is visible and not too many asteroids
+      if (
+        isVisibleRef.current &&
+        asteroids.length < 4 && // Reduced from 15 to 8
+        Math.random() < 0.5 // Reduced from 0.8 to 0.5 (50% chance)
+      ) {
         createAsteroid()
       }
-      setTimeout(spawnAsteroid, Math.random() * 800 + 300) // Random interval 0.3-1.1 seconds (faster)
+
+      // Only set new timeout if tab is visible
+      if (isVisibleRef.current) {
+        spawnTimeoutRef.current = setTimeout(
+          spawnAsteroid,
+          Math.random() * 1500 + 800 // Increased from 800+300 to 1500+800 (0.8-2.3s)
+        )
+      }
     }
 
-    // Create initial asteroids immediately
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => createAsteroid(), i * 200) // Create 5 asteroids in first second
+    // Create initial asteroids immediately (but limit them)
+    const initialCount = Math.min(2, 3) // Further reduced from 3 to 2
+    for (let i = 0; i < initialCount; i++) {
+      setTimeout(() => {
+        if (isVisibleRef.current) {
+          createAsteroid()
+        }
+      }, i * 400) // Increased delay from 200ms to 400ms
     }
 
-    spawnAsteroid() // Animation loop
+    // Start the spawning process
+    lastTimeRef.current = Date.now()
+    spawnAsteroid()
+
+    // Animation loop
     const animate = () => {
+      // Only animate if tab is visible
+      if (!isVisibleRef.current) {
+        animationIdRef.current = requestAnimationFrame(animate)
+        return
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Draw stars
@@ -223,7 +281,7 @@ const SpaceBackground = () => {
         }
       })
 
-      requestAnimationFrame(animate)
+      animationIdRef.current = requestAnimationFrame(animate)
     }
 
     animate()
@@ -231,6 +289,12 @@ const SpaceBackground = () => {
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas)
+      if (spawnTimeoutRef.current) {
+        clearTimeout(spawnTimeoutRef.current)
+      }
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current)
+      }
     }
   }, [isClient])
 

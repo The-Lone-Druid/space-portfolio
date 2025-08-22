@@ -94,7 +94,7 @@ const SpaceOrbital = () => {
       </div>
 
       {/* Main Central Element */}
-      <div className='bg-gradient-cosmic animate-pulse-cosmic glass-cosmic border-space-gold/20 relative z-10 mx-auto flex h-64 w-64 items-center justify-center rounded-full border-2'>
+      <div className='bg-gradient-cosmic animate-pulse-cosmic glass-cosmic-clear border-space-gold/20 relative z-10 mx-auto flex h-64 w-64 items-center justify-center rounded-full border-2'>
         <div className='text-center'>
           <div className='mb-2 text-6xl'>🌟</div>
           <p className='text-lg font-semibold text-white'>Ready to Build</p>

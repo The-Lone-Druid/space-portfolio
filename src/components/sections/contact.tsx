@@ -331,62 +331,118 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Social Links */}
-        <div>
-          <h3 className='mb-4 text-xl font-bold text-white'>
+        {/* Social Links & Availability */}
+        <div className='mt-16'>
+          <h3 className='mb-8 text-center text-2xl font-bold text-white'>
             Connect in the{' '}
             <span className='text-space-gold'>Digital Universe</span>
           </h3>
 
-          <div className='flex space-x-4'>
-            {socialLinks.map((social, index) => {
-              const IconComponent = social.icon
-              return (
-                <a
-                  key={index}
-                  href={social.url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='group'
-                >
-                  <Card className='glass-nebula hover:border-space-gold/50 border-purple-500/20 transition-all duration-300 group-hover:scale-105'>
-                    <CardContent className='p-6 text-center'>
-                      <IconComponent className='group-hover:text-space-gold mx-auto mb-3 h-8 w-8 text-gray-400 transition-colors duration-300' />
-                      <h4 className='mb-1 text-sm font-semibold text-white'>
-                        {social.name}
-                      </h4>
-                      <p className='text-xs text-gray-400'>{social.username}</p>
-                    </CardContent>
-                  </Card>
-                </a>
-              )
-            })}
+          <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
+            {/* Social Links */}
+            <div className='lg:col-span-2'>
+              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                {socialLinks.map((social, index) => {
+                  const IconComponent = social.icon
+                  return (
+                    <a
+                      key={index}
+                      href={social.url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='group'
+                    >
+                      <Card className='glass-nebula hover:border-space-gold/50 h-full border-purple-500/20 transition-all duration-300 group-hover:scale-105'>
+                        <CardContent className='p-6'>
+                          <div className='flex items-center space-x-4'>
+                            <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-12 w-12 items-center justify-center rounded-xl'>
+                              <IconComponent className='h-6 w-6 text-white' />
+                            </div>
+                            <div className='flex-1'>
+                              <h4 className='group-hover:text-space-gold mb-1 text-lg font-semibold text-white transition-colors duration-300'>
+                                {social.name}
+                              </h4>
+                              <p className='text-sm text-gray-400'>
+                                {social.username}
+                              </p>
+                              <p className='text-space-gold mt-1 text-xs'>
+                                Click to connect →
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
 
             {/* Availability Status */}
-            <Card className='glass-cosmic border-purple-500/20'>
-              <CardContent className='p-6'>
-                <div className='mb-4 flex items-center space-x-3'>
-                  <div className='h-3 w-3 animate-pulse rounded-full bg-green-400'></div>
-                  <span className='font-semibold text-white'>
-                    Currently Available
-                  </span>
-                </div>
-                <p className='mb-4 text-sm text-gray-400'>
-                  I&apos;m currently accepting new projects and collaborations.
-                  Let&apos;s create something amazing together!
-                </p>
-                <div className='space-y-2 text-sm'>
-                  <div className='flex justify-between text-gray-400'>
-                    <span>Response time:</span>
-                    <span className='text-space-gold'>Within 24 hours</span>
+            <div className='lg:col-span-1'>
+              <Card className='glass-cosmic h-full border-purple-500/20'>
+                <CardContent className='flex h-full flex-col justify-center p-6'>
+                  <div className='space-y-4 text-center'>
+                    {/* Status Indicator */}
+                    <div className='flex items-center justify-center space-x-3'>
+                      <div className='relative'>
+                        <div className='h-4 w-4 animate-pulse rounded-full bg-green-400'></div>
+                        <div className='absolute inset-0 h-4 w-4 animate-ping rounded-full bg-green-400 opacity-75'></div>
+                      </div>
+                      <span className='text-lg font-semibold text-white'>
+                        Available for Work
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <p className='text-sm leading-relaxed text-gray-300'>
+                      Ready to bring your vision to life! I&apos;m accepting new
+                      projects and collaborations.
+                    </p>
+
+                    {/* Quick Stats */}
+                    <div className='space-y-3 border-t border-purple-500/20 pt-4'>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-sm text-gray-400'>Response:</span>
+                        <span className='text-space-gold text-sm font-medium'>
+                          24 hours
+                        </span>
+                      </div>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-sm text-gray-400'>Start:</span>
+                        <span className='text-space-gold text-sm font-medium'>
+                          1-2 weeks
+                        </span>
+                      </div>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-sm text-gray-400'>Rate:</span>
+                        <span className='text-space-gold text-sm font-medium'>
+                          Competitive
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Call to Action */}
+                    <div className='pt-4'>
+                      <Button
+                        variant='stellar'
+                        size='sm'
+                        className='w-full text-sm'
+                        onClick={() => {
+                          const element =
+                            document.querySelector('#contact form')
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' })
+                          }
+                        }}
+                      >
+                        Let&apos;s Talk! 💫
+                      </Button>
+                    </div>
                   </div>
-                  <div className='flex justify-between text-gray-400'>
-                    <span>Project start:</span>
-                    <span className='text-space-gold'>Within 1-2 weeks</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
