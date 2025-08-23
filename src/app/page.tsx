@@ -4,19 +4,38 @@ import Hero from '@/components/sections/hero'
 import Projects from '@/components/sections/projects'
 import Services from '@/components/sections/services'
 import Skills from '@/components/sections/skills'
+import { getPortfolioData } from '@/services/portfolio-data'
 import { Toaster } from 'sonner'
 import SpaceBackground from '../components/animations/background'
 import Footer from '../components/shared/footer'
 import Header from '../components/shared/header'
-import {
-  heroStats,
-  personalInfo,
-  projects,
-  services,
-  skills,
-} from '../lib/data'
 
 export default async function Page() {
+  const { personalInfo, heroStats, skills, projects, services } =
+    await getPortfolioData()
+
+  // Handle missing data gracefully
+  if (!personalInfo || !heroStats) {
+    return (
+      <>
+        <SpaceBackground />
+        <Header />
+        <div className='flex min-h-screen items-center justify-center'>
+          <div className='text-center'>
+            <h1 className='mb-4 text-2xl font-bold'>
+              Portfolio Data Unavailable
+            </h1>
+            <p className='text-muted-foreground'>
+              Please ensure your database is set up and contains the required
+              data.
+            </p>
+          </div>
+        </div>
+        <Toaster />
+      </>
+    )
+  }
+
   return (
     <>
       <SpaceBackground />

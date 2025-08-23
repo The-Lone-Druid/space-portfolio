@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌌 Starting Space Portfolio seeding...')
+  console.warn('🌌 Starting Space Portfolio seeding...')
 
   // Create admin user
   const hashedPassword = await bcrypt.hash(
@@ -23,7 +23,7 @@ async function main() {
     },
   })
 
-  console.log('👤 Admin user created:', adminUser.email)
+  console.warn('👤 Admin user created:', adminUser.email)
 
   // Create Personal Info
   const personalInfo = await prisma.personalInfo.upsert({
@@ -40,7 +40,7 @@ async function main() {
     },
   })
 
-  console.log('👨‍💻 Personal info created:', personalInfo.name)
+  console.warn('👨‍💻 Personal info created:', personalInfo.name)
 
   // Create Social Links for Personal Info
   const socialLinks = [
@@ -78,7 +78,7 @@ async function main() {
     })
   }
 
-  console.log('🔗 Social links created')
+  console.warn('🔗 Social links created')
 
   // Create Hero Stats
   const hero = await prisma.hero.upsert({
@@ -92,7 +92,7 @@ async function main() {
     },
   })
 
-  console.log('🦸‍♂️ Hero stats created:', hero)
+  console.warn('🦸‍♂️ Hero stats created:', hero)
 
   // Create Skills
   const skills = [
@@ -131,7 +131,7 @@ async function main() {
     })
   }
 
-  console.log('🚀 Skills created:', skills.length)
+  console.warn('🚀 Skills created:', skills.length)
 
   // Create Projects with related data
   const projects = [
@@ -265,7 +265,7 @@ async function main() {
     }
   }
 
-  console.log('📦 Projects created with tasks and skills:', projects.length)
+  console.warn('📦 Projects created with tasks and skills:', projects.length)
 
   // Create Services
   const services = [
@@ -321,7 +321,7 @@ async function main() {
     })
   }
 
-  console.log('🛠️ Services created:', services.length)
+  console.warn('🛠️ Services created:', services.length)
 
   // Create some site settings
   const settings = [
@@ -354,9 +354,9 @@ async function main() {
     })
   }
 
-  console.log('⚙️ Site settings created:', settings.length)
+  console.warn('⚙️ Site settings created:', settings.length)
 
-  console.log('✨ Space Portfolio seeding completed successfully!')
+  console.warn('✨ Space Portfolio seeding completed successfully!')
 }
 
 main()

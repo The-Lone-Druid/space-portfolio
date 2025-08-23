@@ -44,13 +44,13 @@ const About = ({ heroStats }: AboutProps) => {
     { label: 'Years of Experience', value: '4', icon: '🚀', isNumeric: true },
     {
       label: 'Technologies Mastered',
-      value: `${heroStats.verified_skills}`,
+      value: `${heroStats.verifiedSkills}`,
       icon: '⚡',
       isNumeric: true,
     },
     {
       label: 'Projects Completed',
-      value: `${heroStats.professional_projects + heroStats.personal_projects}`,
+      value: `${heroStats.professionalProjects + heroStats.personalProjects}`,
       icon: '🌟',
       isNumeric: true,
     },

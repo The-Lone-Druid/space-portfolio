@@ -1,10 +1,10 @@
 'use client'
 
 import { Github, Linkedin, Mail, MapPin, Rocket } from 'lucide-react'
-import { PersonalInfo } from '../../types'
+import { PersonalInfoWithSocials } from '../../types'
 
 interface FooterProps {
-  personalInfo: PersonalInfo
+  personalInfo: PersonalInfoWithSocials
 }
 
 const Footer = ({ personalInfo }: FooterProps) => {
@@ -72,7 +72,7 @@ const Footer = ({ personalInfo }: FooterProps) => {
           <div className='space-y-4'>
             <h3 className='text-lg font-semibold text-white'>Connect</h3>
             <div className='flex space-x-4'>
-              {personalInfo.social_links.map(social => {
+              {personalInfo.socialLinks.map(social => {
                 const IconComponent =
                   socialIcons[social.icon as keyof typeof socialIcons] || Mail
                 return (

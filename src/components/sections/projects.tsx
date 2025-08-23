@@ -2,12 +2,12 @@
 
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { Project } from '../../types'
+import { ProjectWithDetails } from '../../types'
 import { ProjectCard } from '../cards/project-card'
 import { SectionCard } from '../cards/section-card'
 
 interface ProjectsProps {
-  projects: Project[]
+  projects: ProjectWithDetails[]
 }
 
 const Projects = ({ projects }: ProjectsProps) => {
@@ -17,7 +17,7 @@ const Projects = ({ projects }: ProjectsProps) => {
     filter === 'all'
       ? projects
       : projects.filter(project =>
-          project.skills_utilized.some(skill =>
+          project.skillsUtilized.some((skill: { name: string }) =>
             filter === 'frontend'
               ? skill.name.toLowerCase().includes('react') ||
                 skill.name.toLowerCase().includes('next')

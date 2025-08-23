@@ -1,65 +1,47 @@
-export interface Hero {
-  verified_skills: number
-  professional_projects: number
-  personal_projects: number
+import type {
+  Hero as PrismaHero,
+  PersonalInfo as PrismaPersonalInfo,
+  Project as PrismaProject,
+  ProjectSkill as PrismaProjectSkill,
+  ProjectTask as PrismaProjectTask,
+  Service as PrismaService,
+  Skill as PrismaSkill,
+  SocialLink as PrismaSocialLink,
+} from '@prisma/client'
+
+// Re-export Prisma types for convenience
+export type PersonalInfo = PrismaPersonalInfo
+export type Hero = PrismaHero
+export type Skill = PrismaSkill
+export type Project = PrismaProject
+export type Service = PrismaService
+export type SocialLink = PrismaSocialLink
+export type ProjectTask = PrismaProjectTask
+export type ProjectSkill = PrismaProjectSkill
+
+// Extended types for API responses with relations
+export type PersonalInfoWithSocials = PrismaPersonalInfo & {
+  socialLinks: PrismaSocialLink[]
 }
 
-export interface Skill {
-  id: number
-  name: string
-  category?: string
+export type ProjectWithDetails = PrismaProject & {
+  projectTasks: PrismaProjectTask[]
+  skillsUtilized: PrismaProjectSkill[]
 }
 
-export interface ProjectTask {
-  id: number
-  task: string
+// API Response wrapper
+export interface ApiResponse<T> {
+  success: boolean
+  data?: T
+  error?: string
+  message?: string
 }
 
-export interface SkillUtilized {
-  id: number
-  name: string
-}
-
-export interface Project {
-  id: number
-  project_name: string
-  project_date: string
-  project_description: string
-  project_link: string
-  project_tasks: ProjectTask[]
-  skills_utilized: SkillUtilized[]
-  image?: string
-  github_link?: string
-  featured?: boolean
-}
-
-export interface Service {
-  id: number
-  name: string
-  desc: string
-  icon: string
-}
-
-export interface ContactForm {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  message: string
-}
-
-export interface SocialLink {
-  name: string
-  url: string
-  icon: string
-}
-
-export interface PersonalInfo {
-  name: string
-  title: string
-  bio: string
-  email: string
-  location: string
-  resume_url?: string
-  social_links: SocialLink[]
+// Portfolio data structure for page components
+export interface PortfolioData {
+  personalInfo: PersonalInfoWithSocials | null
+  heroStats: Hero | null
+  skills: Skill[]
+  projects: ProjectWithDetails[]
+  services: Service[]
 }

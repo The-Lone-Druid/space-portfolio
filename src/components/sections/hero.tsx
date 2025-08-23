@@ -33,18 +33,18 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
         const progress = currentStep / steps
 
         setCounts({
-          skills: Math.floor(heroStats.verified_skills * progress),
+          skills: Math.floor(heroStats.verifiedSkills * progress),
           professionalProjects: Math.floor(
-            heroStats.professional_projects * progress
+            heroStats.professionalProjects * progress
           ),
-          personalProjects: Math.floor(heroStats.personal_projects * progress),
+          personalProjects: Math.floor(heroStats.personalProjects * progress),
         })
 
         if (currentStep >= steps) {
           setCounts({
-            skills: heroStats.verified_skills,
-            professionalProjects: heroStats.professional_projects,
-            personalProjects: heroStats.personal_projects,
+            skills: heroStats.verifiedSkills,
+            professionalProjects: heroStats.professionalProjects,
+            personalProjects: heroStats.personalProjects,
           })
           clearInterval(timer)
         }
