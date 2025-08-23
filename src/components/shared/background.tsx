@@ -302,7 +302,7 @@ const SpaceBackground = () => {
     <>
       {/* Static background that loads immediately */}
       <div
-        className='pointer-events-none fixed inset-0 z-0'
+        className='pointer-events-none fixed inset-0 -z-50'
         style={{
           background:
             'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)',
@@ -313,13 +313,13 @@ const SpaceBackground = () => {
       {isClient && (
         <canvas
           ref={canvasRef}
-          className='pointer-events-none fixed inset-0 z-0'
+          className='pointer-events-none fixed inset-0 -z-40'
           style={{ background: 'transparent' }}
         />
       )}
 
       {/* Additional cosmic elements */}
-      <div className='pointer-events-none fixed inset-0'>
+      <div className='pointer-events-none fixed inset-0 -z-30'>
         {/* Floating particles */}
         <div className='animate-drift absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-purple-400 opacity-30'></div>
         <div

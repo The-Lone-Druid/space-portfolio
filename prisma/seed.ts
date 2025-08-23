@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting database seeding...')
+  console.log('🌌 Starting Space Portfolio seeding...')
 
   // Create admin user
   const hashedPassword = await bcrypt.hash(
@@ -13,226 +13,303 @@ async function main() {
   )
 
   const adminUser = await prisma.user.upsert({
-    where: { email: process.env.ADMIN_EMAIL || 'admin@spaceportfolio.com' },
+    where: { email: 'admin@spaceportfolio.com' },
     update: {},
     create: {
-      email: process.env.ADMIN_EMAIL || 'admin@spaceportfolio.com',
+      email: 'admin@spaceportfolio.com',
       password: hashedPassword,
-      name: 'Space Portfolio Admin',
+      name: 'Space Admin',
       role: 'ADMIN',
     },
   })
 
-  console.log('👤 Created admin user:', adminUser.email)
+  console.log('👤 Admin user created:', adminUser.email)
 
-  // Seed Hero Section
-  const heroSection = await prisma.heroSection.upsert({
-    where: { id: 'hero-main' },
+  // Create Personal Info
+  const personalInfo = await prisma.personalInfo.upsert({
+    where: { id: 'personal-info-1' },
     update: {},
     create: {
-      id: 'hero-main',
-      title: "Hi, I'm",
-      subtitle: 'Zahid Shaikh',
-      description:
-        'A passionate full-stack developer crafting digital experiences that are out of this world. Welcome to my cosmic corner of the web!',
-      ctaText: 'Explore My Universe',
-      ctaLink: '#projects',
+      id: 'personal-info-1',
+      name: 'Zahid Shaikh',
+      title: 'Full Stack Developer & Tech Innovator',
+      bio: 'I craft modern web experiences and build scalable applications that drive user satisfaction. With a passion for clean code and innovative solutions, I transform ideas into powerful digital products.',
+      email: 'reachtozahid@gmail.com',
+      location: 'Mumbai, Maharashtra',
+      resumeUrl: '#',
     },
   })
 
-  console.log('🚀 Created hero section')
+  console.log('👨‍💻 Personal info created:', personalInfo.name)
 
-  // Seed About Section
-  const aboutSection = await prisma.aboutSection.upsert({
-    where: { id: 'about-main' },
-    update: {},
-    create: {
-      id: 'about-main',
-      title: 'About',
-      subtitle: 'Me',
-      description:
-        "I'm a full-stack developer with a passion for creating innovative digital solutions. My journey in the cosmos of code has led me to master various technologies and frameworks, always striving to push the boundaries of what's possible.",
-      highlights: [
-        'Full-stack development expertise',
-        'Modern web technologies',
-        'Creative problem solving',
-        'Continuous learning mindset',
-      ],
-    },
-  })
-
-  console.log('🧑‍🚀 Created about section')
-
-  // Seed Skills
-  const skills = [
-    { name: 'React', category: 'FRONTEND' as const, level: 95, icon: 'react' },
+  // Create Social Links for Personal Info
+  const socialLinks = [
     {
-      name: 'Next.js',
-      category: 'FRAMEWORKS' as const,
-      level: 90,
-      icon: 'nextjs',
+      name: 'GitHub',
+      url: 'https://github.com/zahidshaikh',
+      icon: 'fab fa-github',
+      order: 0,
+      personalInfoId: personalInfo.id,
     },
     {
-      name: 'TypeScript',
-      category: 'LANGUAGES' as const,
-      level: 88,
-      icon: 'typescript',
+      name: 'LinkedIn',
+      url: 'https://linkedin.com/in/zahidshaikh',
+      icon: 'fab fa-linkedin',
+      order: 1,
+      personalInfoId: personalInfo.id,
     },
     {
-      name: 'Node.js',
-      category: 'BACKEND' as const,
-      level: 85,
-      icon: 'nodejs',
+      name: 'Twitter',
+      url: 'https://twitter.com/zahidshaikh',
+      icon: 'fab fa-twitter',
+      order: 2,
+      personalInfoId: personalInfo.id,
     },
-    {
-      name: 'PostgreSQL',
-      category: 'DATABASE' as const,
-      level: 80,
-      icon: 'postgresql',
-    },
-    { name: 'Prisma', category: 'TOOLS' as const, level: 85, icon: 'prisma' },
-    {
-      name: 'Tailwind CSS',
-      category: 'FRONTEND' as const,
-      level: 92,
-      icon: 'tailwind',
-    },
-    { name: 'Docker', category: 'DEVOPS' as const, level: 75, icon: 'docker' },
   ]
 
-  for (const [index, skill] of skills.entries()) {
-    await prisma.skill.upsert({
-      where: {
-        id: `skill-${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
-      },
+  for (const link of socialLinks) {
+    await prisma.socialLink.upsert({
+      where: { id: `social-${link.name.toLowerCase()}` },
       update: {},
       create: {
-        id: `skill-${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
-        ...skill,
-        order: index,
+        id: `social-${link.name.toLowerCase()}`,
+        ...link,
       },
     })
   }
 
-  console.log('🛠️ Created skills')
+  console.log('🔗 Social links created')
 
-  // Seed Projects
+  // Create Hero Stats
+  const hero = await prisma.hero.upsert({
+    where: { id: 'hero-stats-1' },
+    update: {},
+    create: {
+      id: 'hero-stats-1',
+      verifiedSkills: 25,
+      professionalProjects: 12,
+      personalProjects: 16,
+    },
+  })
+
+  console.log('🦸‍♂️ Hero stats created:', hero)
+
+  // Create Skills
+  const skills = [
+    { id: 1, name: 'HTML', category: 'Frontend', order: 0 },
+    { id: 2, name: 'CSS', category: 'Frontend', order: 1 },
+    { id: 3, name: 'SCSS', category: 'Frontend', order: 2 },
+    { id: 4, name: 'JavaScript', category: 'Frontend', order: 3 },
+    { id: 5, name: 'TypeScript', category: 'Frontend', order: 4 },
+    { id: 6, name: 'React', category: 'Frontend', order: 5 },
+    { id: 7, name: 'Next.js', category: 'Frontend', order: 6 },
+    { id: 8, name: 'Angular', category: 'Frontend', order: 7 },
+    { id: 9, name: 'React Native', category: 'Mobile', order: 8 },
+    { id: 10, name: 'Ionic', category: 'Mobile', order: 9 },
+    { id: 11, name: 'Capacitor.js', category: 'Mobile', order: 10 },
+    { id: 12, name: 'Node.js', category: 'Backend', order: 11 },
+    { id: 13, name: 'Firebase', category: 'Backend', order: 12 },
+    { id: 14, name: 'REST API', category: 'Backend', order: 13 },
+    { id: 15, name: 'WordPress', category: 'CMS', order: 14 },
+    { id: 16, name: 'Figma', category: 'Design', order: 15 },
+    { id: 17, name: 'Git', category: 'Tools', order: 16 },
+    { id: 18, name: 'GitHub', category: 'Tools', order: 17 },
+    { id: 19, name: 'Tailwind CSS', category: 'Frontend', order: 18 },
+    { id: 20, name: 'Material UI', category: 'Frontend', order: 19 },
+    { id: 21, name: 'Bootstrap', category: 'Frontend', order: 20 },
+    { id: 22, name: 'Responsive Design', category: 'Frontend', order: 21 },
+    { id: 23, name: 'jQuery', category: 'Frontend', order: 22 },
+    { id: 24, name: 'Webpack', category: 'Tools', order: 23 },
+    { id: 25, name: 'Vite', category: 'Tools', order: 24 },
+  ]
+
+  for (const skill of skills) {
+    await prisma.skill.upsert({
+      where: { id: skill.id },
+      update: {},
+      create: skill,
+    })
+  }
+
+  console.log('🚀 Skills created:', skills.length)
+
+  // Create Projects with related data
   const projects = [
     {
-      id: 'space-portfolio',
-      title: 'Space Portfolio',
-      description:
-        'A cosmic-themed personal portfolio with advanced animations and responsive design.',
-      shortDesc: 'Personal portfolio with space theme',
-      category: 'WEBSITE' as const,
-      status: 'COMPLETED' as const,
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-      features: [
-        'Responsive Design',
-        'Dark Theme',
-        'Smooth Animations',
-        'Contact Form',
+      id: 1,
+      projectName: 'Cosmic Portfolio',
+      projectDate: 'AUG 2025 - Present',
+      projectDescription:
+        'A stellar portfolio website built with Next.js 15, featuring space-themed animations and modern web technologies. Showcases projects in a cosmic interface with smooth animations.',
+      projectLink: 'https://zahidshaikh.space/',
+      githubLink: 'https://github.com/zahidshaikh/cosmic-portfolio',
+      featured: true,
+      order: 0,
+      tasks: [
+        {
+          task: 'Designed and implemented space-themed UI components',
+          order: 0,
+        },
+        { task: 'Built responsive layouts with Tailwind CSS', order: 1 },
+        { task: 'Integrated smooth animations with Framer Motion', order: 2 },
+        { task: 'Optimized performance and SEO', order: 3 },
       ],
-      isFeatured: true,
+      skillsUtilized: [
+        { name: 'Next.js', order: 0 },
+        { name: 'TypeScript', order: 1 },
+        { name: 'Tailwind CSS', order: 2 },
+        { name: 'Framer Motion', order: 3 },
+        { name: 'React', order: 4 },
+      ],
+    },
+    {
+      id: 2,
+      projectName: 'Spotfinder',
+      projectDate: 'APR 2022 - OCT 2022',
+      projectDescription:
+        'A revolutionary parking solution platform where users can book car parking spaces through mobile app and web interface with real-time availability.',
+      projectLink: 'https://spotfinder.app/',
+      githubLink: null,
+      featured: true,
       order: 1,
+      tasks: [
+        {
+          task: 'Converting Design Systems into reusable CSS and Components',
+          order: 0,
+        },
+        { task: 'Making complex responsive layouts', order: 1 },
+        { task: 'Developing and maintaining user interfaces', order: 2 },
+        { task: 'Optimization, Performance and UX Improvement', order: 3 },
+        { task: 'Integrating APIs and RESTful Services', order: 4 },
+      ],
+      skillsUtilized: [
+        { name: 'HTML', order: 0 },
+        { name: 'SCSS', order: 1 },
+        { name: 'JavaScript', order: 2 },
+        { name: 'React', order: 3 },
+        { name: 'React Native', order: 4 },
+        { name: 'TypeScript', order: 5 },
+      ],
     },
     {
-      id: 'ecommerce-platform',
-      title: 'E-commerce Platform',
-      description:
-        'Full-stack e-commerce solution with modern UI and secure payment processing.',
-      shortDesc: 'Modern e-commerce platform',
-      category: 'WEB_APP' as const,
-      status: 'COMPLETED' as const,
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-      features: [
-        'Shopping Cart',
-        'Payment Processing',
-        'Admin Dashboard',
-        'Order Management',
-      ],
-      isFeatured: true,
+      id: 3,
+      projectName: 'Neev Healthcare',
+      projectDate: 'FEB 2021 - APR 2022',
+      projectDescription:
+        'A comprehensive healthcare platform enabling users to book yoga classes, purchase health products, and access wellness services in one unified ecosystem.',
+      projectLink: null,
+      githubLink: null,
+      featured: false,
       order: 2,
-    },
-    {
-      id: 'task-management',
-      title: 'Task Management App',
-      description:
-        'Collaborative task management application with real-time updates.',
-      shortDesc: 'Team collaboration tool',
-      category: 'WEB_APP' as const,
-      status: 'IN_PROGRESS' as const,
-      technologies: ['Vue.js', 'Firebase', 'TypeScript'],
-      features: [
-        'Real-time Updates',
-        'Team Collaboration',
-        'File Sharing',
-        'Notifications',
+      tasks: [
+        {
+          task: 'Converting Design Systems into reusable components',
+          order: 0,
+        },
+        { task: 'Building responsive healthcare interfaces', order: 1 },
+        { task: 'Implementing booking and payment systems', order: 2 },
+        { task: 'Optimizing user experience for wellness services', order: 3 },
       ],
-      isFeatured: false,
-      order: 3,
+      skillsUtilized: [
+        { name: 'React', order: 0 },
+        { name: 'Node.js', order: 1 },
+        { name: 'CSS', order: 2 },
+        { name: 'JavaScript', order: 3 },
+        { name: 'REST API', order: 4 },
+      ],
     },
   ]
 
   for (const project of projects) {
-    await prisma.project.upsert({
+    const createdProject = await prisma.project.upsert({
       where: { id: project.id },
       update: {},
-      create: project,
+      create: {
+        id: project.id,
+        projectName: project.projectName,
+        projectDate: project.projectDate,
+        projectDescription: project.projectDescription,
+        projectLink: project.projectLink,
+        githubLink: project.githubLink,
+        featured: project.featured,
+        order: project.order,
+      },
     })
+
+    // Create project tasks
+    for (const task of project.tasks) {
+      await prisma.projectTask.upsert({
+        where: { id: project.id * 100 + task.order }, // Unique ID generation
+        update: {},
+        create: {
+          id: project.id * 100 + task.order,
+          task: task.task,
+          order: task.order,
+          projectId: createdProject.id,
+        },
+      })
+    }
+
+    // Create project skills
+    for (const skill of project.skillsUtilized) {
+      await prisma.projectSkill.upsert({
+        where: { id: project.id * 200 + skill.order }, // Unique ID generation
+        update: {},
+        create: {
+          id: project.id * 200 + skill.order,
+          name: skill.name,
+          order: skill.order,
+          projectId: createdProject.id,
+        },
+      })
+    }
   }
 
-  console.log('📂 Created projects')
+  console.log('📦 Projects created with tasks and skills:', projects.length)
 
-  // Seed Services
+  // Create Services
   const services = [
     {
-      id: 'web-development',
-      title: 'Web Development',
-      description:
-        'Custom websites and web applications built with modern technologies.',
-      features: [
-        'Responsive Design',
-        'SEO Optimization',
-        'Performance Optimization',
-        'Cross-browser Compatibility',
-      ],
-      icon: 'code',
-      price: 'Starting at $2000',
-      duration: '2-6 weeks',
+      id: 1,
+      name: 'Stellar Web Design',
+      icon: 'fas fa-rocket',
+      desc: 'I craft cosmic user experiences using cutting-edge design tools like Figma, creating prototypes that give clients a glimpse into their digital universe before launch.',
+      order: 0,
+    },
+    {
+      id: 2,
+      name: 'Code to Orbit Conversion',
+      icon: 'fab fa-html5',
+      desc: 'Transform your designs into responsive, pixel-perfect websites using modern web technologies. Your vision will be launched exactly as designed across all devices.',
       order: 1,
     },
     {
-      id: 'fullstack-development',
-      title: 'Full-Stack Development',
-      description:
-        'Complete web solutions from frontend to backend and database.',
-      features: [
-        'API Development',
-        'Database Design',
-        'User Authentication',
-        'Admin Dashboards',
-      ],
-      icon: 'layers',
-      price: 'Starting at $3500',
-      duration: '4-12 weeks',
+      id: 3,
+      name: 'Clean Cosmic Code',
+      icon: 'fas fa-laptop-code',
+      desc: 'Every line of code is written with stellar precision - 100% clean, valid, and maintainable. Built for scalability and easy understanding by future space travelers.',
       order: 2,
     },
     {
-      id: 'consulting',
-      title: 'Technical Consulting',
-      description:
-        'Expert advice on technology choices, architecture, and best practices.',
-      features: [
-        'Technology Assessment',
-        'Architecture Planning',
-        'Code Review',
-        'Performance Audit',
-      ],
-      icon: 'lightbulb',
-      price: 'Starting at $150/hour',
-      duration: 'Flexible',
+      id: 4,
+      name: 'Mission-Ready Customization',
+      icon: 'fas fa-cogs',
+      desc: 'Develop websites with modular architecture, making them easily customizable for evolving business needs and seamless feature integration.',
       order: 3,
+    },
+    {
+      id: 5,
+      name: 'Multi-Device Exploration',
+      icon: 'fas fa-mobile-alt',
+      desc: 'Create responsive experiences that adapt perfectly across all devices - from mobile to desktop, ensuring your users can explore your digital space anywhere.',
+      order: 4,
+    },
+    {
+      id: 6,
+      name: 'Version Control Mission',
+      icon: 'fab fa-github',
+      desc: "Maintain your project's trajectory using advanced version control systems, ensuring smooth deployments and coordinated development across the team.",
+      order: 5,
     },
   ]
 
@@ -244,158 +321,32 @@ async function main() {
     })
   }
 
-  console.log('🛎️ Created services')
+  console.log('🛠️ Services created:', services.length)
 
-  // Seed Achievements
-  const achievements = [
-    {
-      id: 'projects-completed',
-      title: 'Projects Completed',
-      description: 'Successfully delivered projects',
-      value: '50+',
-      icon: 'trophy',
-      order: 1,
-    },
-    {
-      id: 'client-satisfaction',
-      title: 'Client Satisfaction',
-      description: 'Happy clients and positive feedback',
-      value: '99%',
-      icon: 'star',
-      order: 2,
-    },
-    {
-      id: 'years-experience',
-      title: 'Years Experience',
-      description: 'Professional development experience',
-      value: '5+',
-      icon: 'calendar',
-      order: 3,
-    },
-  ]
-
-  for (const achievement of achievements) {
-    await prisma.achievement.upsert({
-      where: { id: achievement.id },
-      update: {},
-      create: achievement,
-    })
-  }
-
-  console.log('🏆 Created achievements')
-
-  // Seed Contact Methods
-  const contactMethods = [
-    {
-      id: 'email',
-      type: 'EMAIL' as const,
-      label: 'Email',
-      value: 'hello@zahidshaikh.dev',
-      description: 'Send me an email',
-      icon: 'mail',
-      order: 1,
-    },
-    {
-      id: 'phone',
-      type: 'PHONE' as const,
-      label: 'Phone',
-      value: '+1 (555) 123-4567',
-      description: 'Give me a call',
-      icon: 'phone',
-      order: 2,
-    },
-    {
-      id: 'location',
-      type: 'LOCATION' as const,
-      label: 'Location',
-      value: 'San Francisco, CA',
-      description: 'Based in the Bay Area',
-      icon: 'map-pin',
-      order: 3,
-    },
-  ]
-
-  for (const method of contactMethods) {
-    await prisma.contactMethod.upsert({
-      where: { id: method.id },
-      update: {},
-      create: method,
-    })
-  }
-
-  console.log('📞 Created contact methods')
-
-  // Seed Social Links
-  const socialLinks = [
-    {
-      id: 'github',
-      platform: 'GitHub',
-      username: '@zahidshaikh',
-      url: 'https://github.com/zahidshaikh',
-      icon: 'github',
-      followerCount: '1.2K followers',
-      order: 1,
-    },
-    {
-      id: 'linkedin',
-      platform: 'LinkedIn',
-      username: 'Zahid Shaikh',
-      url: 'https://linkedin.com/in/zahidshaikh',
-      icon: 'linkedin',
-      followerCount: '500+ connections',
-      order: 2,
-    },
-    {
-      id: 'twitter',
-      platform: 'Twitter',
-      username: '@zahidshaikh',
-      url: 'https://twitter.com/zahidshaikh',
-      icon: 'twitter',
-      followerCount: '800 followers',
-      order: 3,
-    },
-  ]
-
-  for (const social of socialLinks) {
-    await prisma.socialLink.upsert({
-      where: { id: social.id },
-      update: {},
-      create: social,
-    })
-  }
-
-  console.log('🌐 Created social links')
-
-  // Seed Site Settings
-  const siteSettings = [
+  // Create some site settings
+  const settings = [
     {
       key: 'site_title',
-      value: 'Zahid Shaikh - Full Stack Developer',
-      description: 'Main site title for SEO',
+      value: 'Zahid Shaikh - Space Portfolio',
+      description: 'Main site title',
       type: 'STRING' as const,
     },
     {
       key: 'site_description',
       value:
-        'Full-stack developer creating innovative digital solutions with modern web technologies.',
+        'Full Stack Developer & Tech Innovator crafting stellar digital experiences',
       description: 'Site meta description',
       type: 'STRING' as const,
     },
     {
-      key: 'maintenance_mode',
-      value: 'false',
-      description: 'Enable/disable maintenance mode',
-      type: 'BOOLEAN' as const,
-    },
-    {
-      key: 'analytics_id',
-      value: 'GA-XXXXXXXXX',
-      description: 'Google Analytics tracking ID',
-      type: 'STRING' as const,
+      key: 'contact_email',
+      value: 'reachtozahid@gmail.com',
+      description: 'Primary contact email',
+      type: 'EMAIL' as const,
     },
   ]
 
-  for (const setting of siteSettings) {
+  for (const setting of settings) {
     await prisma.siteSettings.upsert({
       where: { key: setting.key },
       update: {},
@@ -403,17 +354,16 @@ async function main() {
     })
   }
 
-  console.log('⚙️ Created site settings')
+  console.log('⚙️ Site settings created:', settings.length)
 
-  console.log('✅ Database seeding completed successfully!')
+  console.log('✨ Space Portfolio seeding completed successfully!')
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async e => {
+  .catch(e => {
     console.error('❌ Error during seeding:', e)
-    await prisma.$disconnect()
     process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
   })

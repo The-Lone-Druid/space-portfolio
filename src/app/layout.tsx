@@ -1,7 +1,4 @@
-import SpaceBackground from '@/components/shared/background'
-import Footer from '@/components/shared/footer'
-import Header from '@/components/shared/header'
-import { Toaster } from '@/components/ui/sonner'
+import AuthProvider from '@/components/auth/auth-provider'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
@@ -71,15 +68,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en'>
+    <html lang='en' className='dark'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} relative min-h-screen overflow-x-hidden antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} dark relative antialiased`}
       >
-        <SpaceBackground />
-        <Header />
-        <main className='relative z-10'>{children}</main>
-        <Footer />
-        <Toaster />
+        <AuthProvider>
+          <main className='relative z-10'>{children}</main>
+        </AuthProvider>
       </body>
     </html>
   )

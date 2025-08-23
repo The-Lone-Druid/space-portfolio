@@ -159,7 +159,7 @@ const Hero = () => {
           </div>
 
           {/* Right Content - Stats */}
-          <div className='space-y-8'>
+          <div className='mt-16 space-y-8 lg:mt-0'>
             {/* Main Visual Element */}
             <div className='relative'>
               <SpaceOrbital />
@@ -215,17 +215,19 @@ const Hero = () => {
         </div>
 
         {/* Scroll indicator */}
-        <div className='absolute bottom-8 left-1/2 -translate-x-1/2 transform animate-bounce'>
-          <button
-            onClick={scrollToNext}
-            className='hover:text-space-gold group flex cursor-pointer flex-col items-center space-y-2 text-gray-400 transition-all duration-300 hover:scale-110'
-            aria-label='Scroll to next section'
-          >
-            <span className='group-hover:text-space-gold text-sm transition-colors duration-300'>
-              Scroll to explore
-            </span>
-            <ArrowDown className='h-5 w-5 transition-transform duration-300 group-hover:translate-y-1' />
-          </button>
+        <div className='mt-12 flex items-center justify-center lg:mt-0'>
+          <div className='transform animate-bounce lg:absolute lg:bottom-8'>
+            <button
+              onClick={scrollToNext}
+              className='hover:text-space-gold group flex cursor-pointer flex-col items-center space-y-2 text-gray-400 transition-all duration-300 hover:scale-110'
+              aria-label='Scroll to next section'
+            >
+              <span className='group-hover:text-space-gold text-sm transition-colors duration-300'>
+                Scroll to explore
+              </span>
+              <ArrowDown className='h-5 w-5 transition-transform duration-300 group-hover:translate-y-1' />
+            </button>
+          </div>
         </div>
       </div>
     </section>
