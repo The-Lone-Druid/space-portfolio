@@ -1,6 +1,7 @@
 export { useAnimatedCounter } from './use-animated-counter'
 export { useBreakpoint } from './use-breakpoint'
 export { useContactForm } from './use-contact-form'
+export { usePersonalInfo } from './use-personal-info'
 export { useScrollToSection } from './use-scroll-to-section'
 export { useSidebar } from './use-sidebar'
 export { useVisibility } from './use-visibility'

@@ -5,7 +5,7 @@ import {
   StatsCard,
 } from '@/components/dashboard'
 import { requireAdmin } from '@/lib/auth-utils'
-import { Briefcase, Eye, MessageSquare, Star } from 'lucide-react'
+import { Briefcase, Eye, Star } from 'lucide-react'
 
 export default async function AdminDashboard() {
   // Require admin authentication
@@ -26,13 +26,6 @@ export default async function AdminDashboard() {
       trend: { value: 4, isPositive: true },
     },
     {
-      title: 'Contact Messages',
-      value: 48,
-      description: 'This month',
-      icon: <MessageSquare className='h-4 w-4' />,
-      trend: { value: 23, isPositive: true },
-    },
-    {
       title: 'Portfolio Views',
       value: '2.4k',
       description: 'Last 30 days',
@@ -42,14 +35,6 @@ export default async function AdminDashboard() {
   ]
 
   const recentActivities = [
-    {
-      id: '1',
-      type: 'message' as const,
-      title: 'New contact message',
-      description: 'John Doe sent a message about collaboration',
-      timestamp: '2 minutes ago',
-      metadata: { status: 'success' as const },
-    },
     {
       id: '2',
       type: 'project_view' as const,
