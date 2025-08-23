@@ -40,24 +40,14 @@ export default async function Page() {
     <>
       <SpaceBackground />
       <Header />
-      <div>
+      <main id='main' role='main'>
         <Hero personalInfo={personalInfo} heroStats={heroStats} />
-      </div>
-      <div>
         <About heroStats={heroStats} />
-      </div>
-      <div>
         <Projects projects={projects} />
-      </div>
-      <div>
         <Skills skills={skills} />
-      </div>
-      <div>
         <Services services={services} />
-      </div>
-      <div>
         <Contact personalInfo={personalInfo} />
-      </div>
+      </main>
       <Footer personalInfo={personalInfo} />
       <Toaster />
     </>

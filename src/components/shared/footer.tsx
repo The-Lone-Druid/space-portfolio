@@ -28,11 +28,11 @@ const Footer = ({ personalInfo }: FooterProps) => {
                 zahidshaikh<span className='text-space-gold'>.space</span>
               </span>
             </div>
-            <p className='max-w-sm text-gray-400'>
+            <p className='max-w-sm text-gray-200'>
               Building modern web experiences and crafting innovative solutions
               that drive business growth.
             </p>
-            <div className='flex items-center space-x-2 text-gray-400'>
+            <div className='flex items-center space-x-2 text-gray-200'>
               <MapPin className='h-4 w-4' />
               <span>{personalInfo.location}</span>
             </div>
@@ -60,7 +60,7 @@ const Footer = ({ personalInfo }: FooterProps) => {
                       element.scrollIntoView({ behavior: 'smooth' })
                     }
                   }}
-                  className='hover:text-space-gold text-left text-gray-400 transition-colors duration-300'
+                  className='hover:text-space-gold text-left text-gray-200 transition-colors duration-300'
                 >
                   {item}
                 </button>
@@ -81,7 +81,8 @@ const Footer = ({ personalInfo }: FooterProps) => {
                     href={social.url}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='bg-space-cosmic hover:bg-space-stellar hover:text-space-gold flex h-10 w-10 items-center justify-center rounded-full text-gray-400 transition-all duration-300 hover:scale-110'
+                    className='bg-space-cosmic hover:bg-space-stellar hover:text-space-gold flex h-10 w-10 items-center justify-center rounded-full text-gray-200 transition-all duration-300 hover:scale-110'
+                    aria-label={`Visit my ${social.name} profile`}
                   >
                     <IconComponent className='h-5 w-5' />
                   </a>
@@ -91,7 +92,8 @@ const Footer = ({ personalInfo }: FooterProps) => {
             <div className='space-y-2'>
               <a
                 href={`mailto:${personalInfo.email}`}
-                className='hover:text-space-gold flex items-center space-x-2 text-gray-400 transition-colors duration-300'
+                className='hover:text-space-gold flex items-center space-x-2 text-gray-200 transition-colors duration-300'
+                aria-label={`Send email to ${personalInfo.email}`}
               >
                 <Mail className='h-4 w-4' />
                 <span>{personalInfo.email}</span>

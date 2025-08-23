@@ -20,7 +20,8 @@ export async function getPersonalInfo(): Promise<PersonalInfoWithSocials | null>
       },
     })
   } catch (error) {
-    console.error('Error fetching personal info:', error)
+    // Use console.warn instead of console.error for better accessibility
+    console.warn('Error fetching personal info:', error)
     return null
   }
 }
@@ -31,7 +32,7 @@ export async function getHeroStats(): Promise<Hero | null> {
       where: { isActive: true },
     })
   } catch (error) {
-    console.error('Error fetching hero stats:', error)
+    console.warn('Error fetching hero stats:', error)
     return null
   }
 }
@@ -43,7 +44,7 @@ export async function getSkills(): Promise<Skill[]> {
       orderBy: [{ order: 'asc' }, { category: 'asc' }, { name: 'asc' }],
     })
   } catch (error) {
-    console.error('Error fetching skills:', error)
+    console.warn('Error fetching skills:', error)
     return []
   }
 }
@@ -63,7 +64,7 @@ export async function getProjects(): Promise<ProjectWithDetails[]> {
       orderBy: [{ featured: 'desc' }, { order: 'asc' }, { createdAt: 'desc' }],
     })
   } catch (error) {
-    console.error('Error fetching projects:', error)
+    console.warn('Error fetching projects:', error)
     return []
   }
 }
@@ -75,7 +76,7 @@ export async function getServices(): Promise<Service[]> {
       orderBy: [{ order: 'asc' }, { name: 'asc' }],
     })
   } catch (error) {
-    console.error('Error fetching services:', error)
+    console.warn('Error fetching services:', error)
     return []
   }
 }
@@ -100,7 +101,7 @@ export async function getPortfolioData() {
       services,
     }
   } catch (error) {
-    console.error('Error fetching portfolio data:', error)
+    console.warn('Error fetching portfolio data:', error)
     throw new Error('Failed to fetch portfolio data')
   }
 }

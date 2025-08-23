@@ -75,8 +75,10 @@ export const ProjectCard = ({
                 size='sm'
                 onClick={() => window.open(projectLink, '_blank')}
                 className='glass-cosmic border-space-gold/30 text-space-gold hover:bg-space-gold/10'
+                aria-label={`View live demo of ${projectName}`}
               >
                 <ExternalLink className='mr-1 size-3' />
+                Demo
               </Button>
             )}
             {githubLink && (
@@ -85,15 +87,17 @@ export const ProjectCard = ({
                 size='sm'
                 onClick={() => window.open(githubLink, '_blank')}
                 className='glass-cosmic border-purple-400/30 text-purple-400 hover:bg-purple-400/10'
+                aria-label={`View source code of ${projectName} on GitHub`}
               >
                 <Github className='mr-1 size-3' />
+                Code
               </Button>
             )}
           </div>
         </div>
 
         {/* Project Date */}
-        <div className='mb-2 flex items-center text-sm text-gray-400'>
+        <div className='mb-2 flex items-center text-sm text-gray-200'>
           <Calendar className='mr-2 h-4 w-4' />
           {projectDate}
         </div>
@@ -106,7 +110,7 @@ export const ProjectCard = ({
 
       <CardContent className='space-y-4'>
         {/* Description */}
-        <p className='text-sm leading-relaxed text-gray-400'>
+        <p className='text-sm leading-relaxed text-gray-200'>
           {projectDescription}
         </p>
 

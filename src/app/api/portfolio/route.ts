@@ -11,7 +11,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<PortfolioData>>> {
       data,
     })
   } catch (error) {
-    console.error('Portfolio API error:', error)
+    console.warn('Portfolio API error:', error)
     return NextResponse.json(
       {
         success: false,

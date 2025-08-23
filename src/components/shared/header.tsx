@@ -39,86 +39,104 @@ const Header = () => {
   }
 
   return (
-    <header
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-space-deep/90 border-b border-purple-500/20 backdrop-blur-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <nav className='container mx-auto px-6 py-4'>
-        <div className='flex items-center justify-between'>
-          {/* Logo */}
-          <div className='flex items-center space-x-2'>
-            <Rocket className='text-space-gold animate-float h-8 w-8' />
-            <span className='text-xl font-bold text-white'>
-              zahidshaikh<span className='text-space-gold'>.space</span>
-            </span>
-          </div>
+    <>
+      {/* Skip to main content link for screen readers */}
+      <a
+        href='#main'
+        className='focus:bg-space-gold focus:text-space-deep sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:px-4 focus:py-2 focus:font-semibold'
+      >
+        Skip to main content
+      </a>
 
-          {/* Desktop Navigation */}
-          <div className='hidden items-center space-x-8 md:flex'>
-            {navigationItems.map(item => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className='hover:text-space-gold group relative text-gray-300 transition-colors duration-300'
-              >
-                {item.name}
-                <span className='bg-space-gold absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full'></span>
-              </button>
-            ))}
-          </div>
+      <header
+        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-space-deep/90 border-b border-purple-500/20 backdrop-blur-lg'
+            : 'bg-transparent'
+        }`}
+        role='banner'
+      >
+        <nav className='container mx-auto px-6 py-4'>
+          <div className='flex items-center justify-between'>
+            {/* Logo */}
+            <div className='flex items-center space-x-2'>
+              <Rocket className='text-space-gold animate-float h-8 w-8' />
+              <span className='text-xl font-bold text-white'>
+                zahidshaikh<span className='text-space-gold'>.space</span>
+              </span>
+            </div>
 
-          {/* CTA Button */}
-          <div className='hidden md:block'>
-            <Button
-              variant='cosmic'
-              onClick={() => scrollToSection('#contact')}
-              className='relative'
-            >
-              Get In Touch
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className='text-white md:hidden'
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? (
-              <X className='h-6 w-6' />
-            ) : (
-              <Menu className='h-6 w-6' />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className='mt-4 pb-4 md:hidden'>
-            <div className='bg-space-cosmic/95 flex flex-col space-y-4 rounded-lg p-6 backdrop-blur-lg'>
+            {/* Desktop Navigation */}
+            <div className='hidden items-center space-x-8 md:flex'>
               {navigationItems.map(item => (
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}
-                  className='hover:text-space-gold text-left text-gray-300 transition-colors duration-300'
+                  className='hover:text-space-gold group relative text-gray-300 transition-colors duration-300'
+                  aria-label={`Navigate to ${item.name} section`}
                 >
                   {item.name}
+                  <span className='bg-space-gold absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full'></span>
                 </button>
               ))}
+            </div>
+
+            {/* CTA Button */}
+            <div className='hidden md:block'>
               <Button
                 variant='cosmic'
                 onClick={() => scrollToSection('#contact')}
-                className='mt-4'
+                className='relative'
+                aria-label='Navigate to contact section'
               >
                 Get In Touch
               </Button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className='text-white md:hidden'
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls='mobile-navigation'
+            >
+              {isMobileMenuOpen ? (
+                <X className='h-6 w-6' />
+              ) : (
+                <Menu className='h-6 w-6' />
+              )}
+            </button>
           </div>
-        )}
-      </nav>
-    </header>
+
+          {/* Mobile Navigation */}
+          {isMobileMenuOpen && (
+            <div className='mt-4 pb-4 md:hidden' id='mobile-navigation'>
+              <div className='bg-space-cosmic/95 flex flex-col space-y-4 rounded-lg p-6 backdrop-blur-lg'>
+                {navigationItems.map(item => (
+                  <button
+                    key={item.name}
+                    onClick={() => scrollToSection(item.href)}
+                    className='hover:text-space-gold text-left text-gray-300 transition-colors duration-300'
+                    aria-label={`Navigate to ${item.name} section`}
+                  >
+                    {item.name}
+                  </button>
+                ))}
+                <Button
+                  variant='cosmic'
+                  onClick={() => scrollToSection('#contact')}
+                  className='mt-4'
+                  aria-label='Navigate to contact section'
+                >
+                  Get In Touch
+                </Button>
+              </div>
+            </div>
+          )}
+        </nav>
+      </header>
+    </>
   )
 }
 

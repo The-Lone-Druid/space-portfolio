@@ -67,6 +67,7 @@ const Contact = ({ personalInfo }: ContactProps) => {
       {/* Quick stats with improved visual appeal and responsive design */}
       <div className='relative mb-12 md:mb-16'>
         <div className='glass-cosmic rounded-2xl p-6 shadow-2xl md:rounded-3xl md:p-8'>
+          <h3 className='sr-only'>Contact Statistics</h3>
           <div className='grid grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8'>
             <div className='group text-center' ref={responseTimeCounter.ref}>
               <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
@@ -168,9 +169,9 @@ const Contact = ({ personalInfo }: ContactProps) => {
               <div className='mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-green-400 to-emerald-400 shadow-lg md:mb-4 md:h-16 md:w-16'>
                 <div className='h-2.5 w-2.5 animate-pulse rounded-full bg-white shadow-sm md:h-3 md:w-3'></div>
               </div>
-              <h4 className='mb-2 text-base font-semibold text-green-400 md:text-lg'>
+              <h3 className='mb-2 text-base font-semibold text-green-400 md:text-lg'>
                 Currently Available
-              </h4>
+              </h3>
               <p className='text-xs leading-relaxed text-gray-300 md:text-sm'>
                 Ready to take on new projects and collaborations. Let&apos;s
                 create something amazing together!
