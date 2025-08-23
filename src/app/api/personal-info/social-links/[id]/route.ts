@@ -14,11 +14,12 @@ const socialLinkSchema = z.object({
 // GET - Fetch specific social link
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const socialLink = await prisma.socialLink.findUnique({
-      where: { id: params.id, isActive: true },
+      where: { id, isActive: true },
       include: {
         personalInfo: {
           select: { id: true, name: true },
@@ -49,7 +50,7 @@ export async function GET(
 // PUT - Update specific social link
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -60,11 +61,12 @@ export async function PUT(
       )
     }
 
+    const { id } = await params
     const body = await request.json()
     const validatedData = socialLinkSchema.parse(body)
 
     const existingSocialLink = await prisma.socialLink.findUnique({
-      where: { id: params.id, isActive: true },
+      where: { id, isActive: true },
     })
 
     if (!existingSocialLink) {
@@ -75,7 +77,7 @@ export async function PUT(
     }
 
     const updatedSocialLink = await prisma.socialLink.update({
-      where: { id: params.id },
+      where: { id },
       data: validatedData,
     })
 
@@ -102,7 +104,7 @@ export async function PUT(
 // DELETE - Remove specific social link
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -113,8 +115,9 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
     const existingSocialLink = await prisma.socialLink.findUnique({
-      where: { id: params.id, isActive: true },
+      where: { id, isActive: true },
     })
 
     if (!existingSocialLink) {
@@ -126,7 +129,7 @@ export async function DELETE(
 
     // Soft delete by setting isActive to false
     await prisma.socialLink.update({
-      where: { id: params.id },
+      where: { id },
       data: { isActive: false },
     })
 

@@ -40,14 +40,6 @@ const Header = () => {
 
   return (
     <>
-      {/* Skip to main content link for screen readers */}
-      <a
-        href='#main'
-        className='focus:bg-space-gold focus:text-space-deep sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:px-4 focus:py-2 focus:font-semibold'
-      >
-        Skip to main content
-      </a>
-
       <header
         className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
           isScrolled
