@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { LucideIcon } from 'lucide-react'
 import { ReactNode } from 'react'
-import { useScrollToSection } from '../../hooks/use-scroll-to-section'
+import { scrollToSection } from '../../lib/utils'
 
 interface StoryCardProps {
   title: string
@@ -24,8 +24,6 @@ export const StoryCard = ({
   ctaSection,
   className = '',
 }: StoryCardProps) => {
-  const { scrollToSection } = useScrollToSection()
-
   const handleCtaClick = () => {
     if (onCtaClick) {
       onCtaClick()

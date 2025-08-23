@@ -55,7 +55,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
     return () => {
       clearTimeout(timeout)
     }
-  }, [])
+  }, [heroStats])
 
   const handleScrollToProjects = () => {
     scrollToSection('projects')
