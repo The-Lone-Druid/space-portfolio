@@ -15,11 +15,11 @@ import { useSidebar } from '@/hooks/use-sidebar'
 import { Bell, LogOut, Menu, User } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 
-interface HeaderProps {
+interface DashboardHeaderProps {
   title?: string
 }
 
-export function Header({ title = 'Dashboard' }: HeaderProps) {
+export function DashboardHeader({ title = 'Dashboard' }: DashboardHeaderProps) {
   const { toggle } = useSidebar()
   const { data: session } = useSession()
 

@@ -1,9 +1,13 @@
 'use client'
 
-import { personalInfo } from '@/lib/data'
 import { Github, Linkedin, Mail, MapPin, Rocket } from 'lucide-react'
+import { PersonalInfo } from '../../types'
 
-const Footer = () => {
+interface FooterProps {
+  personalInfo: PersonalInfo
+}
+
+const Footer = ({ personalInfo }: FooterProps) => {
   const currentYear = new Date().getFullYear()
 
   const socialIcons = {

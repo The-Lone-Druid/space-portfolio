@@ -3,9 +3,9 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
-import { Header } from './header'
-import { MobileSidebar } from './mobile-sidebar'
-import { Sidebar } from './sidebar'
+import { DashboardHeader } from '../shared/dashboard-header'
+import { MobileSidebar } from '../shared/mobile-sidebar'
+import { Sidebar } from '../shared/sidebar'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -36,7 +36,7 @@ export function DashboardLayout({
 
         {/* Main content */}
         <div className='flex flex-1 flex-col'>
-          <Header title={title} />
+          <DashboardHeader title={title} />
 
           <main className='flex-1 overflow-hidden'>
             <ScrollArea className='h-full'>

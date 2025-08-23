@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
-import { useScrollToSection } from '@/hooks'
 import { LucideIcon } from 'lucide-react'
 import { ReactNode } from 'react'
+import { useScrollToSection } from '../../hooks/use-scroll-to-section'
 
 interface StoryCardProps {
   title: string

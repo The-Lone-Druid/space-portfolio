@@ -1,11 +1,16 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { SectionCard, SkillCard } from '@/components/cards'
-import { skills } from '@/lib/data'
 import { useState } from 'react'
+import { Skill } from '../../types'
+import { SectionCard } from '../cards/section-card'
+import { SkillCard } from '../cards/skill-card'
 
-const Skills = () => {
+interface SkillProps {
+  skills: Skill[]
+}
+
+const Skills = ({ skills }: SkillProps) => {
   const [selectedCategory, setSelectedCategory] = useState('all')
 
   // Get unique categories

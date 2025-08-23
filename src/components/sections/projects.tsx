@@ -1,11 +1,16 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ProjectCard, SectionCard } from '@/components/cards'
-import { projects } from '@/lib/data'
 import { useState } from 'react'
+import { Project } from '../../types'
+import { ProjectCard } from '../cards/project-card'
+import { SectionCard } from '../cards/section-card'
 
-const Projects = () => {
+interface ProjectsProps {
+  projects: Project[]
+}
+
+const Projects = ({ projects }: ProjectsProps) => {
   const [filter, setFilter] = useState('all')
 
   const filteredProjects =

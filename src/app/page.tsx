@@ -5,36 +5,41 @@ import Projects from '@/components/sections/projects'
 import Services from '@/components/sections/services'
 import Skills from '@/components/sections/skills'
 import { Toaster } from 'sonner'
-import SpaceBackground from '../components/shared/background'
+import SpaceBackground from '../components/animations/background'
 import Footer from '../components/shared/footer'
 import Header from '../components/shared/header'
+import {
+  heroStats,
+  personalInfo,
+  projects,
+  services,
+  skills,
+} from '../lib/data'
 
-export default function Page() {
+export default async function Page() {
   return (
     <>
       <SpaceBackground />
       <Header />
-      <div className='min-h-screen'>
-        <div data-scroll-section>
-          <Hero />
-        </div>
-        <div data-scroll-section>
-          <About />
-        </div>
-        <div data-scroll-section>
-          <Projects />
-        </div>
-        <div data-scroll-section>
-          <Skills />
-        </div>
-        <div data-scroll-section>
-          <Services />
-        </div>
-        <div data-scroll-section>
-          <Contact />
-        </div>
+      <div>
+        <Hero personalInfo={personalInfo} heroStats={heroStats} />
       </div>
-      <Footer />
+      <div>
+        <About heroStats={heroStats} />
+      </div>
+      <div>
+        <Projects projects={projects} />
+      </div>
+      <div>
+        <Skills skills={skills} />
+      </div>
+      <div>
+        <Services services={services} />
+      </div>
+      <div>
+        <Contact personalInfo={personalInfo} />
+      </div>
+      <Footer personalInfo={personalInfo} />
       <Toaster />
     </>
   )

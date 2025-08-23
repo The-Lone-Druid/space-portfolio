@@ -1,4 +1,4 @@
-import { useAnimatedCounter } from '@/hooks'
+import { useAnimatedCounter } from '../../hooks/use-animated-counter'
 
 interface AchievementCardProps {
   label: string

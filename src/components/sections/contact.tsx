@@ -1,16 +1,18 @@
 'use client'
 
-import {
-  ContactMethodCard,
-  SectionCard,
-  SocialLinkCard,
-} from '@/components/cards'
-import { ContactForm } from '@/components/forms'
-import { useAnimatedCounter } from '@/hooks'
-import { personalInfo } from '@/lib/data'
 import { Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react'
+import { useAnimatedCounter } from '../../hooks/use-animated-counter'
+import { PersonalInfo } from '../../types'
+import { ContactMethodCard } from '../cards/contact-method-card'
+import { SectionCard } from '../cards/section-card'
+import { SocialLinkCard } from '../cards/social-link-card'
+import { ContactForm } from '../forms/contact-form'
 
-const Contact = () => {
+interface ContactProps {
+  personalInfo: PersonalInfo
+}
+
+const Contact = ({ personalInfo }: ContactProps) => {
   const responseTimeCounter = useAnimatedCounter({ end: 24, suffix: 'h' })
   const projectsCounter = useAnimatedCounter({ end: 100, suffix: '+' })
   const satisfactionCounter = useAnimatedCounter({ end: 5, suffix: '★' })
