@@ -26,8 +26,7 @@ export default async function Page() {
               Portfolio Data Unavailable
             </h1>
             <p className='text-muted-foreground'>
-              Please ensure your database is set up and contains the required
-              data.
+              Something went wrong, try accessing the site later.
             </p>
           </div>
         </div>
