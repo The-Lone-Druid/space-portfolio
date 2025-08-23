@@ -11,8 +11,8 @@ export default withAuth(
       return NextResponse.next()
     }
 
-    // Protect admin routes
-    if (pathname.startsWith('/admin')) {
+    // Protect dashboard routes
+    if (pathname.startsWith('/dashboard')) {
       if (!token) {
         return NextResponse.redirect(new URL('/auth/signin', req.url))
       }
@@ -31,11 +31,11 @@ export default withAuth(
         const { pathname } = req.nextUrl
 
         // Allow access to public routes
-        if (!pathname.startsWith('/admin')) {
+        if (!pathname.startsWith('/dashboard')) {
           return true
         }
 
-        // Require token for admin routes
+        // Require token for dashboard routes
         return !!token
       },
     },
@@ -43,5 +43,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/admin/:path*', '/auth/:path*'],
+  matcher: ['/dashboard/:path*', '/auth/:path*'],
 }

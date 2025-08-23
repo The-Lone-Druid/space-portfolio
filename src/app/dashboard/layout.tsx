@@ -13,7 +13,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className='bg-background flex h-screen overflow-hidden'>
+    <div className='bg-gradient-cosmic flex h-screen overflow-hidden'>
       {/* Sidebar */}
       <Sidebar className='w-64' />
 
