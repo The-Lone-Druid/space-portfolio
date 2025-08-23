@@ -1,3 +1,4 @@
+import { DashboardPageHeader } from '@/components/dashboard/page-header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +14,7 @@ import {
   Eye,
   FolderOpen,
   MessageSquare,
+  Plus,
   Rocket,
   Settings,
   TrendingUp,
@@ -79,14 +81,16 @@ export default function DashboardPage() {
   return (
     <div className='space-y-6'>
       {/* Header */}
-      <div className='text-center md:text-left'>
-        <h1 className='mb-2 text-3xl font-bold tracking-tight text-white'>
-          Dashboard Overview
-        </h1>
-        <p className='text-lg text-white/70'>
-          Welcome back! Here&apos;s what&apos;s happening with your portfolio.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title='Dashboard Overview'
+        description="Welcome back! Here's what's happening with your portfolio."
+        actions={
+          <Button className='bg-space-accent hover:bg-space-accent/80 text-white'>
+            <Plus className='mr-2 h-4 w-4' />
+            Quick Action
+          </Button>
+        }
+      />
 
       {/* Stats Grid */}
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>

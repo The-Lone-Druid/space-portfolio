@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { LogOut, Settings, User } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 interface DashboardHeaderProps {
@@ -20,6 +21,12 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ title, description }: DashboardHeaderProps) {
+  const { data: session } = useSession()
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/auth/signin' })
+  }
+
   return (
     <header className='glass-cosmic-clear sticky top-0 z-40 border-b border-white/10 backdrop-blur-xl'>
       <div className='flex h-16 items-center gap-4 px-4 lg:px-6'>
@@ -63,10 +70,10 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
             <DropdownMenuLabel className='font-normal'>
               <div className='flex flex-col space-y-1'>
                 <p className='text-sm leading-none font-medium text-white'>
-                  Zahid Shaikh
+                  {session?.user?.name || 'Admin User'}
                 </p>
                 <p className='text-xs leading-none text-white/70'>
-                  admin@zahidshaikh.space
+                  {session?.user?.email || 'admin@zahidshaikh.space'}
                 </p>
               </div>
             </DropdownMenuLabel>
@@ -90,7 +97,10 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator className='bg-white/20' />
-            <DropdownMenuItem className='cursor-pointer text-red-400 hover:bg-red-500/20 focus:bg-red-500/20'>
+            <DropdownMenuItem
+              className='cursor-pointer text-red-400 hover:bg-red-500/20 focus:bg-red-500/20'
+              onClick={handleSignOut}
+            >
               <LogOut className='mr-2 h-4 w-4' />
               <span>Log out</span>
             </DropdownMenuItem>
