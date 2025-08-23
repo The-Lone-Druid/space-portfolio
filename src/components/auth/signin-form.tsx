@@ -139,12 +139,6 @@ export default function SignInForm() {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
-
-          <div className='text-center text-sm text-purple-300'>
-            <p>Default credentials:</p>
-            <p>Email: admin@spaceportfolio.com</p>
-            <p>Password: admin123</p>
-          </div>
         </CardContent>
       </Card>
     </div>
