@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { User } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions, getServerSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions: NextAuthOptions = {
@@ -75,4 +75,22 @@ export const authOptions: NextAuthOptions = {
     error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
+}
+
+/**
+ * Validates that the current user is an admin
+ * Throws an error if not authenticated or not an admin
+ */
+export async function requireAdmin() {
+  const session = await getServerSession(authOptions)
+
+  if (!session || !session.user) {
+    throw new Error('Unauthorized')
+  }
+
+  if (session.user.role !== 'ADMIN') {
+    throw new Error('Unauthorized')
+  }
+
+  return session
 }

@@ -1,18 +1,23 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ProjectCard, SectionCard } from '@/components/cards'
-import { projects } from '@/lib/data'
 import { useState } from 'react'
+import { ProjectWithDetails } from '../../types'
+import { ProjectCard } from '../cards/project-card'
+import { SectionCard } from '../cards/section-card'
 
-const Projects = () => {
+interface ProjectsProps {
+  projects: ProjectWithDetails[]
+}
+
+const Projects = ({ projects }: ProjectsProps) => {
   const [filter, setFilter] = useState('all')
 
   const filteredProjects =
     filter === 'all'
       ? projects
       : projects.filter(project =>
-          project.skills_utilized.some(skill =>
+          project.skillsUtilized.some((skill: { name: string }) =>
             filter === 'frontend'
               ? skill.name.toLowerCase().includes('react') ||
                 skill.name.toLowerCase().includes('next')

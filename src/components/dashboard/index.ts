@@ -1,7 +1,0 @@
-export { DashboardLayout } from './dashboard-layout'
-export { Header } from './header'
-export { MobileSidebar } from './mobile-sidebar'
-export { QuickActions } from './quick-actions'
-export { RecentActivity } from './recent-activity'
-export { Sidebar } from './sidebar'
-export { StatsCard } from './stats-card'

@@ -11,12 +11,12 @@ interface Skill {
 
 interface ProjectCardProps {
   id: number
-  project_name: string
-  project_description: string
-  project_date: string
-  project_link: string
-  github_link?: string
-  skills_utilized: Skill[]
+  projectName: string
+  projectDescription: string
+  projectDate: string
+  projectLink: string | null
+  githubLink?: string | null
+  skillsUtilized: Skill[]
   featured?: boolean
   image?: string
   className?: string
@@ -24,12 +24,12 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({
-  project_name,
-  project_description,
-  project_date,
-  project_link,
-  github_link,
-  skills_utilized,
+  projectName,
+  projectDescription,
+  projectDate,
+  projectLink,
+  githubLink,
+  skillsUtilized,
   featured = false,
   image,
   className = '',
@@ -55,7 +55,7 @@ export const ProjectCard = ({
           {image ? (
             <Image
               src={image}
-              alt={project_name}
+              alt={projectName}
               width={300}
               height={200}
               className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-110'
@@ -69,63 +69,70 @@ export const ProjectCard = ({
 
           {/* Hover overlay with actions */}
           <div className='absolute inset-0 flex items-center justify-center space-x-4 bg-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-            {project_link !== '#' && (
+            {projectLink !== null && projectLink !== '#' && (
               <Button
+                variant='outline'
                 size='sm'
-                variant='cosmic'
-                onClick={() => window.open(project_link, '_blank')}
+                onClick={() => window.open(projectLink, '_blank')}
+                className='glass-cosmic border-space-gold/30 text-space-gold hover:bg-space-gold/10'
+                aria-label={`View live demo of ${projectName}`}
               >
-                <ExternalLink className='h-4 w-4' />
+                <ExternalLink className='mr-1 size-3' />
+                Demo
               </Button>
             )}
-            {github_link && (
+            {githubLink && (
               <Button
+                variant='outline'
                 size='sm'
-                variant='stellar'
-                onClick={() => window.open(github_link, '_blank')}
-                className='group'
+                onClick={() => window.open(githubLink, '_blank')}
+                className='glass-cosmic border-purple-400/30 text-purple-400 hover:bg-purple-400/10'
+                aria-label={`View source code of ${projectName} on GitHub`}
               >
-                <Github className='h-4 w-4 transition-transform duration-300 group-hover:scale-110' />
+                <Github className='mr-1 size-3' />
+                Code
               </Button>
             )}
           </div>
         </div>
 
         {/* Project Date */}
-        <div className='mb-2 flex items-center text-sm text-gray-400'>
+        <div className='mb-2 flex items-center text-sm text-gray-200'>
           <Calendar className='mr-2 h-4 w-4' />
-          {project_date}
+          {projectDate}
         </div>
 
         {/* Project Title */}
         <h3 className='group-hover:text-space-gold text-xl font-bold text-white transition-colors duration-300'>
-          {project_name}
+          {projectName}
         </h3>
       </CardHeader>
 
       <CardContent className='space-y-4'>
         {/* Description */}
-        <p className='text-sm leading-relaxed text-gray-400'>
-          {project_description}
+        <p className='text-sm leading-relaxed text-gray-200'>
+          {projectDescription}
         </p>
 
         {/* Technologies Used */}
         <div className='flex flex-wrap gap-2'>
-          {skills_utilized.slice(0, 4).map(skill => (
-            <Badge
-              key={skill.id}
-              variant='outline'
-              className='border-space-gold/70 bg-space-gold/20 hover:border-space-gold hover:bg-space-gold/30 text-xs font-medium text-white transition-all duration-300'
-            >
-              {skill.name}
-            </Badge>
-          ))}
-          {skills_utilized.length > 4 && (
+          {skillsUtilized
+            .slice(0, 4)
+            .map((skill: { id: number; name: string }) => (
+              <Badge
+                key={skill.id}
+                variant='outline'
+                className='border-space-gold/70 bg-space-gold/20 hover:border-space-gold hover:bg-space-gold/30 text-xs font-medium text-white transition-all duration-300'
+              >
+                {skill.name}
+              </Badge>
+            ))}
+          {skillsUtilized.length > 4 && (
             <Badge
               variant='outline'
               className='border-gray-500 bg-gray-700/50 text-xs text-gray-200 hover:bg-gray-600/50'
             >
-              +{skills_utilized.length - 4} more
+              +{skillsUtilized.length - 4} more
             </Badge>
           )}
         </div>

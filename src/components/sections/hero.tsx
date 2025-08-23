@@ -1,13 +1,18 @@
 'use client'
 
-import { SpaceOrbital } from '@/components/animations'
 import { Button } from '@/components/ui/button'
-import { heroStats, personalInfo } from '@/lib/data'
 import { ArrowDown, Mail, MapPin } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { scrollToSection } from '../../lib/utils'
+import type { Hero as HeroType, PersonalInfo } from '../../types'
+import { SpaceOrbital } from '../animations/space-orbital'
 
-const Hero = () => {
-  const [mounted, setMounted] = useState(false)
+interface HeroProps {
+  personalInfo: PersonalInfo
+  heroStats: HeroType
+}
+
+const Hero = ({ personalInfo, heroStats }: HeroProps) => {
   const [counts, setCounts] = useState({
     skills: 0,
     professionalProjects: 0,
@@ -15,8 +20,6 @@ const Hero = () => {
   })
 
   useEffect(() => {
-    setMounted(true)
-
     // Animated counters
     const animateCounters = () => {
       const duration = 2000 // 2 seconds
@@ -30,18 +33,18 @@ const Hero = () => {
         const progress = currentStep / steps
 
         setCounts({
-          skills: Math.floor(heroStats.verified_skills * progress),
+          skills: Math.floor(heroStats.verifiedSkills * progress),
           professionalProjects: Math.floor(
-            heroStats.professional_projects * progress
+            heroStats.professionalProjects * progress
           ),
-          personalProjects: Math.floor(heroStats.personal_projects * progress),
+          personalProjects: Math.floor(heroStats.personalProjects * progress),
         })
 
         if (currentStep >= steps) {
           setCounts({
-            skills: heroStats.verified_skills,
-            professionalProjects: heroStats.professional_projects,
-            personalProjects: heroStats.personal_projects,
+            skills: heroStats.verifiedSkills,
+            professionalProjects: heroStats.professionalProjects,
+            personalProjects: heroStats.personalProjects,
           })
           clearInterval(timer)
         }
@@ -52,42 +55,19 @@ const Hero = () => {
     return () => {
       clearTimeout(timeout)
     }
-  }, [])
+  }, [heroStats])
 
-  const scrollToProjects = () => {
-    const element = document.querySelector('#projects')
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
-      })
-    }
+  const handleScrollToProjects = () => {
+    scrollToSection('projects')
   }
 
-  const scrollToContact = () => {
-    const element = document.querySelector('#contact')
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
-      })
-    }
+  const handleScrollToContact = () => {
+    scrollToSection('contact')
   }
 
-  const scrollToNext = () => {
-    const element = document.querySelector('#about')
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
-      })
-    }
+  const handleScrollToNext = () => {
+    scrollToSection('about')
   }
-
-  if (!mounted) return null
 
   return (
     <section
@@ -139,7 +119,7 @@ const Hero = () => {
               <Button
                 variant='cosmic'
                 size='lg'
-                onClick={scrollToProjects}
+                onClick={handleScrollToProjects}
                 className='group'
               >
                 View My Work
@@ -149,7 +129,7 @@ const Hero = () => {
               <Button
                 variant='stellar'
                 size='lg'
-                onClick={scrollToContact}
+                onClick={handleScrollToContact}
                 className='group'
               >
                 <Mail className='mr-2 h-5 w-5 transition-transform duration-300 group-hover:scale-110' />
@@ -218,7 +198,7 @@ const Hero = () => {
         <div className='mt-12 flex items-center justify-center lg:mt-0'>
           <div className='transform animate-bounce lg:absolute lg:bottom-8'>
             <button
-              onClick={scrollToNext}
+              onClick={handleScrollToNext}
               className='hover:text-space-gold group flex cursor-pointer flex-col items-center space-y-2 text-gray-400 transition-all duration-300 hover:scale-110'
               aria-label='Scroll to next section'
             >

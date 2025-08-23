@@ -1,7 +1,7 @@
 'use client'
 
+import { MobileSidebar } from '@/components/dashboard/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -11,16 +11,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useSidebar } from '@/hooks/use-sidebar'
-import { Bell, LogOut, Menu, User } from 'lucide-react'
+import { LogOut, Settings, User } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 
-interface HeaderProps {
+interface DashboardHeaderProps {
   title?: string
+  description?: string
 }
 
-export function Header({ title = 'Dashboard' }: HeaderProps) {
-  const { toggle } = useSidebar()
+export function DashboardHeader({ title, description }: DashboardHeaderProps) {
   const { data: session } = useSession()
 
   const handleSignOut = () => {
@@ -28,97 +28,84 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
   }
 
   return (
-    <header className='sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-900/50 backdrop-blur-md'>
-      <div className='flex h-16 items-center gap-4 px-4'>
-        {/* Mobile menu button */}
-        <Button
-          variant='ghost'
-          size='icon'
-          className='text-slate-100 hover:bg-slate-800 md:hidden'
-          onClick={toggle}
-        >
-          <Menu className='h-5 w-5' />
-          <span className='sr-only'>Toggle sidebar</span>
-        </Button>
+    <header className='glass-cosmic-clear sticky top-0 z-40 border-b border-white/10 backdrop-blur-xl'>
+      <div className='flex h-16 items-center gap-4 px-4 lg:px-6'>
+        {/* Mobile Sidebar Toggle */}
+        <MobileSidebar />
 
-        {/* Page title */}
+        {/* Title and Description */}
         <div className='flex-1'>
-          <h1 className='text-lg font-semibold tracking-tight text-slate-100'>
-            {title}
-          </h1>
+          {title && (
+            <div>
+              <h1 className='text-lg font-semibold text-white md:text-xl'>
+                {title}
+              </h1>
+              {description && (
+                <p className='text-sm text-white/70'>{description}</p>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Header actions */}
-        <div className='flex items-center gap-2'>
-          {/* Notifications */}
-          <Button
-            variant='ghost'
-            size='icon'
-            className='relative text-slate-100 hover:bg-slate-800'
+        {/* User Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant='ghost'
+              className='relative h-8 w-8 rounded-full transition-colors hover:bg-white/10'
+            >
+              <Avatar className='ring-space-gold/50 h-8 w-8 ring-2'>
+                <AvatarImage src='/placeholder-avatar.jpg' alt='@username' />
+                <AvatarFallback className='bg-space-accent font-semibold text-white'>
+                  ZS
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className='bg-space-cosmic/95 border-space-accent/30 w-56 backdrop-blur-xl'
+            align='end'
+            forceMount
           >
-            <Bell className='h-4 w-4' />
-            <Badge
-              variant='destructive'
-              className='absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center p-0 text-xs'
+            <DropdownMenuLabel className='font-normal'>
+              <div className='flex flex-col space-y-1'>
+                <p className='text-sm leading-none font-medium text-white'>
+                  {session?.user?.name || 'Admin User'}
+                </p>
+                <p className='text-xs leading-none text-white/70'>
+                  {session?.user?.email || 'admin@zahidshaikh.space'}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className='bg-white/20' />
+            <DropdownMenuItem
+              asChild
+              className='text-white hover:bg-white/10 focus:bg-white/10'
             >
-              3
-            </Badge>
-            <span className='sr-only'>Notifications</span>
-          </Button>
-
-          {/* User menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant='ghost'
-                className='relative h-8 w-8 rounded-full text-slate-100 hover:bg-slate-800'
-              >
-                <Avatar className='h-8 w-8 ring-2 ring-slate-700'>
-                  <AvatarImage
-                    src={session?.user?.image || ''}
-                    alt={session?.user?.name || 'User'}
-                  />
-                  <AvatarFallback className='bg-slate-800 text-slate-100'>
-                    {session?.user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className='w-56 border-slate-700 bg-slate-800 text-slate-100'
-              align='end'
-              forceMount
-            >
-              <DropdownMenuLabel className='font-normal'>
-                <div className='flex flex-col space-y-1'>
-                  <p className='text-sm leading-none font-medium text-slate-100'>
-                    {session?.user?.name || 'User'}
-                  </p>
-                  <p className='text-xs leading-none text-slate-400'>
-                    {session?.user?.email}
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator className='bg-slate-700' />
-              <DropdownMenuItem className='text-slate-100 hover:bg-slate-700'>
+              <Link href='/dashboard/profile' className='cursor-pointer'>
                 <User className='mr-2 h-4 w-4' />
                 <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className='text-slate-100 hover:bg-slate-700'>
-                <User className='mr-2 h-4 w-4' />
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              asChild
+              className='text-white hover:bg-white/10 focus:bg-white/10'
+            >
+              <Link href='/dashboard/settings' className='cursor-pointer'>
+                <Settings className='mr-2 h-4 w-4' />
                 <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className='bg-slate-700' />
-              <DropdownMenuItem
-                onClick={handleSignOut}
-                className='text-slate-100 hover:bg-red-600/20'
-              >
-                <LogOut className='mr-2 h-4 w-4' />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className='bg-white/20' />
+            <DropdownMenuItem
+              className='cursor-pointer text-red-400 hover:bg-red-500/20 focus:bg-red-500/20'
+              onClick={handleSignOut}
+            >
+              <LogOut className='mr-2 h-4 w-4' />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   )

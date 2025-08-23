@@ -6,7 +6,7 @@ interface ServiceCardProps {
   id: number
   name: string
   desc: string
-  icon: string
+  icon: string | null
   onGetStarted?: () => void
   className?: string
   animationDelay?: number
@@ -58,7 +58,7 @@ export const ServiceCard = ({
       <CardHeader className='pb-4 text-center'>
         {/* Service Icon */}
         <div className='bg-gradient-nebula group-hover:animate-pulse-cosmic mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full text-4xl'>
-          {getServiceIcon(icon)}
+          {getServiceIcon(icon || 'fas fa-rocket')}
         </div>
 
         {/* Service Name */}

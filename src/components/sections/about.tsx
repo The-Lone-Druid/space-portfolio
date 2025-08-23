@@ -1,16 +1,18 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import {
-  AchievementCard,
-  HighlightCard,
-  SectionCard,
-  StoryCard,
-} from '@/components/cards'
-import { heroStats } from '@/lib/data'
 import { Code, Mail, Rocket, Star, Zap } from 'lucide-react'
+import { Hero } from '../../types'
+import { AchievementCard } from '../cards/achievement-card'
+import { HighlightCard } from '../cards/highlight-card'
+import { SectionCard } from '../cards/section-card'
+import { StoryCard } from '../cards/story-card'
 
-const About = () => {
+interface AboutProps {
+  heroStats: Hero
+}
+
+const About = ({ heroStats }: AboutProps) => {
   const highlights = [
     {
       icon: Code,
@@ -42,13 +44,13 @@ const About = () => {
     { label: 'Years of Experience', value: '4', icon: '🚀', isNumeric: true },
     {
       label: 'Technologies Mastered',
-      value: `${heroStats.verified_skills}`,
+      value: `${heroStats.verifiedSkills}`,
       icon: '⚡',
       isNumeric: true,
     },
     {
       label: 'Projects Completed',
-      value: `${heroStats.professional_projects + heroStats.personal_projects}`,
+      value: `${heroStats.professionalProjects + heroStats.personalProjects}`,
       icon: '🌟',
       isNumeric: true,
     },

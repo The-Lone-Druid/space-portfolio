@@ -1,12 +1,15 @@
 'use client'
 
-import { ServiceCard, SectionCard } from '@/components/cards'
-import { services } from '@/lib/data'
-import { useScrollToSection } from '@/hooks'
+import { scrollToSection } from '../../lib/utils'
+import { Service } from '../../types'
+import { SectionCard } from '../cards/section-card'
+import { ServiceCard } from '../cards/service-card'
 
-const Services = () => {
-  const { scrollToSection } = useScrollToSection()
+interface ServicesProps {
+  services: Service[]
+}
 
+const Services = ({ services }: ServicesProps) => {
   const handleGetStarted = () => {
     scrollToSection('contact')
   }
