@@ -30,6 +30,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Zahid Shaikh', url: 'https://zahidshaikh.space' }],
   creator: 'Zahid Shaikh',
+  icons: {
+    icon: [
+      { url: '/rocket.ico', sizes: '16x16', type: 'image/x-icon' },
+      { url: '/rocket.ico', sizes: '32x32', type: 'image/x-icon' },
+    ],
+    shortcut: '/rocket.ico',
+    apple: '/rocket.ico',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

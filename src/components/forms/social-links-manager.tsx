@@ -71,7 +71,7 @@ export function SocialLinksManager({
   }
 
   return (
-    <Card>
+    <Card className='glass-cosmic'>
       <CardHeader>
         <CardTitle className='flex items-center gap-2'>
           <LinkIcon className='h-5 w-5' />
