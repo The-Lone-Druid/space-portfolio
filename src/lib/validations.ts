@@ -56,8 +56,8 @@ export const skillSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   level: z
     .number()
-    .min(1, 'Proficiency level must be at least 1')
-    .max(5, 'Proficiency level cannot exceed 5'),
+    .min(0, 'Proficiency level must be at least 0')
+    .max(100, 'Proficiency level cannot exceed 100'),
   order: z.number().default(0),
   isActive: z.boolean().default(true),
 })

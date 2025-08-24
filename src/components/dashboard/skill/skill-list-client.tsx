@@ -17,32 +17,28 @@ interface SkillListClientProps {
   skills: Skill[]
 }
 
-// Define proficiency levels (1-5 scale)
+// Define proficiency levels based on percentage
 const PROFICIENCY_LEVELS = [
-  { label: 'Beginner', value: 1, color: 'bg-red-500' },
-  { label: 'Novice', value: 2, color: 'bg-orange-500' },
-  { label: 'Intermediate', value: 3, color: 'bg-yellow-500' },
-  { label: 'Advanced', value: 4, color: 'bg-blue-500' },
-  { label: 'Expert', value: 5, color: 'bg-green-500' },
+  { label: 'Beginner', min: 1, max: 25, color: 'bg-red-500' },
+  { label: 'Novice', min: 26, max: 45, color: 'bg-orange-500' },
+  { label: 'Intermediate', min: 46, max: 65, color: 'bg-yellow-500' },
+  { label: 'Advanced', min: 66, max: 85, color: 'bg-blue-500' },
+  { label: 'Expert', min: 86, max: 100, color: 'bg-green-500' },
 ]
 
 function getProficiencyLevel(level: number) {
   return (
-    PROFICIENCY_LEVELS.find(p => p.value === level) || PROFICIENCY_LEVELS[0]
+    PROFICIENCY_LEVELS.find(p => level >= p.min && level <= p.max) ||
+    PROFICIENCY_LEVELS[0]
   )
 }
 
 function getProficiencyColor(level: number) {
-  if (level >= 5) return 'text-green-400'
-  if (level >= 4) return 'text-blue-400'
-  if (level >= 3) return 'text-yellow-400'
-  if (level >= 2) return 'text-orange-400'
+  if (level >= 86) return 'text-green-400'
+  if (level >= 66) return 'text-blue-400'
+  if (level >= 46) return 'text-yellow-400'
+  if (level >= 26) return 'text-orange-400'
   return 'text-red-400'
-}
-
-// Convert 1-5 scale to percentage for progress bar
-function levelToPercentage(level: number): number {
-  return (level / 5) * 100
 }
 
 export function SkillListClient({ skills }: SkillListClientProps) {
@@ -241,10 +237,7 @@ export function SkillListClient({ skills }: SkillListClientProps) {
                 {/* Proficiency Progress Bar */}
                 <div className='space-y-2'>
                   <div className='text-xs text-white/70'>Proficiency Level</div>
-                  <Progress
-                    value={levelToPercentage(skill.level)}
-                    className='h-2'
-                  />
+                  <Progress value={skill.level} className='h-2' />
                 </div>
 
                 {/* Actions */}

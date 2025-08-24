@@ -65,18 +65,37 @@ export function SkillForm({
   isSubmitting = false,
   submitLabel = 'Save Skill',
 }: SkillFormProps) {
+  // Convert percentage to 1-5 scale for UI
+  const percentageToScale = (percentage: number): number => {
+    if (percentage === 0) return 1
+    return Math.ceil(percentage / 20) // 0-20=1, 21-40=2, 41-60=3, 61-80=4, 81-100=5
+  }
+
+  // Convert 1-5 scale to percentage for storage
+  const scaleToPercentage = (scale: number): number => {
+    const percentageMap: Record<number, number> = {
+      1: 20, // Beginner: 20%
+      2: 40, // Novice: 40%
+      3: 60, // Intermediate: 60%
+      4: 80, // Advanced: 80%
+      5: 100, // Expert: 100%
+    }
+    return percentageMap[scale] || 60
+  }
+
   const form = useForm({
     resolver: zodResolver(skillSchema),
     defaultValues: {
       name: initialData?.name || '',
       category: initialData?.category || '',
-      level: initialData?.level || 3,
+      level: initialData?.level || 60, // Default to 60% (Intermediate)
       order: initialData?.order || 0,
       isActive: initialData?.isActive ?? true,
     } as SkillFormData,
   })
 
-  const watchedLevel = form.watch('level')
+  // Convert stored percentage to UI scale for display
+  const uiLevel = percentageToScale(form.watch('level'))
 
   const handleSubmit = async (data: SkillFormData) => {
     try {
@@ -177,10 +196,10 @@ export function SkillForm({
                       Level:{' '}
                       {
                         proficiencyLabels[
-                          watchedLevel as keyof typeof proficiencyLabels
+                          uiLevel as keyof typeof proficiencyLabels
                         ]
                       }{' '}
-                      ({watchedLevel}/5)
+                      ({field.value}%)
                     </FormLabel>
                     <FormControl>
                       <div className='px-3'>
@@ -188,18 +207,21 @@ export function SkillForm({
                           min={1}
                           max={5}
                           step={1}
-                          value={[field.value]}
-                          onValueChange={vals => field.onChange(vals[0])}
+                          value={[uiLevel]}
+                          onValueChange={vals => {
+                            const newPercentage = scaleToPercentage(vals[0])
+                            field.onChange(newPercentage)
+                          }}
                           className='w-full'
                         />
                       </div>
                     </FormControl>
                     <div className='flex justify-between text-xs text-gray-400'>
-                      <span>Beginner</span>
-                      <span>Novice</span>
-                      <span>Intermediate</span>
-                      <span>Advanced</span>
-                      <span>Expert</span>
+                      <span>Beginner (20%)</span>
+                      <span>Novice (40%)</span>
+                      <span>Intermediate (60%)</span>
+                      <span>Advanced (80%)</span>
+                      <span>Expert (100%)</span>
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -247,7 +269,7 @@ export function SkillForm({
           {/* Form Actions */}
           <div className='flex justify-end gap-4'>
             {onCancel && (
-              <Button type='button' variant='ghost' onClick={onCancel}>
+              <Button type='button' variant='link' onClick={onCancel}>
                 Cancel
               </Button>
             )}
