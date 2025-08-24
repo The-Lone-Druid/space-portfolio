@@ -39,12 +39,10 @@ const Projects = ({ projects }: ProjectsProps) => {
         {['all', 'frontend', 'backend', 'web'].map(category => (
           <Button
             key={category}
-            variant={filter === category ? 'cosmic' : 'outline'}
+            variant={filter === category ? 'cosmic' : 'stellar'}
             onClick={() => setFilter(category)}
             className={`capitalize ${
-              filter !== category
-                ? 'border-space-gold/50 text-space-gold/70 hover:text-space-gold hover:border-space-gold hover:bg-space-gold/10'
-                : ''
+              filter !== category ? 'opacity-80 hover:opacity-100' : ''
             }`}
           >
             {category === 'all' ? 'All Projects' : category}

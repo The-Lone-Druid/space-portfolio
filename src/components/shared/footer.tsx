@@ -1,6 +1,7 @@
 'use client'
 
 import { Github, Linkedin, Mail, MapPin, Rocket } from 'lucide-react'
+import { getLucideIcon } from '../../lib/utils'
 import { PersonalInfoWithSocials } from '../../types'
 
 interface FooterProps {
@@ -73,8 +74,7 @@ const Footer = ({ personalInfo }: FooterProps) => {
             <h3 className='text-lg font-semibold text-white'>Connect</h3>
             <div className='flex space-x-4'>
               {personalInfo.socialLinks.map(social => {
-                const IconComponent =
-                  socialIcons[social.icon as keyof typeof socialIcons] || Mail
+                const IconComponent = getLucideIcon(social.name)
                 return (
                   <a
                     key={social.name}

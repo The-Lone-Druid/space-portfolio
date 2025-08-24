@@ -10,11 +10,10 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinnerInline } from '@/components/ui/loading-spinner'
 import { Textarea } from '@/components/ui/textarea'
 import {
   usePersonalInfo,
-  type PersonalInfo,
   type PersonalInfoFormData,
 } from '@/hooks/use-personal-info'
 import {
@@ -34,9 +33,14 @@ import {
   Youtube,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { PersonalInfo, SocialLink } from '../../types'
 
 interface PersonalInfoFormProps {
-  initialData?: PersonalInfo | null
+  initialData?:
+    | ({
+        socialLinks: SocialLink[]
+      } & PersonalInfo)
+    | null
   onSave?: (data: PersonalInfo) => void
 }
 
@@ -394,7 +398,10 @@ export function PersonalInfoForm({
           disabled={isLoading}
         >
           {isLoading ? (
-            <LoadingSpinner variant='default' size='sm' />
+            <>
+              <LoadingSpinnerInline variant='orbit' />
+              <span className='ml-2'>Updating...</span>
+            </>
           ) : (
             <>
               <Save className='mr-2 h-4 w-4' />

@@ -1,5 +1,4 @@
 import { DashboardPageHeader } from '@/components/dashboard/page-header'
-import { PersonalInfoClientWrapper } from '@/components/forms/personal-info-client-wrapper'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
@@ -29,6 +28,7 @@ import {
   User,
   Youtube,
 } from 'lucide-react'
+import { PersonalInfoForm } from '../../../components/forms/personal-info-form'
 
 // Icon mapping for social platforms
 const socialIcons: Record<string, React.ElementType> = {
@@ -281,7 +281,7 @@ export default async function PersonalInfoPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PersonalInfoClientWrapper initialData={personalInfo} />
+                <PersonalInfoForm initialData={personalInfo} />
               </CardContent>
             </Card>
           </div>
@@ -301,7 +301,7 @@ export default async function PersonalInfoPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <PersonalInfoClientWrapper />
+              <PersonalInfoForm />
             </CardContent>
           </Card>
         </div>

@@ -38,11 +38,7 @@ export const SectionCard = ({
 
           <h2 className='mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl'>
             {title}{' '}
-            {highlight && (
-              <span className='text-space-gold animate-pulse-cosmic'>
-                {highlight}
-              </span>
-            )}
+            {highlight && <span className='text-space-gold'>{highlight}</span>}
           </h2>
 
           <div className='bg-gradient-stellar mx-auto mb-6 h-1 w-24'></div>
