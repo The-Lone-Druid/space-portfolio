@@ -144,16 +144,88 @@
 }
 
 @layer base {
-  html,
-  body {
-    scroll-behavior: smooth;
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  html {
+    scroll-behavior: smooth !important;
   }
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  }
+
+  /* Custom Themed Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.488 0.243 264.376) oklch(0.21 0.006 285.885);
+  }
+
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: oklch(0.21 0.006 285.885);
+    border-radius: 4px;
+    border: 1px solid oklch(1 0 0 / 10%);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      135deg,
+      oklch(0.488 0.243 264.376),
+      oklch(0.552 0.016 285.938)
+    );
+    border-radius: 4px;
+    border: 1px solid oklch(1 0 0 / 20%);
+    transition: all 0.2s ease;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      135deg,
+      oklch(0.588 0.243 264.376),
+      oklch(0.652 0.016 285.938)
+    );
+    box-shadow: 0 0 8px oklch(0.488 0.243 264.376 / 50%);
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(
+      135deg,
+      oklch(0.688 0.243 264.376),
+      oklch(0.752 0.016 285.938)
+    );
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: oklch(0.21 0.006 285.885);
+  }
+
+  /* Custom scrollbar for specific components */
+  .glass-nebula::-webkit-scrollbar-track {
+    background: oklch(0.274 0.006 286.033);
+    border: 1px solid oklch(1 0 0 / 15%);
+  }
+
+  .glass-nebula::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      135deg,
+      oklch(0.488 0.243 264.376),
+      oklch(0.645 0.246 16.439)
+    );
+    border: 1px solid oklch(1 0 0 / 25%);
+  }
+
+  .glass-nebula::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      135deg,
+      oklch(0.588 0.243 264.376),
+      oklch(0.745 0.246 16.439)
+    );
+    box-shadow: 0 0 12px oklch(0.488 0.243 264.376 / 60%);
   }
 }
 

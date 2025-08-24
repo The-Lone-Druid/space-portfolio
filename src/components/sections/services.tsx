@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { scrollToSection } from '../../lib/utils'
 import { Service } from '../../types'
 import { SectionCard } from '../cards/section-card'
@@ -11,7 +12,7 @@ interface ServicesProps {
 
 const Services = ({ services }: ServicesProps) => {
   const handleGetStarted = () => {
-    scrollToSection('contact')
+    scrollToSection('#contact')
   }
 
   return (
@@ -42,9 +43,11 @@ const Services = ({ services }: ServicesProps) => {
           <p className='mb-8 text-xl text-gray-300'>
             Let&apos;s discuss your vision and bring it to life together
           </p>
-          <button
+          <Button
             onClick={handleGetStarted}
-            className='bg-gradient-cosmic hover:shadow-space-gold/50 inline-flex items-center rounded-full px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl'
+            variant='cosmic'
+            size='lg'
+            className='group'
           >
             Start Your Journey
             <svg
@@ -60,7 +63,7 @@ const Services = ({ services }: ServicesProps) => {
                 d='M13 7l5 5m0 0l-5 5m5-5H6'
               />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
     </SectionCard>

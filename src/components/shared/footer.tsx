@@ -1,6 +1,7 @@
 'use client'
 
-import { Github, Linkedin, Mail, MapPin, Rocket } from 'lucide-react'
+import { Mail, MapPin, Rocket } from 'lucide-react'
+import { getLucideIcon } from '../../lib/utils'
 import { PersonalInfoWithSocials } from '../../types'
 
 interface FooterProps {
@@ -9,12 +10,6 @@ interface FooterProps {
 
 const Footer = ({ personalInfo }: FooterProps) => {
   const currentYear = new Date().getFullYear()
-
-  const socialIcons = {
-    'fab fa-github': Github,
-    'fab fa-linkedin': Linkedin,
-    'fab fa-twitter': Mail, // Using Mail as placeholder for Twitter
-  }
 
   return (
     <footer className='bg-space-deep relative z-10 border-t border-purple-500/20'>
@@ -73,8 +68,7 @@ const Footer = ({ personalInfo }: FooterProps) => {
             <h3 className='text-lg font-semibold text-white'>Connect</h3>
             <div className='flex space-x-4'>
               {personalInfo.socialLinks.map(social => {
-                const IconComponent =
-                  socialIcons[social.icon as keyof typeof socialIcons] || Mail
+                const IconComponent = getLucideIcon(social.name)
                 return (
                   <a
                     key={social.name}

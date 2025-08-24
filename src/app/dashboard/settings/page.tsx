@@ -10,7 +10,7 @@ export default async function SettingsPage() {
         title='Settings'
         description='Configure your space dashboard and account preferences.'
         actions={
-          <Button className='bg-space-accent hover:bg-space-accent/80 text-white'>
+          <Button variant='nebula'>
             <Save className='mr-2 h-4 w-4' />
             Save Changes
           </Button>

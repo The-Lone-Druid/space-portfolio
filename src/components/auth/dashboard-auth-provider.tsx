@@ -35,13 +35,11 @@ export function DashboardAuthProvider({
       <div className='bg-gradient-cosmic flex min-h-screen items-center justify-center'>
         <div className='space-y-4 text-center'>
           <div className='flex items-center justify-center'>
-            <LoadingSpinner className='text-space-gold h-8 w-8' />
-          </div>
-          <div>
-            <h2 className='text-xl font-semibold text-white'>
-              Loading Dashboard
-            </h2>
-            <p className='text-white/70'>Verifying authentication...</p>
+            <LoadingSpinner
+              variant='orbit'
+              size='xl'
+              message='Verifying authentication, Please wait....'
+            />
           </div>
         </div>
       </div>

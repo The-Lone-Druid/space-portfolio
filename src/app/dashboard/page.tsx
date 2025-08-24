@@ -10,7 +10,7 @@ export default function DashboardPage() {
         title='Dashboard Overview'
         description="Welcome back! Here's what's happening with your portfolio."
         actions={
-          <Button className='bg-space-accent hover:bg-space-accent/80 text-white'>
+          <Button variant='space'>
             <Plus className='mr-2 h-4 w-4' />
             Quick Action
           </Button>

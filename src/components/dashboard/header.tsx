@@ -51,7 +51,7 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant='ghost'
+              variant='link'
               className='relative h-8 w-8 rounded-full transition-colors hover:bg-white/10'
             >
               <Avatar className='ring-space-gold/50 h-8 w-8 ring-2'>

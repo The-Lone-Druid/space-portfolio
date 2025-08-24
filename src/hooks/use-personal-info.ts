@@ -1,32 +1,6 @@
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
-
-// Types for personal info
-export interface PersonalInfo {
-  id: string
-  name: string
-  title: string
-  bio: string
-  email: string
-  location: string
-  resumeUrl?: string | null
-  isActive: boolean
-  createdAt: string
-  updatedAt: string
-  socialLinks: SocialLink[]
-}
-
-export interface SocialLink {
-  id: string
-  name: string
-  url: string
-  icon?: string | null
-  order: number
-  isActive: boolean
-  personalInfoId?: string | null
-  createdAt: string
-  updatedAt: string
-}
+import { PersonalInfo, SocialLink } from '../types'
 
 export interface PersonalInfoFormData {
   name: string

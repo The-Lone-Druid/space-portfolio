@@ -9,3 +9,86 @@ export const contactFormSchema = z.object({
 })
 
 export type ContactFormData = z.infer<typeof contactFormSchema>
+
+// Project validation schemas
+export const projectTaskSchema = z.object({
+  id: z.number().optional(),
+  task: z.string().min(1, 'Task description is required'),
+  order: z.number().default(0),
+})
+
+export const projectSkillSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1, 'Skill name is required'),
+  order: z.number().default(0),
+})
+
+export const projectSchema = z.object({
+  projectName: z.string().min(1, 'Project name is required'),
+  projectDate: z.string().min(1, 'Project date is required'),
+  projectDescription: z
+    .string()
+    .min(10, 'Project description must be at least 10 characters'),
+  projectLink: z
+    .string()
+    .url('Please enter a valid project URL')
+    .optional()
+    .or(z.literal(''))
+    .transform(val => (val === '' ? undefined : val)),
+  githubLink: z
+    .string()
+    .url('Please enter a valid GitHub URL')
+    .optional()
+    .or(z.literal(''))
+    .transform(val => (val === '' ? undefined : val)),
+  featured: z.boolean().default(false),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+  projectTasks: z.array(projectTaskSchema).default([]),
+  skillsUtilized: z.array(projectSkillSchema).default([]),
+})
+
+export type ProjectFormData = z.infer<typeof projectSchema>
+
+// Skills validation schema
+export const skillSchema = z.object({
+  name: z.string().min(1, 'Skill name is required'),
+  category: z.string().min(1, 'Category is required'),
+  level: z
+    .number()
+    .min(0, 'Proficiency level must be at least 0')
+    .max(100, 'Proficiency level cannot exceed 100'),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+})
+
+export const projectUpdateSchema = projectSchema.partial().extend({
+  id: z.number(),
+})
+
+export const skillUpdateSchema = skillSchema.partial().extend({
+  id: z.number(),
+})
+export type ProjectUpdateData = z.infer<typeof projectUpdateSchema>
+export type ProjectTaskData = z.infer<typeof projectTaskSchema>
+export type ProjectSkillData = z.infer<typeof projectSkillSchema>
+export type SkillFormData = z.infer<typeof skillSchema>
+export type SkillUpdateData = z.infer<typeof skillUpdateSchema>
+
+// Services validation schema
+export const serviceSchema = z.object({
+  name: z.string().min(1, 'Service name is required'),
+  desc: z
+    .string()
+    .min(10, 'Service description must be at least 10 characters'),
+  icon: z.string().optional(),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+})
+
+export const serviceUpdateSchema = serviceSchema.partial().extend({
+  id: z.number(),
+})
+
+export type ServiceFormData = z.infer<typeof serviceSchema>
+export type ServiceUpdateData = z.infer<typeof serviceUpdateSchema>

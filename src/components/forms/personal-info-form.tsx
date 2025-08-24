@@ -10,11 +10,10 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinnerInline } from '@/components/ui/loading-spinner'
 import { Textarea } from '@/components/ui/textarea'
 import {
   usePersonalInfo,
-  type PersonalInfo,
   type PersonalInfoFormData,
 } from '@/hooks/use-personal-info'
 import {
@@ -34,9 +33,14 @@ import {
   Youtube,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { PersonalInfo, SocialLink } from '../../types'
 
 interface PersonalInfoFormProps {
-  initialData?: PersonalInfo | null
+  initialData?:
+    | ({
+        socialLinks: SocialLink[]
+      } & PersonalInfo)
+    | null
   onSave?: (data: PersonalInfo) => void
 }
 
@@ -272,10 +276,9 @@ export function PersonalInfoForm({
             </div>
             <Button
               type='button'
-              variant='outline'
+              variant='space'
               size='sm'
               onClick={() => setShowAddSocialLink(true)}
-              className='border-space-accent/50 text-space-accent hover:bg-space-accent/20'
             >
               <Plus className='mr-2 h-4 w-4' />
               Add Link
@@ -310,10 +313,9 @@ export function PersonalInfoForm({
                     </div>
                     <Button
                       type='button'
-                      variant='ghost'
+                      variant='destructive'
                       size='sm'
                       onClick={() => handleRemoveSocialLink(index)}
-                      className='text-red-400 hover:bg-red-500/20 hover:text-red-300'
                     >
                       <Trash2 className='h-4 w-4' />
                     </Button>
@@ -364,18 +366,17 @@ export function PersonalInfoForm({
               <div className='flex justify-end space-x-2'>
                 <Button
                   type='button'
-                  variant='ghost'
+                  variant='link'
                   size='sm'
                   onClick={() => setShowAddSocialLink(false)}
-                  className='text-white/70 hover:text-white'
                 >
                   Cancel
                 </Button>
                 <Button
                   type='button'
+                  variant='space'
                   size='sm'
                   onClick={handleAddSocialLink}
-                  className='bg-space-accent hover:bg-space-accent/80 text-white'
                   disabled={!newSocialLink.name || !newSocialLink.url}
                 >
                   Add Link
@@ -388,13 +389,12 @@ export function PersonalInfoForm({
 
       {/* Submit Button */}
       <div className='flex justify-end'>
-        <Button
-          type='submit'
-          className='bg-space-accent hover:bg-space-accent/80 text-white'
-          disabled={isLoading}
-        >
+        <Button type='submit' variant='stellar' disabled={isLoading}>
           {isLoading ? (
-            <LoadingSpinner variant='default' size='sm' />
+            <>
+              <LoadingSpinnerInline variant='orbit' />
+              <span className='ml-2'>Updating...</span>
+            </>
           ) : (
             <>
               <Save className='mr-2 h-4 w-4' />

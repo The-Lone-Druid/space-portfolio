@@ -1,15 +1,16 @@
 'use client'
 
-import { Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react'
+import { Github, Mail, MapPin, Phone } from 'lucide-react'
 import { useAnimatedCounter } from '../../hooks/use-animated-counter'
-import { PersonalInfo } from '../../types'
+import { getLucideIcon } from '../../lib/utils'
+import { PersonalInfoWithSocials } from '../../types'
 import { ContactMethodCard } from '../cards/contact-method-card'
 import { SectionCard } from '../cards/section-card'
 import { SocialLinkCard } from '../cards/social-link-card'
 import { ContactForm } from '../forms/contact-form'
 
 interface ContactProps {
-  personalInfo: PersonalInfo
+  personalInfo: PersonalInfoWithSocials
 }
 
 const Contact = ({ personalInfo }: ContactProps) => {
@@ -41,20 +42,12 @@ const Contact = ({ personalInfo }: ContactProps) => {
     },
   ]
 
-  const socialLinks = [
-    {
-      icon: Github,
-      name: 'GitHub',
-      url: 'https://github.com/zahidshaikh',
-      username: '@zahidshaikh',
-    },
-    {
-      icon: Linkedin,
-      name: 'LinkedIn',
-      url: 'https://linkedin.com/in/zahidshaikh',
-      username: 'Zahid Shaikh',
-    },
-  ]
+  const socialLinks = personalInfo?.socialLinks.map(social => ({
+    icon: getLucideIcon(social.name),
+    name: social.name,
+    url: social.url,
+    username: social.url,
+  }))
 
   return (
     <SectionCard

@@ -107,7 +107,7 @@ function SidebarContent({ items, pathname, onItemClick }: SidebarContentProps) {
               {item.children ? (
                 <div>
                   <Button
-                    variant='ghost'
+                    variant='link'
                     className={cn(
                       'h-auto w-full justify-start space-x-2 px-3 py-2 text-white/90 transition-all duration-200 hover:bg-white/10 hover:text-white',
                       isActive(item.href) &&
@@ -131,7 +131,7 @@ function SidebarContent({ items, pathname, onItemClick }: SidebarContentProps) {
                       {item.children.map(child => (
                         <Link key={child.href} href={child.href}>
                           <Button
-                            variant='ghost'
+                            variant='link'
                             className={cn(
                               'h-auto w-full justify-start space-x-2 px-3 py-2 text-sm text-white/80 transition-all duration-200 hover:bg-white/5 hover:text-white',
                               isActive(child.href) &&
@@ -150,7 +150,7 @@ function SidebarContent({ items, pathname, onItemClick }: SidebarContentProps) {
               ) : (
                 <Link href={item.href}>
                   <Button
-                    variant='ghost'
+                    variant='link'
                     className={cn(
                       'h-auto w-full justify-start space-x-2 px-3 py-2 text-white/90 transition-all duration-200 hover:bg-white/10 hover:text-white',
                       isActive(item.href) &&
@@ -209,7 +209,7 @@ export function MobileSidebar() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='ghost' size='icon' className='lg:hidden'>
+        <Button variant='link' size='icon' className='lg:hidden'>
           <Menu className='h-5 w-5' />
           <span className='sr-only'>Toggle sidebar</span>
         </Button>

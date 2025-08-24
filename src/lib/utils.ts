@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx'
+import { Github, Link, Linkedin, LucideIcon } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -45,5 +46,15 @@ export function debounce<T extends (...args: never[]) => unknown>(
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId)
     timeoutId = setTimeout(() => func(...args), delay)
+  }
+}
+
+export function getLucideIcon(icon: string | null): LucideIcon {
+  if (icon?.toLowerCase().includes('github')) {
+    return Github
+  } else if (icon?.toLowerCase().includes('linkedin')) {
+    return Linkedin
+  } else {
+    return Link
   }
 }
