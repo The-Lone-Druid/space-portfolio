@@ -132,7 +132,7 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
                 />
                 <Button
                   type='button'
-                  variant='ghost'
+                  variant='link'
                   size='sm'
                   className='absolute top-0 right-0 h-full px-3 py-2'
                   onClick={() => setShowPassword(!showPassword)}

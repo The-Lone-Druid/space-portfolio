@@ -79,7 +79,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
             <div className='flex flex-wrap gap-2'>
               <Button
                 size='sm'
-                variant={selectedSkill === null ? 'space' : 'ghost'}
+                variant={selectedSkill === null ? 'space' : 'link'}
                 onClick={() => setSelectedSkill(null)}
               >
                 All Skills
@@ -88,7 +88,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                 <Button
                   key={skill}
                   size='sm'
-                  variant={selectedSkill === skill ? 'space' : 'ghost'}
+                  variant={selectedSkill === skill ? 'space' : 'link'}
                   onClick={() =>
                     setSelectedSkill(selectedSkill === skill ? null : skill)
                   }

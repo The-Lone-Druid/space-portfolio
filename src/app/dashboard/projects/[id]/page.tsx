@@ -51,7 +51,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       />
 
       {/* Back Button */}
-      <Button variant='ghost' asChild>
+      <Button variant='link' asChild>
         <Link href='/dashboard/projects'>
           <ArrowLeft className='mr-2 h-4 w-4' />
           Back to Projects

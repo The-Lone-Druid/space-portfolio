@@ -366,7 +366,7 @@ export function PersonalInfoForm({
               <div className='flex justify-end space-x-2'>
                 <Button
                   type='button'
-                  variant='ghost'
+                  variant='link'
                   size='sm'
                   onClick={() => setShowAddSocialLink(false)}
                 >

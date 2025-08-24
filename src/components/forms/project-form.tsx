@@ -263,7 +263,7 @@ export function ProjectForm({
               ))}
               <Button
                 type='button'
-                variant='ghost'
+                variant='link'
                 onClick={() =>
                   appendTask({ task: '', order: taskFields.length })
                 }
@@ -320,7 +320,7 @@ export function ProjectForm({
               </div>
               <Button
                 type='button'
-                variant='ghost'
+                variant='link'
                 onClick={() =>
                   appendSkill({ name: '', order: skillFields.length })
                 }
@@ -418,7 +418,7 @@ export function ProjectForm({
           {/* Form Actions */}
           <div className='flex justify-end gap-4'>
             {onCancel && (
-              <Button type='button' variant='ghost' onClick={onCancel}>
+              <Button type='button' variant='link' onClick={onCancel}>
                 Cancel
               </Button>
             )}
