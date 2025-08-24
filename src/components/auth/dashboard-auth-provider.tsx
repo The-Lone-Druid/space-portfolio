@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinnerInline } from '@/components/ui/loading-spinner'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -35,7 +35,7 @@ export function DashboardAuthProvider({
       <div className='bg-gradient-cosmic flex min-h-screen items-center justify-center'>
         <div className='space-y-4 text-center'>
           <div className='flex items-center justify-center'>
-            <LoadingSpinner className='text-space-gold h-8 w-8' />
+            <LoadingSpinnerInline variant='orbit' size='xl' />
           </div>
           <div>
             <h2 className='text-xl font-semibold text-white'>
