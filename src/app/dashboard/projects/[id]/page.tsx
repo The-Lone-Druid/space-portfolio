@@ -1,5 +1,4 @@
 import { DashboardPageHeader } from '@/components/dashboard/page-header'
-import { EditProjectDialog } from '@/components/dashboard/project/edit-project-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -82,12 +81,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 {formatDistanceToNow(project.updatedAt, { addSuffix: true })}
               </CardDescription>
             </div>
-            <EditProjectDialog project={project}>
-              <Button size='sm' variant='stellar'>
-                <Edit className='mr-2 h-4 w-4' />
-                Edit Project
-              </Button>
-            </EditProjectDialog>
+            <Button size='sm' variant='stellar'>
+              <Edit className='mr-2 h-4 w-4' />
+              Edit Project
+            </Button>
           </div>
         </CardHeader>
         <CardContent className='space-y-6'>

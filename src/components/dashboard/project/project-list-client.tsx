@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import type { ProjectWithDetails } from '@/types'
-import { ExternalLink, Github, Search, Star, X } from 'lucide-react'
+import { Edit, ExternalLink, Github, Search, Star, X } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { EditProjectDialog } from './edit-project-dialog'
 
 interface ProjectListClientProps {
   projects: ProjectWithDetails[]
@@ -217,6 +218,11 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                         View Details
                       </Link>
                     </Button>
+                    <EditProjectDialog project={project}>
+                      <Button size='sm' variant='stellar'>
+                        <Edit className='h-3 w-3' />
+                      </Button>
+                    </EditProjectDialog>
                   </div>
                 </div>
               </CardContent>

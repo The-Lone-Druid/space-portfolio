@@ -156,7 +156,7 @@ export function AccountsManager({ accounts }: AccountsManagerProps) {
                       <TableCell className='text-right'>
                         <div className='flex justify-end gap-2'>
                           <Button
-                            variant='ghost'
+                            variant='link'
                             size='sm'
                             className='h-8 w-8 p-0 text-white/60 hover:text-red-400'
                             onClick={() => handleDisconnectAccount(account)}
@@ -207,7 +207,7 @@ export function AccountsManager({ accounts }: AccountsManagerProps) {
                       </div>
                     </div>
                     <Button
-                      variant='ghost'
+                      variant='link'
                       size='sm'
                       className='h-8 w-8 p-0 text-white/60 hover:text-red-400'
                       onClick={() => handleDisconnectAccount(account)}

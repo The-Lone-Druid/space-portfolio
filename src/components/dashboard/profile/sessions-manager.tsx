@@ -165,7 +165,7 @@ export function SessionsManager({ sessions }: SessionsManagerProps) {
                         </TableCell>
                         <TableCell className='text-right'>
                           <Button
-                            variant='ghost'
+                            variant='link'
                             size='sm'
                             className='h-8 w-8 p-0 text-white/60 hover:text-red-400'
                             onClick={() => handleRevokeSession(session)}
@@ -223,7 +223,7 @@ export function SessionsManager({ sessions }: SessionsManagerProps) {
                         </div>
                       </div>
                       <Button
-                        variant='ghost'
+                        variant='link'
                         size='sm'
                         className='h-8 w-8 p-0 text-white/60 hover:text-red-400'
                         onClick={() => handleRevokeSession(session)}

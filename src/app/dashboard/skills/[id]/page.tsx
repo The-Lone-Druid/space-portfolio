@@ -84,7 +84,7 @@ export default async function SkillDetailPage({ params }: SkillPageProps) {
       />
 
       {/* Back Button */}
-      <Button variant='ghost' asChild>
+      <Button variant='link' asChild>
         <Link href='/dashboard/skills'>
           <ArrowLeft className='mr-2 h-4 w-4' />
           Back to Skills
@@ -234,7 +234,7 @@ export default async function SkillDetailPage({ params }: SkillPageProps) {
                 <Edit className='mr-2 h-4 w-4' />
                 Edit Skill
               </Button>
-              <Button variant='ghost' className='w-full' asChild>
+              <Button variant='link' className='w-full' asChild>
                 <Link href='/dashboard/skills'>
                   <ArrowLeft className='mr-2 h-4 w-4' />
                   Back to Skills

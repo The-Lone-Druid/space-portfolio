@@ -251,7 +251,7 @@ export function ServiceForm({
           {/* Form Actions */}
           <div className='flex justify-end gap-4'>
             {onCancel && (
-              <Button type='button' variant='ghost' onClick={onCancel}>
+              <Button type='button' variant='link' onClick={onCancel}>
                 Cancel
               </Button>
             )}

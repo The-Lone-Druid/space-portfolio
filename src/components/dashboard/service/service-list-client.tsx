@@ -106,14 +106,14 @@ export function ServiceListClient({ services }: ServiceListClientProps) {
             <div className='flex flex-wrap gap-2'>
               <Button
                 size='sm'
-                variant={statusFilter === 'all' ? 'space' : 'ghost'}
+                variant={statusFilter === 'all' ? 'space' : 'link'}
                 onClick={() => setStatusFilter('all')}
               >
                 All Services
               </Button>
               <Button
                 size='sm'
-                variant={statusFilter === 'active' ? 'space' : 'ghost'}
+                variant={statusFilter === 'active' ? 'space' : 'link'}
                 onClick={() => setStatusFilter('active')}
               >
                 <Eye className='mr-1 h-3 w-3' />
@@ -121,7 +121,7 @@ export function ServiceListClient({ services }: ServiceListClientProps) {
               </Button>
               <Button
                 size='sm'
-                variant={statusFilter === 'inactive' ? 'space' : 'ghost'}
+                variant={statusFilter === 'inactive' ? 'space' : 'link'}
                 onClick={() => setStatusFilter('inactive')}
               >
                 <EyeOff className='mr-1 h-3 w-3' />

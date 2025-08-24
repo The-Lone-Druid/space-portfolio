@@ -119,7 +119,7 @@ export function SkillListClient({ skills }: SkillListClientProps) {
             <div className='flex flex-wrap gap-2'>
               <Button
                 size='sm'
-                variant={selectedCategory === null ? 'space' : 'ghost'}
+                variant={selectedCategory === null ? 'space' : 'link'}
                 onClick={() => setSelectedCategory(null)}
               >
                 All Categories
@@ -128,7 +128,7 @@ export function SkillListClient({ skills }: SkillListClientProps) {
                 <Button
                   key={category}
                   size='sm'
-                  variant={selectedCategory === category ? 'space' : 'ghost'}
+                  variant={selectedCategory === category ? 'space' : 'link'}
                   onClick={() =>
                     setSelectedCategory(
                       selectedCategory === category ? null : category
@@ -148,7 +148,7 @@ export function SkillListClient({ skills }: SkillListClientProps) {
           <div className='flex flex-wrap gap-2'>
             <Button
               size='sm'
-              variant={selectedProficiency === null ? 'space' : 'ghost'}
+              variant={selectedProficiency === null ? 'space' : 'link'}
               onClick={() => setSelectedProficiency(null)}
             >
               All Levels
@@ -157,9 +157,7 @@ export function SkillListClient({ skills }: SkillListClientProps) {
               <Button
                 key={level.label}
                 size='sm'
-                variant={
-                  selectedProficiency === level.label ? 'space' : 'ghost'
-                }
+                variant={selectedProficiency === level.label ? 'space' : 'link'}
                 onClick={() =>
                   setSelectedProficiency(
                     selectedProficiency === level.label ? null : level.label
