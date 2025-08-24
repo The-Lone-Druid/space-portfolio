@@ -1,6 +1,7 @@
 import AuthProvider from '@/components/auth/auth-provider'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const geistSans = Geist({
@@ -83,6 +84,7 @@ export default function RootLayout({
         <AuthProvider>
           <main className='relative z-10'>{children}</main>
         </AuthProvider>
+        <Toaster />
       </body>
     </html>
   )

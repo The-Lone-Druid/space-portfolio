@@ -29,6 +29,18 @@ export type ProjectWithDetails = PrismaProject & {
   skillsUtilized: PrismaProjectSkill[]
 }
 
+// Extended types for skills
+export type SkillWithDetails = PrismaSkill
+
+// Form data types
+export interface SkillFormData {
+  name: string
+  category: string
+  level: number
+  order?: number
+  isActive?: boolean
+}
+
 // API Response wrapper
 export interface ApiResponse<T> {
   success: boolean

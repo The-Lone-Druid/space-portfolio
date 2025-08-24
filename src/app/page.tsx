@@ -48,7 +48,6 @@ export default async function Page() {
         <Contact personalInfo={personalInfo} />
       </main>
       <Footer personalInfo={personalInfo} />
-      <Toaster />
     </>
   )
 }

@@ -48,11 +48,29 @@ export const projectSchema = z.object({
   skillsUtilized: z.array(projectSkillSchema).default([]),
 })
 
+export type ProjectFormData = z.infer<typeof projectSchema>
+
+// Skills validation schema
+export const skillSchema = z.object({
+  name: z.string().min(1, 'Skill name is required'),
+  category: z.string().min(1, 'Category is required'),
+  level: z
+    .number()
+    .min(1, 'Proficiency level must be at least 1')
+    .max(5, 'Proficiency level cannot exceed 5'),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+})
+
 export const projectUpdateSchema = projectSchema.partial().extend({
   id: z.number(),
 })
 
-export type ProjectFormData = z.infer<typeof projectSchema>
+export const skillUpdateSchema = skillSchema.partial().extend({
+  id: z.number(),
+})
 export type ProjectUpdateData = z.infer<typeof projectUpdateSchema>
 export type ProjectTaskData = z.infer<typeof projectTaskSchema>
 export type ProjectSkillData = z.infer<typeof projectSkillSchema>
+export type SkillFormData = z.infer<typeof skillSchema>
+export type SkillUpdateData = z.infer<typeof skillUpdateSchema>
