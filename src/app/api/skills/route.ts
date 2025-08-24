@@ -31,8 +31,10 @@ export async function POST(
     const body = await request.json()
     const validatedData = skillSchema.parse(body)
 
-    const skill = await prisma.skill.create({
-      data: validatedData,
+    const skill = await prisma.$transaction(async tx => {
+      return await tx.skill.create({
+        data: validatedData,
+      })
     })
 
     return NextResponse.json({
