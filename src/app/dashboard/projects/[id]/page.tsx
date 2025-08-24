@@ -51,11 +51,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       />
 
       {/* Back Button */}
-      <Button
-        variant='outline'
-        className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-        asChild
-      >
+      <Button variant='ghost' asChild>
         <Link href='/dashboard/projects'>
           <ArrowLeft className='mr-2 h-4 w-4' />
           Back to Projects
@@ -87,10 +83,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               </CardDescription>
             </div>
             <EditProjectDialog project={project}>
-              <Button
-                size='sm'
-                className='bg-space-accent hover:bg-space-accent/80 text-black'
-              >
+              <Button size='sm' variant='stellar'>
                 <Edit className='mr-2 h-4 w-4' />
                 Edit Project
               </Button>
@@ -111,11 +104,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             <h3 className='mb-3 text-lg font-semibold text-white'>Links</h3>
             <div className='flex gap-3'>
               {project.projectLink && (
-                <Button
-                  variant='outline'
-                  className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-                  asChild
-                >
+                <Button variant='nebula' asChild>
                   <a
                     href={project.projectLink}
                     target='_blank'
@@ -127,11 +116,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </Button>
               )}
               {project.githubLink && (
-                <Button
-                  variant='outline'
-                  className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-                  asChild
-                >
+                <Button variant='cosmic' asChild>
                   <a
                     href={project.githubLink}
                     target='_blank'

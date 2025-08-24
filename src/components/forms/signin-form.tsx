@@ -134,7 +134,7 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
                   type='button'
                   variant='ghost'
                   size='sm'
-                  className='absolute top-0 right-0 h-full px-3 py-2 text-white/70 hover:bg-transparent hover:text-white'
+                  className='absolute top-0 right-0 h-full px-3 py-2'
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isLoading}
                 >
@@ -161,7 +161,8 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
             {/* Sign In Button */}
             <Button
               type='submit'
-              className='bg-gradient-stellar hover:bg-gradient-cosmic-gold w-full transform font-medium text-white transition-all duration-300 hover:scale-[1.02] disabled:transform-none disabled:opacity-50'
+              variant='cosmic'
+              className='w-full'
               disabled={isLoading || !email || !password}
             >
               {isLoading ? (

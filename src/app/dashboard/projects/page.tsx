@@ -88,7 +88,7 @@ export default async function ProjectsPage() {
               </CardDescription>
             </div>
             <CreateProjectDialog>
-              <Button className='bg-space-accent hover:bg-space-accent/80 text-black'>
+              <Button variant='stellar'>
                 <Plus className='mr-2 h-4 w-4' />
                 Add Project
               </Button>
@@ -106,7 +106,7 @@ export default async function ProjectsPage() {
                 Start building your portfolio by adding your first project.
               </p>
               <CreateProjectDialog>
-                <Button className='bg-space-accent hover:bg-space-accent/80 text-black'>
+                <Button variant='space'>
                   <Plus className='mr-2 h-4 w-4' />
                   Add Your First Project
                 </Button>

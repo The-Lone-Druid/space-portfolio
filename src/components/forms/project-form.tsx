@@ -252,10 +252,9 @@ export function ProjectForm({
                   {taskFields.length > 1 && (
                     <Button
                       type='button'
-                      variant='outline'
+                      variant='destructive'
                       size='sm'
                       onClick={() => removeTask(index)}
-                      className='mt-1 border-red-400/30 text-red-400 hover:bg-red-400/10'
                     >
                       <Trash2 className='h-4 w-4' />
                     </Button>
@@ -264,11 +263,11 @@ export function ProjectForm({
               ))}
               <Button
                 type='button'
-                variant='outline'
+                variant='ghost'
                 onClick={() =>
                   appendTask({ task: '', order: taskFields.length })
                 }
-                className='w-full border-gray-600 text-gray-300 hover:bg-gray-800/50'
+                className='w-full'
               >
                 <Plus className='mr-2 h-4 w-4' />
                 Add Task
@@ -309,10 +308,9 @@ export function ProjectForm({
                     {skillFields.length > 1 && (
                       <Button
                         type='button'
-                        variant='outline'
+                        variant='destructive'
                         size='sm'
                         onClick={() => removeSkill(index)}
-                        className='border-red-400/30 text-red-400 hover:bg-red-400/10'
                       >
                         <Trash2 className='h-4 w-4' />
                       </Button>
@@ -322,11 +320,11 @@ export function ProjectForm({
               </div>
               <Button
                 type='button'
-                variant='outline'
+                variant='ghost'
                 onClick={() =>
                   appendSkill({ name: '', order: skillFields.length })
                 }
-                className='w-full border-gray-600 text-gray-300 hover:bg-gray-800/50'
+                className='w-full'
               >
                 <Plus className='mr-2 h-4 w-4' />
                 Add Skill
@@ -420,20 +418,11 @@ export function ProjectForm({
           {/* Form Actions */}
           <div className='flex justify-end gap-4'>
             {onCancel && (
-              <Button
-                type='button'
-                variant='outline'
-                onClick={onCancel}
-                className='border-gray-600 text-gray-300 hover:bg-gray-800/50'
-              >
+              <Button type='button' variant='ghost' onClick={onCancel}>
                 Cancel
               </Button>
             )}
-            <Button
-              type='submit'
-              disabled={isSubmitting}
-              className='bg-purple-600 text-white hover:bg-purple-700'
-            >
+            <Button type='submit' disabled={isSubmitting} variant='cosmic'>
               {isSubmitting ? (
                 <>
                   <Loader2 className='mr-2 h-4 w-4 animate-spin' />

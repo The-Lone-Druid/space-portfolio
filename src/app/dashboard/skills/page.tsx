@@ -10,7 +10,7 @@ export default async function SkillsPage() {
         title='Skills & Expertise'
         description='Manage your technical skills and proficiency levels across the galaxy of technologies.'
         actions={
-          <Button className='bg-space-accent hover:bg-space-accent/80 text-white'>
+          <Button variant='cosmic'>
             <Plus className='mr-2 h-4 w-4' />
             Add Skill
           </Button>

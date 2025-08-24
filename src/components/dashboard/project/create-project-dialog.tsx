@@ -40,7 +40,7 @@ export function CreateProjectDialog({ children }: CreateProjectDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto border-gray-800 bg-gray-900'>
+      <DialogContent className='max-h-[90vh] min-w-[80vw] overflow-y-auto border-gray-800 bg-gray-900'>
         <DialogHeader>
           <DialogTitle className='text-white'>Create New Project</DialogTitle>
           <DialogDescription className='text-gray-400'>

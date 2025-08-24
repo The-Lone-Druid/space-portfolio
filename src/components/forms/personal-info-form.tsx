@@ -276,10 +276,9 @@ export function PersonalInfoForm({
             </div>
             <Button
               type='button'
-              variant='outline'
+              variant='space'
               size='sm'
               onClick={() => setShowAddSocialLink(true)}
-              className='border-space-accent/50 text-space-accent hover:bg-space-accent/20'
             >
               <Plus className='mr-2 h-4 w-4' />
               Add Link
@@ -314,10 +313,9 @@ export function PersonalInfoForm({
                     </div>
                     <Button
                       type='button'
-                      variant='ghost'
+                      variant='destructive'
                       size='sm'
                       onClick={() => handleRemoveSocialLink(index)}
-                      className='text-red-400 hover:bg-red-500/20 hover:text-red-300'
                     >
                       <Trash2 className='h-4 w-4' />
                     </Button>
@@ -371,15 +369,14 @@ export function PersonalInfoForm({
                   variant='ghost'
                   size='sm'
                   onClick={() => setShowAddSocialLink(false)}
-                  className='text-white/70 hover:text-white'
                 >
                   Cancel
                 </Button>
                 <Button
                   type='button'
+                  variant='space'
                   size='sm'
                   onClick={handleAddSocialLink}
-                  className='bg-space-accent hover:bg-space-accent/80 text-white'
                   disabled={!newSocialLink.name || !newSocialLink.url}
                 >
                   Add Link
@@ -392,11 +389,7 @@ export function PersonalInfoForm({
 
       {/* Submit Button */}
       <div className='flex justify-end'>
-        <Button
-          type='submit'
-          className='bg-space-accent hover:bg-space-accent/80 text-white'
-          disabled={isLoading}
-        >
+        <Button type='submit' variant='stellar' disabled={isLoading}>
           {isLoading ? (
             <>
               <LoadingSpinnerInline variant='orbit' />

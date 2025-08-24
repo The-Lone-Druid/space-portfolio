@@ -79,13 +79,8 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
             <div className='flex flex-wrap gap-2'>
               <Button
                 size='sm'
-                variant={selectedSkill === null ? 'default' : 'outline'}
+                variant={selectedSkill === null ? 'space' : 'ghost'}
                 onClick={() => setSelectedSkill(null)}
-                className={
-                  selectedSkill === null
-                    ? 'bg-space-accent hover:bg-space-accent/80 text-black'
-                    : 'border-white/20 bg-white/5 text-white hover:bg-white/10'
-                }
               >
                 All Skills
               </Button>
@@ -93,14 +88,9 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                 <Button
                   key={skill}
                   size='sm'
-                  variant={selectedSkill === skill ? 'default' : 'outline'}
+                  variant={selectedSkill === skill ? 'space' : 'ghost'}
                   onClick={() =>
                     setSelectedSkill(selectedSkill === skill ? null : skill)
-                  }
-                  className={
-                    selectedSkill === skill
-                      ? 'bg-space-accent hover:bg-space-accent/80 text-black'
-                      : 'border-white/20 bg-white/5 text-white hover:bg-white/10'
                   }
                 >
                   {skill}
@@ -133,7 +123,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
               setSearchQuery('')
               setSelectedSkill(null)
             }}
-            className='bg-space-accent hover:bg-space-accent/80 text-black'
+            variant='space'
           >
             Clear Filters
           </Button>
@@ -195,12 +185,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                     {/* Links */}
                     <div className='flex gap-2'>
                       {project.projectLink && (
-                        <Button
-                          size='sm'
-                          variant='outline'
-                          className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-                          asChild
-                        >
+                        <Button size='sm' variant='nebula' asChild>
                           <a
                             href={project.projectLink}
                             target='_blank'
@@ -212,12 +197,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                         </Button>
                       )}
                       {project.githubLink && (
-                        <Button
-                          size='sm'
-                          variant='outline'
-                          className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-                          asChild
-                        >
+                        <Button size='sm' variant='cosmic' asChild>
                           <a
                             href={project.githubLink}
                             target='_blank'
@@ -232,12 +212,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                   </div>
 
                   <div className='flex items-center gap-2'>
-                    <Button
-                      size='sm'
-                      variant='outline'
-                      className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-                      asChild
-                    >
+                    <Button size='sm' variant='outline' asChild>
                       <Link href={`/dashboard/projects/${project.id}`}>
                         View Details
                       </Link>

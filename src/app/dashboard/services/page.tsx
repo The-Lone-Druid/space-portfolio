@@ -10,7 +10,7 @@ export default async function ServicesPage() {
         title='Services & Solutions'
         description='Manage your space technology services and client offerings across the cosmos.'
         actions={
-          <Button className='bg-space-accent hover:bg-space-accent/80 text-white'>
+          <Button variant='stellar'>
             <Plus className='mr-2 h-4 w-4' />
             Add Service
           </Button>
