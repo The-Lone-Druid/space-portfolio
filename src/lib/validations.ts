@@ -74,3 +74,21 @@ export type ProjectTaskData = z.infer<typeof projectTaskSchema>
 export type ProjectSkillData = z.infer<typeof projectSkillSchema>
 export type SkillFormData = z.infer<typeof skillSchema>
 export type SkillUpdateData = z.infer<typeof skillUpdateSchema>
+
+// Services validation schema
+export const serviceSchema = z.object({
+  name: z.string().min(1, 'Service name is required'),
+  desc: z
+    .string()
+    .min(10, 'Service description must be at least 10 characters'),
+  icon: z.string().optional(),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+})
+
+export const serviceUpdateSchema = serviceSchema.partial().extend({
+  id: z.number(),
+})
+
+export type ServiceFormData = z.infer<typeof serviceSchema>
+export type ServiceUpdateData = z.infer<typeof serviceUpdateSchema>

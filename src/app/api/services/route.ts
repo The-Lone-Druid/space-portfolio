@@ -1,6 +1,8 @@
+import { prisma } from '@/lib/prisma'
+import { serviceSchema } from '@/lib/validations'
 import { getServices } from '@/services/portfolio-data'
-import type { ApiResponse, Service } from '@/types'
-import { NextResponse } from 'next/server'
+import type { ApiResponse, Service, ServiceWithDetails } from '@/types'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(): Promise<NextResponse<ApiResponse<Service[]>>> {
   try {
@@ -16,6 +18,40 @@ export async function GET(): Promise<NextResponse<ApiResponse<Service[]>>> {
       {
         success: false,
         error: 'Failed to fetch services',
+      },
+      { status: 500 }
+    )
+  }
+}
+
+export async function POST(
+  request: NextRequest
+): Promise<NextResponse<ApiResponse<ServiceWithDetails>>> {
+  try {
+    const body = await request.json()
+    const validatedData = serviceSchema.parse(body)
+
+    const service = await prisma.service.create({
+      data: {
+        name: validatedData.name,
+        desc: validatedData.desc,
+        icon: validatedData.icon,
+        order: validatedData.order,
+        isActive: validatedData.isActive,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: service,
+      message: 'Service created successfully',
+    })
+  } catch (error) {
+    console.error('Failed to create service:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to create service',
       },
       { status: 500 }
     )
