@@ -84,9 +84,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <main className='relative z-10'>{children}</main>
+          <Toaster />
+          <SpeedInsights />
         </AuthProvider>
-        <Toaster />
-        <SpeedInsights />
       </body>
     </html>
   )

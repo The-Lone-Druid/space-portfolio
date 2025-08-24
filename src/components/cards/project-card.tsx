@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { formatProjectDateRange } from '@/lib/project-date-utils'
 import { Calendar, ExternalLink, Github, Star } from 'lucide-react'
 import Image from 'next/image'
 
@@ -13,7 +14,9 @@ interface ProjectCardProps {
   id: number
   projectName: string
   projectDescription: string
-  projectDate: string
+  startDate: Date
+  endDate?: Date | null
+  isOngoing: boolean
   projectLink: string | null
   githubLink?: string | null
   skillsUtilized: Skill[]
@@ -26,7 +29,9 @@ interface ProjectCardProps {
 export const ProjectCard = ({
   projectName,
   projectDescription,
-  projectDate,
+  startDate,
+  endDate,
+  isOngoing,
   projectLink,
   githubLink,
   skillsUtilized,
@@ -99,7 +104,11 @@ export const ProjectCard = ({
         {/* Project Date */}
         <div className='mb-2 flex items-center text-sm text-gray-200'>
           <Calendar className='mr-2 h-4 w-4' />
-          {projectDate}
+          {formatProjectDateRange({
+            startDate,
+            endDate: endDate || undefined,
+            isOngoing,
+          })}
         </div>
 
         {/* Project Title */}

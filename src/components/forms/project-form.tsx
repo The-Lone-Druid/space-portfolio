@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DateRangePicker } from '@/components/ui/date-range-picker'
 import {
   Form,
   FormControl,
@@ -14,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+
 import { projectSchema, type ProjectFormData } from '@/lib/validations'
 import type { ProjectWithDetails } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -50,7 +52,9 @@ export function ProjectForm({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       projectName: initialData?.projectName || '',
-      projectDate: initialData?.projectDate || '',
+      startDate: initialData?.startDate || new Date(),
+      endDate: initialData?.endDate || undefined,
+      isOngoing: initialData?.isOngoing || false,
       projectDescription: initialData?.projectDescription || '',
       projectLink: initialData?.projectLink || '',
       githubLink: initialData?.githubLink || '',
@@ -134,26 +138,47 @@ export function ProjectForm({
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name='projectDate'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className='flex items-center gap-2 text-gray-200'>
-                        <Calendar className='h-4 w-4' />
-                        Project Date
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder='e.g., 2024, Q1 2024, Jan 2024'
-                          className='border-gray-700 bg-gray-800/50 text-white placeholder:text-gray-400'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                <FormItem>
+                  <FormLabel className='flex items-center gap-2 text-gray-200'>
+                    <Calendar className='h-4 w-4' />
+                    Project Duration
+                  </FormLabel>
+                  <FormControl>
+                    <DateRangePicker
+                      startDate={form.watch('startDate') as Date}
+                      endDate={form.watch('endDate') as Date}
+                      isOngoing={form.watch('isOngoing')}
+                      onStartDateChange={date =>
+                        form.setValue('startDate', date!, {
+                          shouldValidate: true,
+                        })
+                      }
+                      onEndDateChange={date =>
+                        form.setValue('endDate', date, { shouldValidate: true })
+                      }
+                      onOngoingChange={ongoing =>
+                        form.setValue('isOngoing', ongoing, {
+                          shouldValidate: true,
+                        })
+                      }
+                      placeholder='Select project start and end dates'
+                    />
+                  </FormControl>
+                  <FormDescription className='text-gray-400'>
+                    Select when the project started and ended. Toggle
+                    &quot;Ongoing&quot; for current projects.
+                  </FormDescription>
+                  {form.formState.errors.startDate && (
+                    <p className='text-sm font-medium text-red-500'>
+                      {form.formState.errors.startDate.message}
+                    </p>
                   )}
-                />
+                  {form.formState.errors.endDate && (
+                    <p className='text-sm font-medium text-red-500'>
+                      {form.formState.errors.endDate.message}
+                    </p>
+                  )}
+                </FormItem>
               </div>
 
               <FormField

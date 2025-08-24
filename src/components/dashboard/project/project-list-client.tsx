@@ -4,10 +4,21 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { formatProjectDateRange } from '@/lib/project-date-utils'
 import type { ProjectWithDetails } from '@/types'
-import { Edit, ExternalLink, Github, Search, Star, X } from 'lucide-react'
+import {
+  Edit,
+  ExternalLink,
+  Github,
+  Search,
+  Star,
+  Trash,
+  X,
+} from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
+import { useProjects } from '../../../hooks/use-projects'
 import { EditProjectDialog } from './edit-project-dialog'
 
 interface ProjectListClientProps {
@@ -17,6 +28,8 @@ interface ProjectListClientProps {
 export function ProjectListClient({ projects }: ProjectListClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
+  const { deleteProject } = useProjects()
+  const router = useRouter()
 
   // Get all unique skills from projects
   const allSkills = useMemo(() => {
@@ -49,6 +62,12 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
       return matchesSearch && matchesSkill
     })
   }, [projects, searchQuery, selectedSkill])
+
+  const handleDeleteProject = async (id: number) => {
+    if (confirm('Are you sure you want to delete this project?'))
+      await deleteProject(id)
+    router.push(`/dashboard/projects`)
+  }
 
   return (
     <div className='space-y-4'>
@@ -156,7 +175,12 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                     </p>
 
                     <div className='text-xs text-white/60'>
-                      Created: {project.projectDate}
+                      Created:{' '}
+                      {formatProjectDateRange({
+                        startDate: project.startDate,
+                        endDate: project.endDate || undefined,
+                        isOngoing: project.isOngoing,
+                      })}
                     </div>
 
                     {/* Skills */}
@@ -223,6 +247,13 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                         <Edit className='h-3 w-3' />
                       </Button>
                     </EditProjectDialog>
+                    <Button
+                      size='sm'
+                      variant='destructive'
+                      onClick={() => handleDeleteProject(project.id)}
+                    >
+                      <Trash className='h-3 w-3' />
+                    </Button>
                   </div>
                 </div>
               </CardContent>

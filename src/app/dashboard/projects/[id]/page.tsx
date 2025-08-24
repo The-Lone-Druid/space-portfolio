@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { formatProjectDateRange } from '@/lib/project-date-utils'
 import { getProjectByIdServer } from '@/services/projects-server'
 import { formatDistanceToNow } from 'date-fns'
 import {
@@ -74,7 +75,12 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 )}
               </div>
               <CardDescription className='text-white/70'>
-                Created: {project.projectDate}
+                Created:{' '}
+                {formatProjectDateRange({
+                  startDate: project.startDate,
+                  endDate: project.endDate || undefined,
+                  isOngoing: project.isOngoing,
+                })}
               </CardDescription>
               <CardDescription className='text-white/60'>
                 Last updated:{' '}

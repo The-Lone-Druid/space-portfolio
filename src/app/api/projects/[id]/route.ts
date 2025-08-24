@@ -108,7 +108,9 @@ export async function PUT(
         where: { id: projectId },
         data: {
           projectName: validatedData.projectName,
-          projectDate: validatedData.projectDate,
+          startDate: validatedData.startDate,
+          endDate: validatedData.endDate || null,
+          isOngoing: validatedData.isOngoing,
           projectDescription: validatedData.projectDescription,
           projectLink: validatedData.projectLink || null,
           githubLink: validatedData.githubLink || null,

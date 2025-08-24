@@ -23,30 +23,46 @@ export const projectSkillSchema = z.object({
   order: z.number().default(0),
 })
 
-export const projectSchema = z.object({
-  projectName: z.string().min(1, 'Project name is required'),
-  projectDate: z.string().min(1, 'Project date is required'),
-  projectDescription: z
-    .string()
-    .min(10, 'Project description must be at least 10 characters'),
-  projectLink: z
-    .string()
-    .url('Please enter a valid project URL')
-    .optional()
-    .or(z.literal(''))
-    .transform(val => (val === '' ? undefined : val)),
-  githubLink: z
-    .string()
-    .url('Please enter a valid GitHub URL')
-    .optional()
-    .or(z.literal(''))
-    .transform(val => (val === '' ? undefined : val)),
-  featured: z.boolean().default(false),
-  order: z.number().default(0),
-  isActive: z.boolean().default(true),
-  projectTasks: z.array(projectTaskSchema).default([]),
-  skillsUtilized: z.array(projectSkillSchema).default([]),
-})
+export const projectSchema = z
+  .object({
+    projectName: z.string().min(1, 'Project name is required'),
+    startDate: z.coerce.date({ message: 'Start date is required' }),
+    endDate: z.coerce.date().optional(),
+    isOngoing: z.boolean().default(false),
+    projectDescription: z
+      .string()
+      .min(10, 'Project description must be at least 10 characters'),
+    projectLink: z
+      .string()
+      .url('Please enter a valid project URL')
+      .optional()
+      .or(z.literal(''))
+      .transform(val => (val === '' ? undefined : val)),
+    githubLink: z
+      .string()
+      .url('Please enter a valid GitHub URL')
+      .optional()
+      .or(z.literal(''))
+      .transform(val => (val === '' ? undefined : val)),
+    featured: z.boolean().default(false),
+    order: z.number().default(0),
+    isActive: z.boolean().default(true),
+    projectTasks: z.array(projectTaskSchema).default([]),
+    skillsUtilized: z.array(projectSkillSchema).default([]),
+  })
+  .refine(
+    data => {
+      // If not ongoing and endDate is provided, ensure endDate is after startDate
+      if (!data.isOngoing && data.endDate) {
+        return data.endDate >= data.startDate
+      }
+      return true
+    },
+    {
+      message: 'End date must be after start date',
+      path: ['endDate'],
+    }
+  )
 
 export type ProjectFormData = z.infer<typeof projectSchema>
 

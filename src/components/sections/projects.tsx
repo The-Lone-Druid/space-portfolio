@@ -55,7 +55,16 @@ const Projects = ({ projects }: ProjectsProps) => {
         {filteredProjects.map((project, index) => (
           <ProjectCard
             key={project.id}
-            {...project}
+            id={project.id}
+            projectName={project.projectName}
+            projectDescription={project.projectDescription}
+            startDate={project.startDate}
+            endDate={project.endDate}
+            isOngoing={project.isOngoing}
+            projectLink={project.projectLink}
+            githubLink={project.githubLink}
+            skillsUtilized={project.skillsUtilized}
+            featured={project.featured}
             animationDelay={index * 0.1}
           />
         ))}

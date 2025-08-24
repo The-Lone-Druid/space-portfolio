@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { useProjects } from '@/hooks/use-projects'
 import type { ProjectFormData } from '@/lib/validations'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -22,6 +23,7 @@ export function CreateProjectDialog({ children }: CreateProjectDialogProps) {
   const { createProject } = useProjects()
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
 
   const handleCreateProject = async (data: ProjectFormData) => {
     try {
@@ -29,6 +31,7 @@ export function CreateProjectDialog({ children }: CreateProjectDialogProps) {
       await createProject(data)
       toast.success('Project created successfully!')
       setOpen(false)
+      router.push(`/dashboard/projects`)
     } catch (error) {
       console.error('Failed to create project:', error)
       toast.error('Failed to create project. Please try again.')

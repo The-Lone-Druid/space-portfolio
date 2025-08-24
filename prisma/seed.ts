@@ -138,7 +138,9 @@ async function main() {
     {
       id: 1,
       projectName: 'Cosmic Portfolio',
-      projectDate: 'AUG 2025 - Present',
+      startDate: new Date('2025-08-01'),
+      endDate: null,
+      isOngoing: true,
       projectDescription:
         'A stellar portfolio website built with Next.js 15, featuring space-themed animations and modern web technologies. Showcases projects in a cosmic interface with smooth animations.',
       projectLink: 'https://zahidshaikh.space/',
@@ -165,7 +167,9 @@ async function main() {
     {
       id: 2,
       projectName: 'Spotfinder',
-      projectDate: 'APR 2022 - OCT 2022',
+      startDate: new Date('2022-04-01'),
+      endDate: new Date('2022-10-31'),
+      isOngoing: false,
       projectDescription:
         'A revolutionary parking solution platform where users can book car parking spaces through mobile app and web interface with real-time availability.',
       projectLink: 'https://spotfinder.app/',
@@ -194,7 +198,9 @@ async function main() {
     {
       id: 3,
       projectName: 'Neev Healthcare',
-      projectDate: 'FEB 2021 - APR 2022',
+      startDate: new Date('2021-02-01'),
+      endDate: new Date('2022-04-30'),
+      isOngoing: false,
       projectDescription:
         'A comprehensive healthcare platform enabling users to book yoga classes, purchase health products, and access wellness services in one unified ecosystem.',
       projectLink: null,
@@ -227,7 +233,9 @@ async function main() {
       create: {
         id: project.id,
         projectName: project.projectName,
-        projectDate: project.projectDate,
+        startDate: project.startDate,
+        endDate: project.endDate,
+        isOngoing: project.isOngoing,
         projectDescription: project.projectDescription,
         projectLink: project.projectLink,
         githubLink: project.githubLink,
