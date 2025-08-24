@@ -1,4 +1,4 @@
-import { ProjectDetailClient } from '@/components/dashboard/project-detail-client'
+import { ProjectDetailClient } from '@/components/dashboard/project/project-detail-client'
 import { prisma } from '@/lib/prisma'
 import type { ProjectWithDetails } from '@/types'
 import { notFound } from 'next/navigation'

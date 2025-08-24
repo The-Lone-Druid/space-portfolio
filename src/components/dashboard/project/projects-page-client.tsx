@@ -1,7 +1,7 @@
 'use client'
 
-import { ProjectList } from '@/components/dashboard/project-list'
-import { ProjectStats } from '@/components/dashboard/project-stats'
+import { ProjectList } from '@/components/dashboard/project/project-list'
+import { ProjectStats } from '@/components/dashboard/project/project-stats'
 import { ProjectForm } from '@/components/forms/project-form'
 import {
   Dialog,
