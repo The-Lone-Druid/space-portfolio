@@ -1,6 +1,6 @@
 'use client'
 
-import { Github, Linkedin, Mail, MapPin, Rocket } from 'lucide-react'
+import { Mail, MapPin, Rocket } from 'lucide-react'
 import { getLucideIcon } from '../../lib/utils'
 import { PersonalInfoWithSocials } from '../../types'
 
@@ -10,12 +10,6 @@ interface FooterProps {
 
 const Footer = ({ personalInfo }: FooterProps) => {
   const currentYear = new Date().getFullYear()
-
-  const socialIcons = {
-    'fab fa-github': Github,
-    'fab fa-linkedin': Linkedin,
-    'fab fa-twitter': Mail, // Using Mail as placeholder for Twitter
-  }
 
   return (
     <footer className='bg-space-deep relative z-10 border-t border-purple-500/20'>

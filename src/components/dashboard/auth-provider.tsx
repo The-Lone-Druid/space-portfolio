@@ -35,7 +35,7 @@ export function DashboardAuthProvider({
       <div className='bg-gradient-cosmic flex min-h-screen items-center justify-center'>
         <div className='space-y-6 text-center'>
           <LoadingSpinner
-            variant='rocket'
+            variant='orbit'
             size='xl'
             message='Verifying authentication...'
             className='h-64'
