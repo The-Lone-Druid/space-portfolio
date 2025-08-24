@@ -61,7 +61,12 @@ export async function getProjects(): Promise<ProjectWithDetails[]> {
           orderBy: { order: 'asc' },
         },
       },
-      orderBy: [{ featured: 'desc' }, { order: 'asc' }, { createdAt: 'desc' }],
+      orderBy: [
+        { isOngoing: 'desc' }, // Ongoing projects first
+        { startDate: 'desc' }, // Most recent start date first
+        { featured: 'desc' }, // Featured projects higher
+        { createdAt: 'desc' }, // Most recently created first
+      ],
     })
   } catch (error) {
     console.warn('Error fetching projects:', error)
