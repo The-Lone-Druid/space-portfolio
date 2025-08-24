@@ -58,15 +58,15 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
   }, [heroStats])
 
   const handleScrollToProjects = () => {
-    scrollToSection('projects')
+    scrollToSection('#projects')
   }
 
   const handleScrollToContact = () => {
-    scrollToSection('contact')
+    scrollToSection('#contact')
   }
 
   const handleScrollToNext = () => {
-    scrollToSection('about')
+    scrollToSection('#about')
   }
 
   return (

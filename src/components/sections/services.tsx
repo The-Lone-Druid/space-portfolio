@@ -12,7 +12,7 @@ interface ServicesProps {
 
 const Services = ({ services }: ServicesProps) => {
   const handleGetStarted = () => {
-    scrollToSection('contact')
+    scrollToSection('#contact')
   }
 
   return (

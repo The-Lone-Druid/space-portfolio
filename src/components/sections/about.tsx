@@ -72,7 +72,7 @@ const About = ({ heroStats }: AboutProps) => {
             titleIcon={Rocket}
             ctaText='Get In Touch'
             ctaIcon={Mail}
-            ctaSection='contact'
+            ctaSection='#contact'
           >
             <p>
               My adventure in the digital cosmos began with a simple curiosity

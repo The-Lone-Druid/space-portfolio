@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Menu, Rocket, X } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const Header = () => {
@@ -26,18 +27,6 @@ const Header = () => {
     { name: 'Contact', href: '#contact' },
   ]
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
-      })
-    }
-    setIsMobileMenuOpen(false)
-  }
-
   return (
     <>
       <header
@@ -61,28 +50,29 @@ const Header = () => {
             {/* Desktop Navigation */}
             <div className='hidden items-center space-x-8 md:flex'>
               {navigationItems.map(item => (
-                <button
+                <Link
                   key={item.name}
-                  onClick={() => scrollToSection(item.href)}
                   className='hover:text-space-gold group relative text-gray-300 transition-colors duration-300'
                   aria-label={`Navigate to ${item.name} section`}
+                  href={item.href}
                 >
                   {item.name}
                   <span className='bg-space-gold absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full'></span>
-                </button>
+                </Link>
               ))}
             </div>
 
             {/* CTA Button */}
             <div className='hidden md:block'>
-              <Button
-                variant='cosmic'
-                onClick={() => scrollToSection('#contact')}
-                className='relative'
-                aria-label='Navigate to contact section'
-              >
-                Get In Touch
-              </Button>
+              <Link href='#contact'>
+                <Button
+                  variant='cosmic'
+                  className='relative'
+                  aria-label='Navigate to contact section'
+                >
+                  Get In Touch
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -106,23 +96,24 @@ const Header = () => {
             <div className='mt-4 pb-4 md:hidden' id='mobile-navigation'>
               <div className='bg-space-cosmic/95 flex flex-col space-y-4 rounded-lg p-6 backdrop-blur-lg'>
                 {navigationItems.map(item => (
-                  <button
+                  <Link
                     key={item.name}
-                    onClick={() => scrollToSection(item.href)}
                     className='hover:text-space-gold text-left text-gray-300 transition-colors duration-300'
                     aria-label={`Navigate to ${item.name} section`}
+                    href={item.href}
                   >
                     {item.name}
-                  </button>
+                  </Link>
                 ))}
-                <Button
-                  variant='cosmic'
-                  onClick={() => scrollToSection('#contact')}
-                  className='mt-4'
-                  aria-label='Navigate to contact section'
-                >
-                  Get In Touch
-                </Button>
+                <Link href='#contact'>
+                  <Button
+                    variant='cosmic'
+                    className='mt-4'
+                    aria-label='Navigate to contact section'
+                  >
+                    Get In Touch
+                  </Button>
+                </Link>
               </div>
             </div>
           )}
