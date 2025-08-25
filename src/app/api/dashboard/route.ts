@@ -1,3 +1,4 @@
+import { validateEditor } from '@/lib/auth-utils'
 import { getPersonalInfoServer } from '@/services/personal-info-server'
 import { getHeroStats } from '@/services/portfolio-data'
 import {
@@ -13,6 +14,10 @@ export async function GET(): Promise<
   NextResponse<ApiResponse<DashboardStats>>
 > {
   try {
+    // Validate that user is authenticated and has editor/admin role
+    await validateEditor()
+
+    // Fetch all data concurrently
     // Fetch all data concurrently
     const [
       heroStats,
@@ -216,6 +221,20 @@ export async function GET(): Promise<
     })
   } catch (error) {
     console.error('Dashboard API error:', error)
+
+    // Handle auth errors specifically
+    if (
+      error instanceof Error &&
+      (error.name === 'AuthError' ||
+        error.message === 'Authentication required' ||
+        error.message === 'Editor access required')
+    ) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: error.name === 'AuthError' ? 401 : 403 }
+      )
+    }
+
     return NextResponse.json(
       {
         success: false,

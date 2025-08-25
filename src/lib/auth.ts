@@ -78,10 +78,28 @@ export const authOptions: NextAuthOptions = {
 }
 
 /**
- * Validates that the current user is an admin
- * Throws an error if not authenticated or not an admin
+ * Validates that the current user has admin or editor role
+ * Throws an error if not authenticated or doesn't have required role
  */
 export async function requireAdmin() {
+  const session = await getServerSession(authOptions)
+
+  if (!session || !session.user) {
+    throw new Error('Unauthorized')
+  }
+
+  if (session.user.role !== 'ADMIN' && session.user.role !== 'EDITOR') {
+    throw new Error('Unauthorized')
+  }
+
+  return session
+}
+
+/**
+ * Validates that the current user is strictly an admin (ADMIN role only)
+ * Throws an error if not authenticated or not an admin
+ */
+export async function requireStrictAdmin() {
   const session = await getServerSession(authOptions)
 
   if (!session || !session.user) {

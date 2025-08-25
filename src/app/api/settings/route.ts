@@ -1,10 +1,11 @@
+import { adminApiRoute } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 import { settingSchema } from '@/lib/validations'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
-// GET /api/settings - Get all settings
-export async function GET() {
+// GET /api/settings - Get all settings (Admin only)
+export const GET = adminApiRoute(async () => {
   try {
     const settings = await prisma.siteSettings.findMany({
       orderBy: [{ key: 'asc' }],
@@ -18,10 +19,10 @@ export async function GET() {
       { status: 500 }
     )
   }
-}
+})
 
-// POST /api/settings - Create new setting
-export async function POST(request: NextRequest) {
+// POST /api/settings - Create new setting (Admin only)
+export const POST = adminApiRoute(async (request: NextRequest) => {
   try {
     const body = await request.json()
     const validatedData = settingSchema.parse(body)
@@ -58,4 +59,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})
