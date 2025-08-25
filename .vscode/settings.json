@@ -3,10 +3,10 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.formatOnType": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
-  },
+  // "editor.codeActionsOnSave": {
+  //   "source.fixAll.eslint": "explicit",
+  //   "source.organizeImports": "explicit"
+  // },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
@@ -57,7 +57,7 @@
     "typescriptreact"
   ],
   "eslint.format.enable": true,
-  "eslint.codeActionsOnSave.mode": "all",
+  // "eslint.codeActionsOnSave.mode": "all",
 
   // Files settings
   "files.autoSave": "onFocusChange",

@@ -1,6 +1,5 @@
-import { authOptions } from '@/lib/auth'
+import { editorApiRoute, publicApiRoute } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
-import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -11,8 +10,8 @@ const socialLinkSchema = z.object({
   order: z.number().int().min(0).default(0),
 })
 
-// GET - Fetch all social links
-export async function GET() {
+// GET - Fetch all social links (Public for portfolio display)
+export const GET = publicApiRoute(async () => {
   try {
     const socialLinks = await prisma.socialLink.findMany({
       where: { isActive: true },
@@ -35,19 +34,11 @@ export async function GET() {
       { status: 500 }
     )
   }
-}
+})
 
-// POST - Create new social link
-export async function POST(request: NextRequest) {
+// POST - Create new social link (Editor access)
+export const POST = editorApiRoute(async (request: NextRequest) => {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
     const body = await request.json()
     const validatedData = socialLinkSchema.parse(body)
 
@@ -104,4 +95,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})

@@ -1,6 +1,5 @@
-import { authOptions } from '@/lib/auth'
+import { editorApiRoute, publicApiRoute } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
-import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -34,8 +33,8 @@ const updatePersonalInfoSchema = personalInfoSchema.extend({
     .optional(),
 })
 
-// GET - Fetch personal information with social links
-export async function GET() {
+// GET - Fetch personal information with social links (Public for portfolio display)
+export const GET = publicApiRoute(async () => {
   try {
     const personalInfo = await prisma.personalInfo.findFirst({
       where: { isActive: true },
@@ -66,19 +65,11 @@ export async function GET() {
       { status: 500 }
     )
   }
-}
+})
 
-// POST - Create new personal information
-export async function POST(request: NextRequest) {
+// POST - Create new personal information (Admin only)
+export const POST = editorApiRoute(async (request: NextRequest) => {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
     const body = await request.json()
     const validatedData = updatePersonalInfoSchema.parse(body)
 
@@ -141,19 +132,11 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})
 
-// PUT - Update personal information
-export async function PUT(request: NextRequest) {
+// PUT - Update personal information (Editor access)
+export const PUT = editorApiRoute(async (request: NextRequest) => {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
     const body = await request.json()
     const validatedData = updatePersonalInfoSchema.parse(body)
 
@@ -241,19 +224,11 @@ export async function PUT(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})
 
-// DELETE - Soft delete personal information
-export async function DELETE() {
+// DELETE - Soft delete personal information (Admin only)
+export const DELETE = editorApiRoute(async () => {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
     const existingInfo = await prisma.personalInfo.findFirst({
       where: { isActive: true },
     })
@@ -282,4 +257,4 @@ export async function DELETE() {
       { status: 500 }
     )
   }
-}
+})
