@@ -5,6 +5,7 @@ import type {
   ProjectSkill as PrismaProjectSkill,
   ProjectTask as PrismaProjectTask,
   Service as PrismaService,
+  SiteSettings as PrismaSiteSettings,
   Skill as PrismaSkill,
   SocialLink as PrismaSocialLink,
 } from '@prisma/client'
@@ -18,6 +19,7 @@ export type Service = PrismaService
 export type SocialLink = PrismaSocialLink
 export type ProjectTask = PrismaProjectTask
 export type ProjectSkill = PrismaProjectSkill
+export type SiteSettings = PrismaSiteSettings
 
 // Extended types for API responses with relations
 export type PersonalInfoWithSocials = PrismaPersonalInfo & {
@@ -34,6 +36,9 @@ export type SkillWithDetails = PrismaSkill
 
 // Extended types for services
 export type ServiceWithDetails = PrismaService
+
+// Extended types for settings
+export type SettingWithDetails = PrismaSiteSettings
 
 // Form data types
 export interface SkillFormData {

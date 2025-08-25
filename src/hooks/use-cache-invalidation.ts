@@ -42,6 +42,12 @@ export function useCacheInvalidation() {
     router.refresh()
   }, [router])
 
+  const invalidateSettings = useCallback(async () => {
+    // Revalidate server-side cached settings data
+    await fetch('/api/revalidate?tag=settings', { method: 'POST' })
+    router.refresh()
+  }, [router])
+
   return {
     invalidateAll,
     invalidateProjects,
@@ -49,5 +55,6 @@ export function useCacheInvalidation() {
     invalidateServices,
     invalidatePersonalInfo,
     invalidatePortfolio,
+    invalidateSettings,
   }
 }

@@ -1,3 +1,4 @@
+import { SettingType } from '@prisma/client'
 import { z } from 'zod'
 
 export const contactFormSchema = z.object({
@@ -108,3 +109,38 @@ export const serviceUpdateSchema = serviceSchema.partial().extend({
 
 export type ServiceFormData = z.infer<typeof serviceSchema>
 export type ServiceUpdateData = z.infer<typeof serviceUpdateSchema>
+
+// Settings validation schemas
+export const settingSchema = z.object({
+  key: z
+    .string()
+    .min(1, 'Key is required')
+    .regex(
+      /^[a-zA-Z0-9_.-]+$/,
+      'Key can only contain letters, numbers, underscores, dots, and hyphens'
+    )
+    .transform(val => val.toLowerCase()),
+  value: z.string().min(1, 'Value is required'),
+  description: z.string().optional(),
+  type: z.nativeEnum(SettingType).default(SettingType.STRING),
+  isActive: z.boolean().default(true),
+})
+
+export const settingUpdateSchema = z.object({
+  key: z
+    .string()
+    .min(1, 'Key is required')
+    .regex(
+      /^[a-zA-Z0-9_.-]+$/,
+      'Key can only contain letters, numbers, underscores, dots, and hyphens'
+    )
+    .transform(val => val.toLowerCase())
+    .optional(),
+  value: z.string().min(1, 'Value is required').optional(),
+  description: z.string().optional(),
+  type: z.nativeEnum(SettingType).optional(),
+  isActive: z.boolean().optional(),
+})
+
+export type SettingFormData = z.infer<typeof settingSchema>
+export type SettingUpdateData = z.infer<typeof settingUpdateSchema>
