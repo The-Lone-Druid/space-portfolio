@@ -25,7 +25,7 @@ export default async function SettingsPage() {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-sm text-white/70'>Total Settings</p>
-                  <p className='text-2xl font-semibold text-white'>
+                  <p className='font-semibold text-white'>
                     {stats.totalSettings}
                   </p>
                 </div>
@@ -39,7 +39,7 @@ export default async function SettingsPage() {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-sm text-white/70'>Active Settings</p>
-                  <p className='text-2xl font-semibold text-white'>
+                  <p className='font-semibold text-white'>
                     {stats.activeSettings}
                   </p>
                 </div>
@@ -53,7 +53,7 @@ export default async function SettingsPage() {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-sm text-white/70'>Inactive Settings</p>
-                  <p className='text-2xl font-semibold text-white'>
+                  <p className='font-semibold text-white'>
                     {stats.inactiveSettings}
                   </p>
                 </div>
@@ -67,7 +67,7 @@ export default async function SettingsPage() {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-sm text-white/70'>Setting Types</p>
-                  <p className='text-2xl font-semibold text-white'>
+                  <p className='font-semibold text-white'>
                     {stats.byType.length}
                   </p>
                 </div>

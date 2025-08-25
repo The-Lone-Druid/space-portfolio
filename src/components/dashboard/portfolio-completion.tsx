@@ -1,10 +1,10 @@
 'use client'
 
-import type { DashboardStats } from '@/app/api/dashboard/route'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { AlertCircle, CheckCircle, Circle } from 'lucide-react'
+import { DashboardStats } from '../../types'
 
 interface PortfolioCompletionProps {
   data: DashboardStats

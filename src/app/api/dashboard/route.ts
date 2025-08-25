@@ -6,68 +6,8 @@ import {
 } from '@/services/projects-server'
 import { getServicesStats } from '@/services/services-server'
 import { getSkillsStats } from '@/services/skills-server'
-import type { ApiResponse } from '@/types'
+import type { ApiResponse, DashboardStats } from '@/types'
 import { NextResponse } from 'next/server'
-
-export interface DashboardStats {
-  overview: {
-    portfolioCompletion: number
-    totalItems: number
-    lastUpdated: Date | null
-  }
-  heroStats: {
-    verifiedSkills: number
-    professionalProjects: number
-    personalProjects: number
-    yearsOfExperience: number
-  }
-  projects: {
-    total: number
-    featured: number
-    recent: Array<{
-      id: number
-      projectName: string
-      startDate: Date
-      endDate: Date | null
-      isOngoing: boolean
-      featured: boolean
-    }>
-  }
-  skills: {
-    total: number
-    categories: number
-    avgProficiency: number
-    expertLevel: number
-    topSkills: Array<{
-      id: number
-      name: string
-      level: number
-      category: string
-    }>
-  }
-  services: {
-    total: number
-    recent: Array<{
-      id: number
-      name: string
-      desc: string
-    }>
-  }
-  personalInfo: {
-    isComplete: boolean
-    hasResume: boolean
-    socialLinksCount: number
-  }
-  quickInsights: {
-    portfolioStrength: 'weak' | 'moderate' | 'strong' | 'excellent'
-    recommendations: string[]
-    completionAreas: Array<{
-      area: string
-      status: 'complete' | 'incomplete' | 'needs-update'
-      priority: 'high' | 'medium' | 'low'
-    }>
-  }
-}
 
 export async function GET(): Promise<
   NextResponse<ApiResponse<DashboardStats>>

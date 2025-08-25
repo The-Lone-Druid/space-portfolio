@@ -5,13 +5,11 @@ import Projects from '@/components/sections/projects'
 import Services from '@/components/sections/services'
 import Skills from '@/components/sections/skills'
 import { getPortfolioData } from '@/services/portfolio-data'
-import { Toaster } from 'sonner'
 import SpaceBackground from '../components/animations/background'
 import Footer from '../components/shared/footer'
 import Header from '../components/shared/header'
 
-// Enable ISR with 60 second revalidation and on-demand revalidation
-export const revalidate = 60 // Revalidate at most once every 60 seconds
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   const { personalInfo, heroStats, skills, projects, services } =
@@ -25,7 +23,7 @@ export default async function Page() {
         <Header />
         <div className='flex min-h-screen items-center justify-center'>
           <div className='text-center'>
-            <h1 className='mb-4 text-2xl font-bold'>
+            <h1 className='text-primary mb-4 text-2xl font-bold'>
               Portfolio Data Unavailable
             </h1>
             <p className='text-muted-foreground'>
@@ -33,7 +31,6 @@ export default async function Page() {
             </p>
           </div>
         </div>
-        <Toaster />
       </>
     )
   }

@@ -6,66 +6,7 @@ import {
 } from '@/services/projects-server'
 import { getServicesStats } from '@/services/services-server'
 import { getSkillsStats } from '@/services/skills-server'
-
-export interface DashboardStats {
-  overview: {
-    portfolioCompletion: number
-    totalItems: number
-    lastUpdated: Date | null
-  }
-  heroStats: {
-    verifiedSkills: number
-    professionalProjects: number
-    personalProjects: number
-    yearsOfExperience: number
-  }
-  projects: {
-    total: number
-    featured: number
-    recent: Array<{
-      id: number
-      projectName: string
-      startDate: Date
-      endDate: Date | null
-      isOngoing: boolean
-      featured: boolean
-    }>
-  }
-  skills: {
-    total: number
-    categories: number
-    avgProficiency: number
-    expertLevel: number
-    topSkills: Array<{
-      id: number
-      name: string
-      level: number
-      category: string
-    }>
-  }
-  services: {
-    total: number
-    recent: Array<{
-      id: number
-      name: string
-      desc: string
-    }>
-  }
-  personalInfo: {
-    isComplete: boolean
-    hasResume: boolean
-    socialLinksCount: number
-  }
-  quickInsights: {
-    portfolioStrength: 'weak' | 'moderate' | 'strong' | 'excellent'
-    recommendations: string[]
-    completionAreas: Array<{
-      area: string
-      status: 'complete' | 'incomplete' | 'needs-update'
-      priority: 'high' | 'medium' | 'low'
-    }>
-  }
-}
+import { DashboardStats } from '../types'
 
 /**
  * Server-side function to fetch comprehensive dashboard data
@@ -90,30 +31,49 @@ export async function getDashboardDataServer(): Promise<DashboardStats> {
       getFeaturedProjectsServer(),
     ])
 
-    // Calculate completion percentages
+    // Calculate completion percentages more accurately
     const personalCompletion = personalInfo
-      ? (Object.values(personalInfo).filter(Boolean).length / 7) * 100
+      ? Math.min(
+          ((personalInfo.name ? 1 : 0) +
+            (personalInfo.title ? 1 : 0) +
+            (personalInfo.bio ? 1 : 0) +
+            (personalInfo.email ? 1 : 0) +
+            (personalInfo.location ? 1 : 0) +
+            (personalInfo.resumeUrl ? 1 : 0) +
+            (personalInfo.socialLinks && personalInfo.socialLinks.length > 0
+              ? 1
+              : 0)) *
+            (100 / 7),
+          100
+        )
       : 0
 
     const heroCompletion = heroStats
-      ? (Object.values(heroStats).filter(value => value !== null && value !== 0)
-          .length /
-          4) *
-        100
+      ? Math.min(
+          ((heroStats.verifiedSkills > 0 ? 1 : 0) +
+            (heroStats.professionalProjects > 0 ? 1 : 0) +
+            (heroStats.personalProjects > 0 ? 1 : 0) +
+            (heroStats.yearsOfExperience > 0 ? 1 : 0)) *
+            25, // 25% per field (4 fields = 100%)
+          100
+        )
       : 0
 
     const projectsCompletion = projectsStats.totalProjects > 0 ? 100 : 0
     const skillsCompletion = skillsStats.totalSkills > 0 ? 100 : 0
     const servicesCompletion = servicesStats.totalServices > 0 ? 100 : 0
 
-    // Overall portfolio completion
-    const portfolioCompletion = Math.round(
-      (personalCompletion +
-        heroCompletion +
-        projectsCompletion +
-        skillsCompletion +
-        servicesCompletion) /
-        5
+    // Overall portfolio completion (ensure it doesn't exceed 100%)
+    const portfolioCompletion = Math.min(
+      Math.round(
+        (personalCompletion +
+          heroCompletion +
+          projectsCompletion +
+          skillsCompletion +
+          servicesCompletion) /
+          5
+      ),
+      100
     )
 
     // Calculate total items across portfolio

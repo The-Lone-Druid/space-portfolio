@@ -1,8 +1,8 @@
 'use client'
 
-import type { DashboardStats } from '@/app/api/dashboard/route'
 import { Card, CardContent } from '@/components/ui/card'
 import { Award, Briefcase, FolderOpen, Target, TrendingUp } from 'lucide-react'
+import { DashboardStats } from '../../types'
 
 interface QuickStatsOverviewProps {
   data: DashboardStats

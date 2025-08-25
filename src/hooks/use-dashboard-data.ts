@@ -1,5 +1,5 @@
-import type { DashboardStats } from '@/app/api/dashboard/route'
 import { useCallback, useEffect, useState } from 'react'
+import { DashboardStats } from '../types'
 
 export function useDashboardData() {
   const [data, setData] = useState<DashboardStats | null>(null)

@@ -43,11 +43,13 @@ interface SkillFormProps {
 const skillCategories = [
   'Frontend',
   'Backend',
+  'Mobile',
+  'Desktop',
   'Database',
   'DevOps',
-  'Mobile',
   'Design',
   'Testing',
+  'Tools',
   'Other',
 ]
 

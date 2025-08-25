@@ -1,6 +1,5 @@
 'use client'
 
-import type { DashboardStats } from '@/app/api/dashboard/route'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -13,6 +12,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '../../lib/utils'
+import { DashboardStats } from '../../types'
 
 interface QuickActionsProps {
   data: DashboardStats
@@ -88,7 +88,7 @@ export function QuickActions({ data }: QuickActionsProps) {
                 key={index}
                 variant={action.variant}
                 className={cn(
-                  'h-auto',
+                  'h-auto flex-1',
                   action.priority === 'high' &&
                     'border-yellow-400/50 ring-2 ring-yellow-400/30'
                 )}

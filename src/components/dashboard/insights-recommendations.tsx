@@ -1,6 +1,5 @@
 'use client'
 
-import type { DashboardStats } from '@/app/api/dashboard/route'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,6 +12,7 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import Link from 'next/link'
+import { DashboardStats } from '../../types'
 
 interface InsightsRecommendationsProps {
   data: DashboardStats
