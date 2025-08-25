@@ -12,7 +12,6 @@ import Header from '../components/shared/header'
 
 // Enable ISR with 60 second revalidation and on-demand revalidation
 export const revalidate = 60 // Revalidate at most once every 60 seconds
-export const dynamic = 'force-static' // Force static generation
 
 export default async function Page() {
   const { personalInfo, heroStats, skills, projects, services } =
