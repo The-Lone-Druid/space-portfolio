@@ -93,6 +93,7 @@ export const getSkillsStats = cache(async () => {
             id: true,
             name: true,
             level: true,
+            category: true,
           },
           orderBy: {
             level: 'desc',

@@ -9,7 +9,13 @@ interface AuthProviderProps {
 
 export default function AuthProvider({ children }: AuthProviderProps) {
   return (
-    <ThemeProvider defaultTheme='dark' storageKey='space-portfolio-theme'>
+    <ThemeProvider
+      attribute='class'
+      defaultTheme='system'
+      enableSystem
+      disableTransitionOnChange
+      storageKey='space-portfolio-theme'
+    >
       <SessionProvider>{children}</SessionProvider>
     </ThemeProvider>
   )

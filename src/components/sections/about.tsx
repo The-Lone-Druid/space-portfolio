@@ -41,7 +41,12 @@ const About = ({ heroStats }: AboutProps) => {
   ]
 
   const achievements = [
-    { label: 'Years of Experience', value: '5+', icon: '🚀', isNumeric: true },
+    {
+      label: 'Years of Experience',
+      value: `${heroStats.yearsOfExperience}+`,
+      icon: '🚀',
+      isNumeric: true,
+    },
     {
       label: 'Technologies Mastered',
       value: `${heroStats.verifiedSkills}`,

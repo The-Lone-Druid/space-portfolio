@@ -2,8 +2,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
 interface DashboardPageHeaderProps {
-  title: string | React.ReactNode
-  description?: string | React.ReactNode
+  title: string
+  description?: string
   className?: string
   actions?: React.ReactNode
   isLoading?: boolean
@@ -24,7 +24,7 @@ export function DashboardPageHeader({
       )}
     >
       <div className='text-center md:text-left'>
-        <h1 className='mb-2 text-3xl font-bold tracking-tight text-white'>
+        <h1 className='text-foreground mb-2 text-3xl font-bold tracking-tight'>
           {isLoading ? (
             <Skeleton className='mx-auto h-8 w-64 md:mx-0' />
           ) : (
@@ -32,13 +32,13 @@ export function DashboardPageHeader({
           )}
         </h1>
         {(description || isLoading) && (
-          <p className='text-lg text-white/70'>
+          <>
             {isLoading ? (
               <Skeleton className='mx-auto h-6 w-96 md:mx-0' />
             ) : (
-              description
+              <p className='text-muted-foreground text-lg'>{description}</p>
             )}
-          </p>
+          </>
         )}
       </div>
       {actions && (

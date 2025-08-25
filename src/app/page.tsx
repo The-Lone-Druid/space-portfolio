@@ -10,6 +10,9 @@ import SpaceBackground from '../components/animations/background'
 import Footer from '../components/shared/footer'
 import Header from '../components/shared/header'
 
+// Enable ISR with 60 second revalidation and on-demand revalidation
+export const dynamic = 'force-static' // Force static generation
+
 export default async function Page() {
   const { personalInfo, heroStats, skills, projects, services } =
     await getPortfolioData()

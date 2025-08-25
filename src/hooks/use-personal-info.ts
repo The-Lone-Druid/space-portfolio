@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
-import { PersonalInfo, SocialLink } from '../types'
+import { Hero, PersonalInfo, SocialLink } from '../types'
 import { useCacheInvalidation } from './use-cache-invalidation'
 
 export interface PersonalInfoFormData {
@@ -14,6 +14,7 @@ export interface PersonalInfoFormData {
     SocialLink,
     'id' | 'createdAt' | 'updatedAt' | 'isActive' | 'personalInfoId'
   >[]
+  heroStats: Omit<Hero, 'createdAt' | 'updatedAt' | 'isActive'>
 }
 
 export interface SocialLinkFormData {

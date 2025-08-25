@@ -43,22 +43,30 @@ export const getServiceByIdServer = cache(async (id: number) => {
  */
 export const getServicesStats = cache(async () => {
   try {
-    const [totalServices, activeServices, lastUpdated] = await Promise.all([
-      prisma.service.count(),
-      prisma.service.count({
-        where: { isActive: true },
-      }),
-      prisma.service.findFirst({
-        orderBy: { updatedAt: 'desc' },
-        select: { updatedAt: true },
-      }),
-    ])
+    const [totalServices, activeServices, lastUpdated, recentServices] =
+      await Promise.all([
+        prisma.service.count(),
+        prisma.service.count({
+          where: { isActive: true },
+        }),
+        prisma.service.findFirst({
+          orderBy: { updatedAt: 'desc' },
+          select: { updatedAt: true },
+        }),
+        prisma.service.findMany({
+          where: { isActive: true },
+          select: { id: true, name: true, desc: true, updatedAt: true },
+          orderBy: { updatedAt: 'desc' },
+          take: 5,
+        }),
+      ])
 
     return {
-      totalServices,
+      totalServices: activeServices, // Only count active services
       activeServices,
       inactiveServices: totalServices - activeServices,
       lastUpdated: lastUpdated?.updatedAt || null,
+      recentServices,
     }
   } catch (error) {
     console.error('Error fetching services stats:', error)
@@ -67,6 +75,7 @@ export const getServicesStats = cache(async () => {
       activeServices: 0,
       inactiveServices: 0,
       lastUpdated: null,
+      recentServices: [],
     }
   }
 })

@@ -78,9 +78,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en' className='dark'>
+    <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} dark relative antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
       >
         <AuthProvider>
           <main className='relative z-10'>{children}</main>

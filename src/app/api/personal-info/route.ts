@@ -23,6 +23,15 @@ const socialLinkSchema = z.object({
 
 const updatePersonalInfoSchema = personalInfoSchema.extend({
   socialLinks: z.array(socialLinkSchema).optional(),
+  heroStats: z
+    .object({
+      id: z.string().min(1, 'Hero ID is required'),
+      personalProjects: z.number().min(0).default(0),
+      professionalProjects: z.number().min(0).default(0),
+      verifiedSkills: z.number().min(0).default(0),
+      yearsOfExperience: z.number().min(0).default(0),
+    })
+    .optional(),
 })
 
 // GET - Fetch personal information with social links
@@ -154,14 +163,18 @@ export async function PUT(request: NextRequest) {
       include: { socialLinks: true },
     })
 
-    if (!existingInfo) {
+    const existingHeroStats = await prisma.hero.findFirst({
+      where: { isActive: true },
+    })
+
+    if (!existingInfo || !existingHeroStats) {
       return NextResponse.json(
         { success: false, error: 'No active personal information found' },
         { status: 404 }
       )
     }
 
-    const { socialLinks, ...personalInfoData } = validatedData
+    const { socialLinks, heroStats, ...personalInfoData } = validatedData
 
     // Use transaction to update personal info and social links
     const updatedPersonalInfo = await prisma.$transaction(async tx => {
@@ -188,6 +201,14 @@ export async function PUT(request: NextRequest) {
             })),
           })
         }
+      }
+
+      // Handle hero stats if provided
+      if (heroStats) {
+        await tx.hero.update({
+          where: { id: existingHeroStats.id },
+          data: heroStats,
+        })
       }
 
       // Return updated data with social links

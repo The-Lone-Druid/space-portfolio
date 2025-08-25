@@ -24,11 +24,15 @@ import {
   Linkedin,
   Mail,
   MapPin,
+  Rocket,
+  Star,
   Twitter,
   User,
   Youtube,
+  Zap,
 } from 'lucide-react'
 import { PersonalInfoForm } from '../../../components/forms/personal-info-form'
+import { getHeroStats } from '../../../services/portfolio-data'
 
 // Icon mapping for social platforms
 const socialIcons: Record<string, React.ElementType> = {
@@ -44,14 +48,15 @@ const socialIcons: Record<string, React.ElementType> = {
 
 function getSocialIcon(name: string) {
   const iconName = name.toLowerCase()
-  return socialIcons[iconName] || socialIcons.default
+  return socialIcons[iconName] ?? socialIcons.default
 }
 
 export default async function PersonalInfoPage() {
   // Server-side data fetching
-  const [personalInfo, stats] = await Promise.all([
+  const [personalInfo, stats, heroStats] = await Promise.all([
     getPersonalInfoServer(),
     getPersonalInfoStats(),
+    getHeroStats(),
   ])
 
   return (
@@ -173,6 +178,52 @@ export default async function PersonalInfoPage() {
                       {personalInfo.location}
                     </span>
                   </div>
+                  <Separator className='bg-white/10' />
+
+                  <div className='flex items-center justify-between'>
+                    <span className='flex items-center text-sm text-white/80'>
+                      <Rocket className='mr-2 h-4 w-4' />
+                      Professional Projects
+                    </span>
+                    <span className='font-medium text-white'>
+                      {heroStats?.professionalProjects ?? 0}
+                    </span>
+                  </div>
+                  <Separator className='bg-white/10' />
+
+                  <div className='flex items-center justify-between'>
+                    <span className='flex items-center text-sm text-white/80'>
+                      <Rocket className='mr-2 h-4 w-4' />
+                      Personal Projects
+                    </span>
+                    <span className='font-medium text-white'>
+                      {heroStats?.personalProjects ?? 0}
+                    </span>
+                  </div>
+                  <Separator className='bg-white/10' />
+
+                  <div className='flex items-center justify-between'>
+                    <span className='flex items-center text-sm text-white/80'>
+                      <Zap className='mr-2 h-4 w-4' />
+                      Verified Skills
+                    </span>
+                    <span className='font-medium text-white'>
+                      {heroStats?.verifiedSkills ?? 0}
+                    </span>
+                  </div>
+                  <Separator className='bg-white/10' />
+
+                  <div className='flex items-center justify-between'>
+                    <span className='flex items-center text-sm text-white/80'>
+                      <Star className='mr-2 h-4 w-4' />
+                      Years of Experience
+                    </span>
+                    <span className='font-medium text-white'>
+                      {heroStats?.yearsOfExperience
+                        ? `${heroStats?.yearsOfExperience}+`
+                        : 0}
+                    </span>
+                  </div>
 
                   {personalInfo.resumeUrl && (
                     <>
@@ -240,7 +291,7 @@ export default async function PersonalInfoPage() {
                         const IconComponent = getSocialIcon(link.name)
                         return (
                           <div
-                            key={link.id || index}
+                            key={link.id ?? index}
                             className='border-space-accent/20 hover:border-space-gold/50 flex items-center justify-between rounded-lg border bg-white/5 p-3 transition-colors'
                           >
                             <div className='flex items-center space-x-3'>
@@ -281,7 +332,12 @@ export default async function PersonalInfoPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PersonalInfoForm initialData={personalInfo} />
+                <PersonalInfoForm
+                  initialData={{
+                    ...personalInfo,
+                    heroStats,
+                  }}
+                />
               </CardContent>
             </Card>
           </div>

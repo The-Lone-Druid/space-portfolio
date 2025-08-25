@@ -43,15 +43,15 @@ import {
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { PersonalInfo, SocialLink } from '../../types'
+import { Hero, PersonalInfo, SocialLink } from '../../types'
 
 interface PersonalInfoFormProps {
   initialData?:
     | ({
+        heroStats: Hero | null
         socialLinks: SocialLink[]
       } & PersonalInfo)
     | null
-  onSave?: (data: PersonalInfo) => void
 }
 
 // Icon mapping for social platforms
@@ -66,10 +66,7 @@ const socialIcons: Record<string, React.ElementType> = {
   default: Globe,
 }
 
-export function PersonalInfoForm({
-  initialData,
-  onSave,
-}: PersonalInfoFormProps) {
+export function PersonalInfoForm({ initialData }: PersonalInfoFormProps) {
   const { createPersonalInfo, updatePersonalInfo, isLoading } =
     usePersonalInfo()
   const router = useRouter()
@@ -84,6 +81,13 @@ export function PersonalInfoForm({
       location: '',
       resumeUrl: '',
       socialLinks: [],
+      heroStats: {
+        personalProjects: 0,
+        professionalProjects: 0,
+        verifiedSkills: 0,
+        yearsOfExperience: 0,
+        id: '',
+      },
     } as PersonalInfoFormData,
   })
 
@@ -111,6 +115,14 @@ export function PersonalInfoForm({
           icon: link.icon || '',
           order: link.order,
         })),
+        heroStats: {
+          id: initialData?.heroStats?.id || '',
+          personalProjects: initialData?.heroStats?.personalProjects || 0,
+          professionalProjects:
+            initialData?.heroStats?.professionalProjects || 0,
+          verifiedSkills: initialData?.heroStats?.verifiedSkills || 0,
+          yearsOfExperience: initialData?.heroStats?.yearsOfExperience || 0,
+        },
       })
     }
   }, [initialData, form])
@@ -138,18 +150,12 @@ export function PersonalInfoForm({
 
   const onSubmit = async (data: PersonalInfoFormData) => {
     try {
-      let result: PersonalInfo | null = null
-
       if (initialData) {
-        result = await updatePersonalInfo(data)
+        await updatePersonalInfo(data)
         router.refresh()
       } else {
-        result = await createPersonalInfo(data)
+        await createPersonalInfo(data)
         router.refresh()
-      }
-
-      if (result && onSave) {
-        onSave(result)
       }
     } catch (error) {
       console.error('Error saving personal info:', error)
@@ -302,6 +308,105 @@ export function PersonalInfoForm({
                 </FormItem>
               )}
             />
+
+            <div className='grid grid-cols-2 gap-4'>
+              <FormField
+                control={form.control}
+                name='heroStats.personalProjects'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white/90'>
+                      Personal Projects
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type='number'
+                        min='0'
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='Number of personal projects'
+                        onChange={e =>
+                          field.onChange(parseInt(e.target.value) || 0)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='heroStats.professionalProjects'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white/90'>
+                      Professional Projects
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type='number'
+                        min='0'
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='Number of professional projects'
+                        onChange={e =>
+                          field.onChange(parseInt(e.target.value) || 0)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='heroStats.verifiedSkills'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white/90'>
+                      Verified Skills
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type='number'
+                        min='0'
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='Number of verified skills'
+                        onChange={e =>
+                          field.onChange(parseInt(e.target.value) || 0)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='heroStats.yearsOfExperience'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white/90'>
+                      Years of Experience
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type='number'
+                        min='0'
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='Years in the field'
+                        onChange={e =>
+                          field.onChange(parseInt(e.target.value) || 0)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </CardContent>
         </Card>
 
