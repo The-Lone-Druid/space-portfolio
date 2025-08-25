@@ -16,7 +16,6 @@ import {
   X,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { useProjects } from '../../../hooks/use-projects'
 import { EditProjectDialog } from './edit-project-dialog'
@@ -29,7 +28,6 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
   const { deleteProject } = useProjects()
-  const router = useRouter()
 
   // Get all unique skills from projects
   const allSkills = useMemo(() => {
@@ -66,7 +64,6 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
   const handleDeleteProject = async (id: number) => {
     if (confirm('Are you sure you want to delete this project?'))
       await deleteProject(id)
-    router.push(`/dashboard/projects`)
   }
 
   return (

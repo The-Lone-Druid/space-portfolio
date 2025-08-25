@@ -16,6 +16,7 @@ export default function PersonalInfoLoading() {
       <DashboardPageHeader
         title='Personal Information'
         description='Manage your space explorer profile and contact information across the cosmos.'
+        isLoading={true}
       />
 
       {/* Stats Overview Skeleton */}

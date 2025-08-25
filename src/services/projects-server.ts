@@ -1,160 +1,121 @@
 import { prisma } from '@/lib/prisma'
-import { unstable_cache } from 'next/cache'
+import { cache } from 'react'
 
 // Server-side data fetching for projects (cached with tags)
-export const getProjectsServer = unstable_cache(
-  async () => {
-    try {
-      const projects = await prisma.project.findMany({
-        where: { isActive: true },
-        include: {
-          projectTasks: {
-            orderBy: { order: 'asc' },
-          },
-          skillsUtilized: {
-            orderBy: { order: 'asc' },
-          },
+export const getProjectsServer = cache(async () => {
+  try {
+    const projects = await prisma.project.findMany({
+      where: { isActive: true },
+      include: {
+        projectTasks: {
+          orderBy: { order: 'asc' },
         },
-        orderBy: [
-          { isOngoing: 'desc' }, // Ongoing projects first
-          { startDate: 'desc' }, // Most recent start date first
-          { featured: 'desc' }, // Featured projects higher
-          { createdAt: 'desc' }, // Most recently created first
-        ],
-      })
+        skillsUtilized: {
+          orderBy: { order: 'asc' },
+        },
+      },
+      orderBy: [
+        { isOngoing: 'desc' }, // Ongoing projects first
+        { startDate: 'desc' }, // Most recent start date first
+        { featured: 'desc' }, // Featured projects higher
+        { createdAt: 'desc' }, // Most recently created first
+      ],
+    })
 
-      return projects
-    } catch (error) {
-      console.error('Error fetching projects server-side:', error)
-      return []
-    }
-  },
-  ['projects'],
-  {
-    tags: ['projects', 'portfolio'],
-    revalidate: 3600, // 1 hour fallback revalidation
+    return projects
+  } catch (error) {
+    console.error('Error fetching projects server-side:', error)
+    return []
   }
-)
+})
 
 // Get single project by ID
-export const getProjectByIdServer = unstable_cache(
-  async (id: number) => {
-    try {
-      const project = await prisma.project.findUnique({
-        where: { id, isActive: true },
-        include: {
-          projectTasks: {
-            orderBy: { order: 'asc' },
-          },
-          skillsUtilized: {
-            orderBy: { order: 'asc' },
-          },
+export const getProjectByIdServer = cache(async (id: number) => {
+  try {
+    const project = await prisma.project.findUnique({
+      where: { id, isActive: true },
+      include: {
+        projectTasks: {
+          orderBy: { order: 'asc' },
         },
-      })
+        skillsUtilized: {
+          orderBy: { order: 'asc' },
+        },
+      },
+    })
 
-      return project
-    } catch (error) {
-      console.error('Error fetching project by ID server-side:', error)
-      return null
-    }
-  },
-  ['project-by-id'],
-  {
-    tags: ['projects', 'portfolio'],
-    revalidate: 3600,
+    return project
+  } catch (error) {
+    console.error('Error fetching project by ID server-side:', error)
+    return null
   }
-)
+})
 
 // Get featured projects
-export const getFeaturedProjectsServer = unstable_cache(
-  async () => {
-    try {
-      const projects = await prisma.project.findMany({
-        where: {
-          isActive: true,
-          featured: true,
+export const getFeaturedProjectsServer = cache(async () => {
+  try {
+    const projects = await prisma.project.findMany({
+      where: {
+        isActive: true,
+        featured: true,
+      },
+      include: {
+        projectTasks: {
+          orderBy: { order: 'asc' },
         },
-        include: {
-          projectTasks: {
-            orderBy: { order: 'asc' },
-          },
-          skillsUtilized: {
-            orderBy: { order: 'asc' },
-          },
+        skillsUtilized: {
+          orderBy: { order: 'asc' },
         },
-        orderBy: [
-          { isOngoing: 'desc' },
-          { startDate: 'desc' },
-          { order: 'asc' },
-        ],
-      })
+      },
+      orderBy: [{ isOngoing: 'desc' }, { startDate: 'desc' }, { order: 'asc' }],
+    })
 
-      return projects
-    } catch (error) {
-      console.error('Error fetching featured projects server-side:', error)
-      return []
-    }
-  },
-  ['featured-projects'],
-  {
-    tags: ['projects', 'portfolio'],
-    revalidate: 3600,
+    return projects
+  } catch (error) {
+    console.error('Error fetching featured projects server-side:', error)
+    return []
   }
-)
+})
 
 // Get projects statistics
-export const getProjectsStats = unstable_cache(
-  async () => {
-    try {
-      const [totalProjects, featuredProjects] = await Promise.all([
-        prisma.project.count({ where: { isActive: true } }),
-        prisma.project.count({ where: { isActive: true, featured: true } }),
-      ])
+export const getProjectsStats = cache(async () => {
+  try {
+    const [totalProjects, featuredProjects] = await Promise.all([
+      prisma.project.count({ where: { isActive: true } }),
+      prisma.project.count({ where: { isActive: true, featured: true } }),
+    ])
 
-      // Get latest project update
-      const latestProject = await prisma.project.findFirst({
-        where: { isActive: true },
-        select: { updatedAt: true },
-        orderBy: { updatedAt: 'desc' },
-      })
+    // Get latest project update
+    const latestProject = await prisma.project.findFirst({
+      where: { isActive: true },
+      select: { updatedAt: true },
+      orderBy: { updatedAt: 'desc' },
+    })
 
-      return {
-        totalProjects,
-        featuredProjects,
-        lastUpdated: latestProject?.updatedAt || null,
-      }
-    } catch (error) {
-      console.error('Error fetching projects stats:', error)
-      return {
-        totalProjects: 0,
-        featuredProjects: 0,
-        lastUpdated: null,
-      }
+    return {
+      totalProjects,
+      featuredProjects,
+      lastUpdated: latestProject?.updatedAt || null,
     }
-  },
-  ['projects-stats'],
-  {
-    tags: ['projects', 'portfolio'],
-    revalidate: 3600,
+  } catch (error) {
+    console.error('Error fetching projects stats:', error)
+    return {
+      totalProjects: 0,
+      featuredProjects: 0,
+      lastUpdated: null,
+    }
   }
-)
+})
 
 // Check if projects exist
-export const checkProjectsExist = unstable_cache(
-  async () => {
-    try {
-      const count = await prisma.project.count({
-        where: { isActive: true },
-      })
-      return count > 0
-    } catch (error) {
-      console.error('Error checking projects existence:', error)
-      return false
-    }
-  },
-  ['projects-exist'],
-  {
-    tags: ['projects', 'portfolio'],
-    revalidate: 3600,
+export const checkProjectsExist = cache(async () => {
+  try {
+    const count = await prisma.project.count({
+      where: { isActive: true },
+    })
+    return count > 0
+  } catch (error) {
+    console.error('Error checking projects existence:', error)
+    return false
   }
-)
+})

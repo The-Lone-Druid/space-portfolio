@@ -12,7 +12,6 @@ import {
 import { useProjects } from '@/hooks/use-projects'
 import type { ProjectFormData } from '@/lib/validations'
 import type { ProjectWithDetails } from '@/types'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -28,7 +27,6 @@ export function EditProjectDialog({
   const { updateProject } = useProjects()
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const router = useRouter()
 
   const handleUpdateProject = async (data: ProjectFormData) => {
     try {
@@ -36,7 +34,6 @@ export function EditProjectDialog({
       await updateProject(project.id, data)
       toast.success('Project updated successfully!')
       setOpen(false)
-      router.push(`/dashboard/projects`)
     } catch (error) {
       console.error('Failed to update project:', error)
       toast.error('Failed to update project. Please try again.')

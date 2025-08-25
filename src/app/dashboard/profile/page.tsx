@@ -12,6 +12,9 @@ import {
 import { Settings } from 'lucide-react'
 import { Suspense } from 'react'
 
+// Force dynamic rendering since we use authentication
+export const dynamic = 'force-dynamic'
+
 // Server Component for data fetching
 async function ProfileContent() {
   try {

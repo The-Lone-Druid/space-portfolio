@@ -1,10 +1,12 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
 interface DashboardPageHeaderProps {
-  title: string
-  description?: string
+  title: string | React.ReactNode
+  description?: string | React.ReactNode
   className?: string
   actions?: React.ReactNode
+  isLoading?: boolean
 }
 
 export function DashboardPageHeader({
@@ -12,6 +14,7 @@ export function DashboardPageHeader({
   description,
   className,
   actions,
+  isLoading = false,
 }: DashboardPageHeaderProps) {
   return (
     <div
@@ -22,9 +25,21 @@ export function DashboardPageHeader({
     >
       <div className='text-center md:text-left'>
         <h1 className='mb-2 text-3xl font-bold tracking-tight text-white'>
-          {title}
+          {isLoading ? (
+            <Skeleton className='mx-auto h-8 w-64 md:mx-0' />
+          ) : (
+            title
+          )}
         </h1>
-        {description && <p className='text-lg text-white/70'>{description}</p>}
+        {(description || isLoading) && (
+          <p className='text-lg text-white/70'>
+            {isLoading ? (
+              <Skeleton className='mx-auto h-6 w-96 md:mx-0' />
+            ) : (
+              description
+            )}
+          </p>
+        )}
       </div>
       {actions && (
         <div className='flex flex-col gap-2 sm:flex-row'>{actions}</div>

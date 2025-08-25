@@ -42,6 +42,102 @@ async function main() {
 
   console.warn('👨‍💻 Personal info created:', personalInfo.name)
 
+  // Create Social Links for Personal Info
+  const socialLinks = [
+    {
+      name: 'GitHub',
+      url: 'https://github.com/The-Lone-Druid',
+      icon: 'fab fa-github',
+      order: 0,
+      personalInfoId: personalInfo.id,
+    },
+    {
+      name: 'LinkedIn',
+      url: 'https://linkedin.com/in/zahid-shaikh-7a4843178',
+      icon: 'fab fa-linkedin',
+      order: 1,
+      personalInfoId: personalInfo.id,
+    },
+  ]
+
+  for (const link of socialLinks) {
+    await prisma.socialLink.upsert({
+      where: { id: `social-${link.name.toLowerCase()}` },
+      update: {},
+      create: {
+        id: `social-${link.name.toLowerCase()}`,
+        ...link,
+      },
+    })
+  }
+
+  console.warn('🔗 Social links created')
+
+  // Create Hero Stats
+  const hero = await prisma.hero.upsert({
+    where: { id: 'hero-stats-1' },
+    update: {},
+    create: {
+      id: 'hero-stats-1',
+      verifiedSkills: 25,
+      professionalProjects: 12,
+      personalProjects: 16,
+    },
+  })
+
+  console.warn('🦸‍♂️ Hero stats created:', hero)
+
+  // Create Services
+  const services = [
+    {
+      name: 'Stellar Web Design',
+      icon: 'fas fa-rocket',
+      desc: 'I craft cosmic user experiences using cutting-edge design tools like Figma, creating prototypes that give clients a glimpse into their digital universe before launch.',
+      order: 0,
+    },
+    {
+      name: 'Code to Orbit Conversion',
+      icon: 'fab fa-html5',
+      desc: 'Transform your designs into responsive, pixel-perfect websites using modern web technologies. Your vision will be launched exactly as designed across all devices.',
+      order: 1,
+    },
+    {
+      name: 'Clean Cosmic Code',
+      icon: 'fas fa-laptop-code',
+      desc: 'Every line of code is written with stellar precision - 100% clean, valid, and maintainable. Built for scalability and easy understanding by future space travelers.',
+      order: 2,
+    },
+    {
+      name: 'Mission-Ready Customization',
+      icon: 'fas fa-cogs',
+      desc: 'Develop websites with modular architecture, making them easily customizable for evolving business needs and seamless feature integration.',
+      order: 3,
+    },
+    {
+      name: 'Multi-Device Exploration',
+      icon: 'fas fa-mobile-alt',
+      desc: 'Create responsive experiences that adapt perfectly across all devices - from mobile to desktop, ensuring your users can explore your digital space anywhere.',
+      order: 4,
+    },
+    {
+      name: 'Version Control Mission',
+      icon: 'fab fa-github',
+      desc: "Maintain your project's trajectory using advanced version control systems, ensuring smooth deployments and coordinated development across the team.",
+      order: 5,
+    },
+  ]
+
+  for (const service of services) {
+    const existing = await prisma.service.findFirst({
+      where: { name: service.name },
+    })
+    if (!existing) {
+      await prisma.service.create({ data: service })
+    }
+  }
+
+  console.warn('🛠️ Services created:', services.length)
+
   // Create some site settings
   const settings = [
     {
