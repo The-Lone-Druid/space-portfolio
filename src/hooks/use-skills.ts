@@ -2,12 +2,13 @@
 
 import type { SkillFormData } from '@/lib/validations'
 import type { ApiResponse, SkillWithDetails } from '@/types'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
+import { useCacheInvalidation } from './use-cache-invalidation'
 
 export function useSkills() {
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const { invalidateSkills } = useCacheInvalidation()
 
   const createSkill = async (
     data: SkillFormData
@@ -32,7 +33,11 @@ export function useSkills() {
         throw new Error(result.error || 'Failed to create skill')
       }
 
-      router.refresh()
+      toast.success('Skill created successfully!')
+
+      // Invalidate cache to ensure fresh data on next page load
+      await invalidateSkills()
+
       return result.data
     } finally {
       setIsLoading(false)
@@ -63,7 +68,11 @@ export function useSkills() {
         throw new Error(result.error || 'Failed to update skill')
       }
 
-      router.refresh()
+      toast.success('Skill updated successfully!')
+
+      // Invalidate cache to ensure fresh data on next page load
+      await invalidateSkills()
+
       return result.data
     } finally {
       setIsLoading(false)
@@ -87,7 +96,10 @@ export function useSkills() {
         throw new Error(result.error || 'Failed to delete skill')
       }
 
-      router.refresh()
+      toast.success('Skill deleted successfully!')
+
+      // Invalidate cache to ensure fresh data on next page load
+      await invalidateSkills()
     } finally {
       setIsLoading(false)
     }

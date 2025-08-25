@@ -8,6 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { LoadingSpinnerInline } from '@/components/ui/loading-spinner'
@@ -32,7 +40,9 @@ import {
   User,
   Youtube,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { PersonalInfo, SocialLink } from '../../types'
 
 interface PersonalInfoFormProps {
@@ -62,15 +72,19 @@ export function PersonalInfoForm({
 }: PersonalInfoFormProps) {
   const { createPersonalInfo, updatePersonalInfo, isLoading } =
     usePersonalInfo()
+  const router = useRouter()
 
-  const [formData, setFormData] = useState<PersonalInfoFormData>({
-    name: '',
-    title: '',
-    bio: '',
-    email: '',
-    location: '',
-    resumeUrl: '',
-    socialLinks: [],
+  // Initialize form with react-hook-form
+  const form = useForm({
+    defaultValues: {
+      name: '',
+      title: '',
+      bio: '',
+      email: '',
+      location: '',
+      resumeUrl: '',
+      socialLinks: [],
+    } as PersonalInfoFormData,
   })
 
   const [newSocialLink, setNewSocialLink] = useState({
@@ -84,7 +98,7 @@ export function PersonalInfoForm({
   // Populate form with initial data
   useEffect(() => {
     if (initialData) {
-      setFormData({
+      form.reset({
         name: initialData.name,
         title: initialData.title,
         bio: initialData.bio,
@@ -99,44 +113,39 @@ export function PersonalInfoForm({
         })),
       })
     }
-  }, [initialData])
-
-  const handleInputChange = (
-    field: keyof PersonalInfoFormData,
-    value: string
-  ) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
+  }, [initialData, form])
 
   const handleAddSocialLink = () => {
     if (newSocialLink.name && newSocialLink.url) {
-      const order = formData.socialLinks?.length || 0
-      setFormData(prev => ({
-        ...prev,
-        socialLinks: [...(prev.socialLinks || []), { ...newSocialLink, order }],
-      }))
+      const currentSocialLinks = form.getValues('socialLinks') || []
+      const order = currentSocialLinks.length
+      form.setValue('socialLinks', [
+        ...currentSocialLinks,
+        { ...newSocialLink, order },
+      ])
       setNewSocialLink({ name: '', url: '', icon: '' })
       setShowAddSocialLink(false)
     }
   }
 
   const handleRemoveSocialLink = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      socialLinks: prev.socialLinks?.filter((_, i) => i !== index) || [],
-    }))
+    const currentSocialLinks = form.getValues('socialLinks') || []
+    form.setValue(
+      'socialLinks',
+      currentSocialLinks.filter((_, i) => i !== index)
+    )
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const onSubmit = async (data: PersonalInfoFormData) => {
     try {
       let result: PersonalInfo | null = null
 
       if (initialData) {
-        result = await updatePersonalInfo(formData)
+        result = await updatePersonalInfo(data)
+        router.refresh()
       } else {
-        result = await createPersonalInfo(formData)
+        result = await createPersonalInfo(data)
+        router.refresh()
       }
 
       if (result && onSave) {
@@ -153,256 +162,287 @@ export function PersonalInfoForm({
     return IconComponent
   }
 
+  const watchedSocialLinks = form.watch('socialLinks')
+
   return (
-    <form onSubmit={handleSubmit} className='space-y-6'>
-      {/* Basic Information */}
-      <Card className='glass-nebula border-space-accent/30'>
-        <CardHeader>
-          <CardTitle className='flex items-center text-white'>
-            <User className='text-space-gold mr-2 h-5 w-5' />
-            Basic Information
-          </CardTitle>
-          <CardDescription className='text-white/70'>
-            Your primary contact and identification details
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          <div className='grid gap-4 md:grid-cols-2'>
-            <div className='space-y-2'>
-              <Label htmlFor='name' className='text-white/90'>
-                Full Name *
-              </Label>
-              <Input
-                id='name'
-                value={formData.name}
-                onChange={e => handleInputChange('name', e.target.value)}
-                className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-                placeholder='Enter your full name'
-                required
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        {/* Basic Information */}
+        <Card className='glass-nebula border-space-accent/30'>
+          <CardHeader>
+            <CardTitle className='flex items-center text-white'>
+              <User className='text-space-gold mr-2 h-5 w-5' />
+              Basic Information
+            </CardTitle>
+            <CardDescription className='text-white/70'>
+              Your primary contact and identification details
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className='grid gap-4 md:grid-cols-2'>
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white/90'>Full Name *</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='Enter your full name'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='title'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white/90'>
+                      Professional Title *
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='e.g., Space Technology Engineer'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='title' className='text-white/90'>
-                Professional Title *
-              </Label>
-              <Input
-                id='title'
-                value={formData.title}
-                onChange={e => handleInputChange('title', e.target.value)}
-                className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-                placeholder='e.g., Space Technology Engineer'
-                required
-              />
-            </div>
-          </div>
 
-          <div className='grid gap-4 md:grid-cols-2'>
-            <div className='space-y-2'>
-              <Label
-                htmlFor='email'
-                className='flex items-center text-white/90'
-              >
-                <Mail className='mr-2 h-4 w-4' />
-                Email Address *
-              </Label>
-              <Input
-                id='email'
-                type='email'
-                value={formData.email}
-                onChange={e => handleInputChange('email', e.target.value)}
-                className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-                placeholder='your.email@domain.com'
-                required
+            <div className='grid gap-4 md:grid-cols-2'>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='flex items-center text-white/90'>
+                      <Mail className='mr-2 h-4 w-4' />
+                      Email Address *
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type='email'
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='your.email@domain.com'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='location'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='flex items-center text-white/90'>
+                      <MapPin className='mr-2 h-4 w-4' />
+                      Location *
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                        placeholder='City, Country'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className='space-y-2'>
-              <Label
-                htmlFor='location'
-                className='flex items-center text-white/90'
-              >
-                <MapPin className='mr-2 h-4 w-4' />
-                Location *
-              </Label>
-              <Input
-                id='location'
-                value={formData.location}
-                onChange={e => handleInputChange('location', e.target.value)}
-                className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-                placeholder='City, Country'
-                required
-              />
-            </div>
-          </div>
 
-          <div className='space-y-2'>
-            <Label htmlFor='bio' className='flex items-center text-white/90'>
-              <FileText className='mr-2 h-4 w-4' />
-              Professional Bio *
-            </Label>
-            <Textarea
-              id='bio'
-              rows={4}
-              value={formData.bio}
-              onChange={e => handleInputChange('bio', e.target.value)}
-              className='resize-none border-white/20 bg-white/10 text-white placeholder:text-white/50'
-              placeholder='Write a brief description about yourself and your expertise...'
-              required
+            <FormField
+              control={form.control}
+              name='bio'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='flex items-center text-white/90'>
+                    <FileText className='mr-2 h-4 w-4' />
+                    Professional Bio *
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      rows={4}
+                      className='resize-none border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                      placeholder='Write a brief description about yourself and your expertise...'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className='space-y-2'>
-            <Label htmlFor='resumeUrl' className='text-white/90'>
-              Resume URL
-            </Label>
-            <Input
-              id='resumeUrl'
-              type='url'
-              value={formData.resumeUrl}
-              onChange={e => handleInputChange('resumeUrl', e.target.value)}
-              className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-              placeholder='https://your-resume-link.com'
+            <FormField
+              control={form.control}
+              name='resumeUrl'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-white/90'>Resume URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type='url'
+                      className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                      placeholder='https://your-resume-link.com'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Social Links */}
-      <Card className='glass-nebula border-space-accent/30'>
-        <CardHeader>
-          <CardTitle className='flex items-center justify-between text-white'>
-            <div className='flex items-center'>
-              <Globe className='text-space-gold mr-2 h-5 w-5' />
-              Social Links
-            </div>
-            <Button
-              type='button'
-              variant='space'
-              size='sm'
-              onClick={() => setShowAddSocialLink(true)}
-            >
-              <Plus className='mr-2 h-4 w-4' />
-              Add Link
-            </Button>
-          </CardTitle>
-          <CardDescription className='text-white/70'>
-            Your professional social media and portfolio links
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          {/* Existing Social Links */}
-          {formData.socialLinks && formData.socialLinks.length > 0 ? (
-            <div className='space-y-3'>
-              {formData.socialLinks.map((link, index) => {
-                const IconComponent = getSocialIcon(link.name)
-                return (
-                  <div
-                    key={index}
-                    className='border-space-accent/20 flex items-center justify-between rounded-lg border bg-white/5 p-3'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <IconComponent className='text-space-gold h-5 w-5' />
-                      <div>
-                        <div className='font-medium text-white'>
-                          {link.name}
-                        </div>
-                        <div className='flex items-center text-sm text-white/60'>
-                          <ExternalLink className='mr-1 h-3 w-3' />
-                          {link.url}
+        {/* Social Links */}
+        <Card className='glass-nebula border-space-accent/30'>
+          <CardHeader>
+            <CardTitle className='flex items-center justify-between text-white'>
+              <div className='flex items-center'>
+                <Globe className='text-space-gold mr-2 h-5 w-5' />
+                Social Links
+              </div>
+              <Button
+                type='button'
+                variant='space'
+                size='sm'
+                onClick={() => setShowAddSocialLink(true)}
+              >
+                <Plus className='mr-2 h-4 w-4' />
+                Add Link
+              </Button>
+            </CardTitle>
+            <CardDescription className='text-white/70'>
+              Your professional social media and portfolio links
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            {/* Existing Social Links */}
+            {watchedSocialLinks && watchedSocialLinks.length > 0 ? (
+              <div className='space-y-3'>
+                {watchedSocialLinks.map((link, index) => {
+                  const IconComponent = getSocialIcon(link.name)
+                  return (
+                    <div
+                      key={index}
+                      className='border-space-accent/20 flex items-center justify-between rounded-lg border bg-white/5 p-3'
+                    >
+                      <div className='flex items-center space-x-3'>
+                        <IconComponent className='text-space-gold h-5 w-5' />
+                        <div>
+                          <div className='font-medium text-white'>
+                            {link.name}
+                          </div>
+                          <div className='flex items-center text-sm text-white/60'>
+                            <ExternalLink className='mr-1 h-3 w-3' />
+                            {link.url}
+                          </div>
                         </div>
                       </div>
+                      <Button
+                        type='button'
+                        variant='destructive'
+                        size='sm'
+                        onClick={() => handleRemoveSocialLink(index)}
+                      >
+                        <Trash2 className='h-4 w-4' />
+                      </Button>
                     </div>
-                    <Button
-                      type='button'
-                      variant='destructive'
-                      size='sm'
-                      onClick={() => handleRemoveSocialLink(index)}
-                    >
-                      <Trash2 className='h-4 w-4' />
-                    </Button>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className='py-8 text-center text-white/60'>
+                <Globe className='mx-auto mb-4 h-12 w-12 text-white/20' />
+                <p>No social links added yet</p>
+              </div>
+            )}
+
+            {/* Add New Social Link Form */}
+            {showAddSocialLink && (
+              <div className='border-space-accent/30 space-y-3 rounded-lg border bg-white/5 p-4'>
+                <div className='grid gap-3 md:grid-cols-2'>
+                  <div className='space-y-2'>
+                    <Label className='text-white/90'>Platform Name</Label>
+                    <Input
+                      value={newSocialLink.name}
+                      onChange={e =>
+                        setNewSocialLink(prev => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                      placeholder='GitHub, LinkedIn, Twitter...'
+                    />
                   </div>
-                )
-              })}
-            </div>
-          ) : (
-            <div className='py-8 text-center text-white/60'>
-              <Globe className='mx-auto mb-4 h-12 w-12 text-white/20' />
-              <p>No social links added yet</p>
-            </div>
-          )}
-
-          {/* Add New Social Link Form */}
-          {showAddSocialLink && (
-            <div className='border-space-accent/30 space-y-3 rounded-lg border bg-white/5 p-4'>
-              <div className='grid gap-3 md:grid-cols-2'>
-                <div className='space-y-2'>
-                  <Label className='text-white/90'>Platform Name</Label>
-                  <Input
-                    value={newSocialLink.name}
-                    onChange={e =>
-                      setNewSocialLink(prev => ({
-                        ...prev,
-                        name: e.target.value,
-                      }))
-                    }
-                    className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-                    placeholder='GitHub, LinkedIn, Twitter...'
-                  />
+                  <div className='space-y-2'>
+                    <Label className='text-white/90'>URL</Label>
+                    <Input
+                      value={newSocialLink.url}
+                      onChange={e =>
+                        setNewSocialLink(prev => ({
+                          ...prev,
+                          url: e.target.value,
+                        }))
+                      }
+                      className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
+                      placeholder='https://...'
+                    />
+                  </div>
                 </div>
-                <div className='space-y-2'>
-                  <Label className='text-white/90'>URL</Label>
-                  <Input
-                    value={newSocialLink.url}
-                    onChange={e =>
-                      setNewSocialLink(prev => ({
-                        ...prev,
-                        url: e.target.value,
-                      }))
-                    }
-                    className='border-white/20 bg-white/10 text-white placeholder:text-white/50'
-                    placeholder='https://...'
-                  />
+                <div className='flex justify-end space-x-2'>
+                  <Button
+                    type='button'
+                    variant='link'
+                    size='sm'
+                    onClick={() => setShowAddSocialLink(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type='button'
+                    variant='space'
+                    size='sm'
+                    onClick={handleAddSocialLink}
+                    disabled={!newSocialLink.name || !newSocialLink.url}
+                  >
+                    Add Link
+                  </Button>
                 </div>
               </div>
-              <div className='flex justify-end space-x-2'>
-                <Button
-                  type='button'
-                  variant='link'
-                  size='sm'
-                  onClick={() => setShowAddSocialLink(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type='button'
-                  variant='space'
-                  size='sm'
-                  onClick={handleAddSocialLink}
-                  disabled={!newSocialLink.name || !newSocialLink.url}
-                >
-                  Add Link
-                </Button>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            )}
+          </CardContent>
+        </Card>
 
-      {/* Submit Button */}
-      <div className='flex justify-end'>
-        <Button type='submit' variant='stellar' disabled={isLoading}>
-          {isLoading ? (
-            <>
-              <LoadingSpinnerInline variant='orbit' />
-              <span className='ml-2'>Updating...</span>
-            </>
-          ) : (
-            <>
-              <Save className='mr-2 h-4 w-4' />
-              {initialData ? 'Update Information' : 'Save Information'}
-            </>
-          )}
-        </Button>
-      </div>
-    </form>
+        {/* Submit Button */}
+        <div className='flex justify-end'>
+          <Button type='submit' variant='stellar' disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <LoadingSpinnerInline variant='orbit' />
+                <span className='ml-2'>Updating...</span>
+              </>
+            ) : (
+              <>
+                <Save className='mr-2 h-4 w-4' />
+                {initialData ? 'Update Information' : 'Save Information'}
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }

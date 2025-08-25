@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 import { PersonalInfo, SocialLink } from '../types'
+import { useCacheInvalidation } from './use-cache-invalidation'
 
 export interface PersonalInfoFormData {
   name: string
@@ -26,6 +27,7 @@ export interface SocialLinkFormData {
 export function usePersonalInfo() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { invalidatePersonalInfo } = useCacheInvalidation()
 
   const fetchPersonalInfo =
     useCallback(async (): Promise<PersonalInfo | null> => {
@@ -72,6 +74,10 @@ export function usePersonalInfo() {
         }
 
         toast.success('Personal information created successfully!')
+
+        // Invalidate cache to ensure fresh data on next page load
+        await invalidatePersonalInfo()
+
         return result.data
       } catch (err) {
         const errorMessage =
@@ -83,7 +89,7 @@ export function usePersonalInfo() {
         setIsLoading(false)
       }
     },
-    []
+    [invalidatePersonalInfo]
   )
 
   const updatePersonalInfo = useCallback(
@@ -107,6 +113,10 @@ export function usePersonalInfo() {
         }
 
         toast.success('Personal information updated successfully!')
+
+        // Invalidate cache to ensure fresh data on next page load
+        await invalidatePersonalInfo()
+
         return result.data
       } catch (err) {
         const errorMessage =
@@ -118,7 +128,7 @@ export function usePersonalInfo() {
         setIsLoading(false)
       }
     },
-    []
+    [invalidatePersonalInfo]
   )
 
   const deletePersonalInfo = useCallback(async (): Promise<boolean> => {
