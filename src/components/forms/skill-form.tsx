@@ -28,8 +28,9 @@ import { Slider } from '@/components/ui/slider'
 import { skillSchema, type SkillFormData } from '@/lib/validations'
 import type { SkillWithDetails } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Award, Code, Loader2, Settings } from 'lucide-react'
+import { Award, Code, Settings } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { LoadingSpinnerInline } from '../ui/loading-spinner'
 
 interface SkillFormProps {
   initialData?: SkillWithDetails
@@ -276,7 +277,7 @@ export function SkillForm({
             <Button type='submit' disabled={isSubmitting} variant='cosmic'>
               {isSubmitting ? (
                 <>
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  <LoadingSpinnerInline />
                   Saving...
                 </>
               ) : (

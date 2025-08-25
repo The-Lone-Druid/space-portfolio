@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Loader2, Send } from 'lucide-react'
+import { Send } from 'lucide-react'
 import { useContactForm } from '../../hooks/use-contact-form'
+import { LoadingSpinnerInline } from '../ui/loading-spinner'
 
 export const ContactForm = () => {
   const {
@@ -155,7 +156,7 @@ export const ContactForm = () => {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className='mr-2 h-4 w-4 animate-spin md:h-5 md:w-5' />
+                <LoadingSpinnerInline />
                 Launching Message...
               </>
             ) : (

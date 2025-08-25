@@ -25,7 +25,6 @@ import {
   Github,
   Lightbulb,
   Link,
-  Loader2,
   Plus,
   Save,
   Star,
@@ -33,6 +32,7 @@ import {
 } from 'lucide-react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
+import { LoadingSpinnerInline } from '../ui/loading-spinner'
 interface ProjectFormProps {
   initialData?: ProjectWithDetails
   onSubmit: (data: ProjectFormData) => Promise<void>
@@ -450,7 +450,7 @@ export function ProjectForm({
             <Button type='submit' disabled={isSubmitting} variant='cosmic'>
               {isSubmitting ? (
                 <>
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  <LoadingSpinnerInline />
                   Saving...
                 </>
               ) : (

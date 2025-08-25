@@ -33,7 +33,6 @@ import {
   Cloud,
   Code,
   Database,
-  Loader2,
   Palette,
   Rocket,
   Settings,
@@ -43,6 +42,7 @@ import {
 } from 'lucide-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { LoadingSpinnerInline } from '../ui/loading-spinner'
 
 interface ServiceFormProps {
   initialData?: ServiceWithDetails
@@ -258,7 +258,7 @@ export function ServiceForm({
             <Button type='submit' disabled={isSubmitting} variant='cosmic'>
               {isSubmitting ? (
                 <>
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  <LoadingSpinnerInline />
                   Saving...
                 </>
               ) : (

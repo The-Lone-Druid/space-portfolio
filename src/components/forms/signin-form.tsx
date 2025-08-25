@@ -167,7 +167,7 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
             >
               {isLoading ? (
                 <div className='flex items-center space-x-2'>
-                  <LoadingSpinnerInline variant='orbit' />
+                  <LoadingSpinnerInline />
                   <span>Signing In...</span>
                 </div>
               ) : (

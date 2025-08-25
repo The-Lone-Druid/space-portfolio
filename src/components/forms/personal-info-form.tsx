@@ -431,8 +431,8 @@ export function PersonalInfoForm({
           <Button type='submit' variant='stellar' disabled={isLoading}>
             {isLoading ? (
               <>
-                <LoadingSpinnerInline variant='orbit' />
-                <span className='ml-2'>Updating...</span>
+                <LoadingSpinnerInline />
+                <span>Updating...</span>
               </>
             ) : (
               <>

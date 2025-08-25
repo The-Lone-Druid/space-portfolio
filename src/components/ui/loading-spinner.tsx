@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Rocket } from 'lucide-react'
+import { Loader2, Rocket } from 'lucide-react'
 
 interface LoadingSpinnerProps {
   message?: string
@@ -32,12 +32,9 @@ function DefaultSpinner({
   className?: string
 }) {
   return (
-    <div
-      className={cn(
-        'border-space-accent/30 border-t-space-gold animate-spin rounded-full border-2',
-        sizeClasses[size!],
-        className
-      )}
+    <Loader2
+      className={cn('mr-2 h-4 w-4 animate-spin', className)}
+      size={size}
     />
   )
 }
