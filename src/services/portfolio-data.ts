@@ -30,6 +30,7 @@ export const getPersonalInfo = unstable_cache(
   ['personal-info'],
   {
     tags: ['personal-info', 'portfolio-data'],
+    revalidate: 60,
   }
 )
 
@@ -47,6 +48,7 @@ export const getHeroStats = unstable_cache(
   ['hero-stats'],
   {
     tags: ['hero-stats', 'portfolio-data'],
+    revalidate: 60,
   }
 )
 
@@ -65,6 +67,7 @@ export const getSkills = unstable_cache(
   ['skills'],
   {
     tags: ['skills', 'portfolio-data'],
+    revalidate: 60,
   }
 )
 
@@ -96,6 +99,7 @@ export const getProjects = unstable_cache(
   ['projects'],
   {
     tags: ['projects', 'portfolio-data'],
+    revalidate: 60,
   }
 )
 
@@ -114,6 +118,7 @@ export const getServices = unstable_cache(
   ['services'],
   {
     tags: ['services', 'portfolio-data'],
+    revalidate: 60,
   }
 )
 

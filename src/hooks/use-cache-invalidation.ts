@@ -33,6 +33,7 @@ export function useCacheInvalidation() {
   const invalidatePersonalInfo = useCallback(async () => {
     // Revalidate server-side cached personal info data
     await fetch('/api/revalidate?tag=personal-info', { method: 'POST' })
+    await fetch('/api/revalidate?tag=hero-stats', { method: 'POST' })
     router.refresh()
   }, [router])
 
