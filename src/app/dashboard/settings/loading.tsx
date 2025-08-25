@@ -10,7 +10,7 @@ export default function SettingsLoading() {
         description='Manage your site settings and configuration'
         isLoading={true}
       />
-      <div className='container mx-auto max-w-6xl space-y-8 p-6'>
+      <div className='mt-6 space-y-6'>
         {/* Stats Overview Skeleton */}
         <div className='grid gap-4 md:grid-cols-4'>
           {Array.from({ length: 4 }).map((_, i) => (
