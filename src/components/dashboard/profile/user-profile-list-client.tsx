@@ -17,7 +17,6 @@ import {
   Calendar,
   CheckCircle2,
   Clock,
-  Key,
   Mail,
   Shield,
   User,
@@ -27,22 +26,6 @@ import Image from 'next/image'
 interface UserProfileListClientProps {
   userProfile: UserProfile | null
   isLoading?: boolean
-}
-
-// Provider icon mapping
-const getProviderIcon = (provider: string) => {
-  switch (provider.toLowerCase()) {
-    case 'google':
-      return '🔍'
-    case 'github':
-      return '🐙'
-    case 'discord':
-      return '🎮'
-    case 'credentials':
-      return '🔑'
-    default:
-      return '🔗'
-  }
 }
 
 export function UserProfileListClient({
@@ -69,7 +52,7 @@ export function UserProfileListClient({
     )
   }
 
-  const { user, accountsCount, sessionsCount, lastLogin } = userProfile
+  const { user, lastLogin } = userProfile
 
   return (
     <div className='space-y-6'>
@@ -176,87 +159,6 @@ export function UserProfileListClient({
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Connected Accounts Card */}
-      <Card className='glass-nebula border-space-accent/30'>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2 text-white'>
-            <Key className='h-5 w-5 text-cyan-400' />
-            Connected Accounts
-          </CardTitle>
-          <CardDescription className='text-gray-400'>
-            OAuth providers and authentication methods linked to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {accountsCount === 0 ? (
-            <div className='flex min-h-[100px] flex-col items-center justify-center rounded-lg border border-dashed border-white/20 bg-white/5 p-6 text-center'>
-              <Key className='mb-2 h-8 w-8 text-white/40' />
-              <p className='text-sm text-white/70'>No connected accounts</p>
-            </div>
-          ) : (
-            <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
-              {user.accounts.map(account => (
-                <div
-                  key={account.id}
-                  className='group hover:border-space-accent/50 relative rounded-lg border border-white/10 bg-white/5 p-3 transition-all'
-                >
-                  <div className='flex items-center gap-3'>
-                    <div className='bg-space-accent/20 flex items-center justify-center rounded-full p-2 text-lg'>
-                      {getProviderIcon(account.provider)}
-                    </div>
-                    <div className='min-w-0 flex-1'>
-                      <p className='font-medium text-white capitalize'>
-                        {account.provider}
-                      </p>
-                      <p className='text-xs text-white/60 capitalize'>
-                        {account.type} authentication
-                      </p>
-                      <p className='truncate text-xs text-white/50'>
-                        ID: {account.providerAccountId}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Statistics Card */}
-      <Card className='glass-nebula border-space-accent/30'>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2 text-white'>
-            <Activity className='h-5 w-5 text-cyan-400' />
-            Account Statistics
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className='grid gap-4 sm:grid-cols-3'>
-            <div className='space-y-2 text-center'>
-              <p className='text-2xl font-bold text-white'>{accountsCount}</p>
-              <p className='text-sm text-white/60'>
-                Connected Account{accountsCount !== 1 ? 's' : ''}
-              </p>
-            </div>
-            <div className='space-y-2 text-center'>
-              <p className='text-space-accent text-2xl font-bold'>
-                {sessionsCount}
-              </p>
-              <p className='text-sm text-white/60'>
-                Active Session{sessionsCount !== 1 ? 's' : ''}
-              </p>
-            </div>
-            <div className='space-y-2 text-center'>
-              <p className='text-2xl font-bold text-cyan-400'>
-                {user.emailVerified ? '✓' : '✗'}
-              </p>
-              <p className='text-sm text-white/60'>Email Verified</p>
             </div>
           </div>
         </CardContent>

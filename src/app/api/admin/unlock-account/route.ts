@@ -1,7 +1,9 @@
 import { adminApiRoute } from '@/lib/auth-utils'
+import { authOptions } from '@/lib/auth'
 import { AccountLockoutService } from '@/services/account-lockout-service'
 import { AuditService } from '@/services/audit-service'
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
 import type { ApiResponse } from '@/types'
 import { z } from 'zod'
 
@@ -11,8 +13,7 @@ const unlockAccountSchema = z.object({
 
 export const POST = adminApiRoute(
   async (
-    request: NextRequest,
-    context: { user: { id: string; email: string; role: string } }
+    request: NextRequest
   ): Promise<NextResponse<ApiResponse<{ email: string }>>> => {
     try {
       const body = await request.json()
@@ -31,6 +32,15 @@ export const POST = adminApiRoute(
         )
       }
 
+      // Get current admin user for audit logging
+      const session = await getServerSession(authOptions)
+      if (!session?.user?.id) {
+        return NextResponse.json(
+          { success: false, error: 'Admin session not found' },
+          { status: 401 }
+        )
+      }
+
       // Unlock the account
       const unlockResult = await AccountLockoutService.unlockAccount(email)
 
@@ -44,15 +54,12 @@ export const POST = adminApiRoute(
         )
       }
 
-      // Log the admin unlock action
-      await AuditService.logAdminUnlock({
-        adminUserId: context.user.id,
-        targetEmail: email,
-        ipAddress:
-          request.headers.get('x-forwarded-for') ||
-          request.headers.get('x-real-ip') ||
-          'unknown',
-        userAgent: request.headers.get('user-agent') || 'unknown',
+      // Log admin action
+      await AuditService.log({
+        action: 'admin_unlock',
+        userId: session.user.id,
+        email: email,
+        details: { unlockedEmail: email, reason: 'Manual unlock by admin' },
       })
 
       return NextResponse.json({

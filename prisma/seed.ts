@@ -71,6 +71,7 @@ async function main() {
       verifiedSkills: 25,
       professionalProjects: 12,
       personalProjects: 16,
+      yearsOfExperience: 5,
     },
   })
 

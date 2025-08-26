@@ -1,18 +1,11 @@
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import type { Account, Session, User } from '@prisma/client'
+import type { User } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 
-// Extended types for user profile with relations
-export type UserWithAccountsAndSessions = User & {
-  accounts: Account[]
-  sessions: Session[]
-}
-
+// Simplified type for JWT-only authentication
 export type UserProfile = {
-  user: UserWithAccountsAndSessions
-  accountsCount: number
-  sessionsCount: number
+  user: User
   lastLogin: Date | null
 }
 
@@ -27,86 +20,46 @@ export async function getCurrentUserProfile(): Promise<UserProfile | null> {
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      include: {
-        accounts: true,
-        sessions: {
-          orderBy: { expires: 'desc' },
-          take: 10, // Limit to recent sessions
-        },
-      },
     })
 
     if (!user) {
       return null
     }
 
-    // Get the most recent session for last login (use updatedAt from user)
-    const lastLogin = user.updatedAt
-
     return {
       user,
-      accountsCount: user.accounts.length,
-      sessionsCount: user.sessions.length,
-      lastLogin,
+      lastLogin: user.updatedAt, // Use updatedAt as proxy for last login
     }
   } catch (error) {
-    console.warn('Error fetching user profile:', error)
+    console.error('Error fetching current user profile:', error)
     return null
   }
 }
 
-// Server-side function to get user accounts
-export async function getUserAccounts(): Promise<Account[]> {
+// Get user by ID (admin function)
+export async function getUserById(id: string): Promise<User | null> {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session?.user?.email) {
-      return []
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true },
-    })
-
-    if (!user) {
-      return []
-    }
-
-    return await prisma.account.findMany({
-      where: { userId: user.id },
+    return await prisma.user.findUnique({
+      where: { id },
     })
   } catch (error) {
-    console.warn('Error fetching user accounts:', error)
-    return []
+    console.error('Error fetching user by ID:', error)
+    return null
   }
 }
 
-// Server-side function to get user sessions
-export async function getUserSessions(): Promise<Session[]> {
+// Update user profile
+export async function updateUserProfile(
+  userId: string,
+  data: Partial<Pick<User, 'name' | 'email' | 'image'>>
+): Promise<User | null> {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session?.user?.email) {
-      return []
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true },
-    })
-
-    if (!user) {
-      return []
-    }
-
-    return await prisma.session.findMany({
-      where: { userId: user.id },
-      orderBy: { expires: 'desc' },
-      take: 20, // Limit to recent sessions
+    return await prisma.user.update({
+      where: { id: userId },
+      data,
     })
   } catch (error) {
-    console.warn('Error fetching user sessions:', error)
-    return []
+    console.error('Error updating user profile:', error)
+    return null
   }
 }

@@ -4,11 +4,7 @@ import { SessionsManager } from '@/components/dashboard/profile/sessions-manager
 import { UserProfileListClient } from '@/components/dashboard/profile/user-profile-list-client'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { Separator } from '@/components/ui/separator'
-import {
-  getCurrentUserProfile,
-  getUserAccounts,
-  getUserSessions,
-} from '@/services/user-profile-service'
+import { getCurrentUserProfile } from '@/services/user-profile-service'
 import { Settings } from 'lucide-react'
 import { Suspense } from 'react'
 
@@ -18,11 +14,7 @@ export const dynamic = 'force-dynamic'
 // Server Component for data fetching
 async function ProfileContent() {
   try {
-    const [userProfile, accounts, sessions] = await Promise.all([
-      getCurrentUserProfile(),
-      getUserAccounts(),
-      getUserSessions(),
-    ])
+    const [userProfile] = await Promise.all([getCurrentUserProfile()])
 
     return (
       <div className='space-y-6'>
@@ -44,12 +36,12 @@ async function ProfileContent() {
         <Separator className='bg-white/10' />
 
         {/* Connected Accounts Management */}
-        <AccountsManager accounts={accounts} />
+        <AccountsManager />
 
         <Separator className='bg-white/10' />
 
         {/* Sessions Management */}
-        <SessionsManager sessions={sessions} />
+        <SessionsManager />
 
         {/* Quick Actions Card */}
         <QuickActionsCard />
