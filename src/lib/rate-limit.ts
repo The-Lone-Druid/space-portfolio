@@ -1,15 +1,5 @@
 import { NextRequest } from 'next/server'
-
-interface RateLimitConfig {
-  maxAttempts: number
-  windowMs: number
-  keyGenerator?: (request: NextRequest) => string
-}
-
-interface RateLimitEntry {
-  count: number
-  resetTime: number
-}
+import { RateLimitConfig, RateLimitEntry } from '../types'
 
 // In-memory store for rate limiting (for development)
 // In production, use Redis or external cache

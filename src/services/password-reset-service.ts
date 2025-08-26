@@ -3,12 +3,7 @@ import crypto from 'crypto'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { addHours } from 'date-fns'
-
-interface ServiceResponse {
-  success: boolean
-  error?: string
-  data?: { message?: string; [key: string]: unknown }
-}
+import { ServiceResponse } from '../types/auth'
 
 /**
  * Generate a secure password reset token

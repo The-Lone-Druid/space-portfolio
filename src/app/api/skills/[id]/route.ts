@@ -1,12 +1,8 @@
 import { editorApiRoute, publicApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { skillSchema } from '@/lib/validations'
-import type { ApiResponse, SkillWithDetails } from '@/types'
+import type { ApiResponse, Context, SkillWithDetails } from '@/types'
 import { NextRequest, NextResponse } from 'next/server'
-
-interface Context {
-  params: Promise<{ id: string }>
-}
 
 export const GET = publicApiRoute(
   async (

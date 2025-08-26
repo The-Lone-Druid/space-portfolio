@@ -1,14 +1,5 @@
 import { format } from 'date-fns'
-
-export interface ProjectDateRange {
-  startDate: Date
-  endDate?: Date
-  isOngoing: boolean
-}
-
-export interface LegacyProjectData {
-  projectDate: string
-}
+import { ProjectDateRange } from '../types'
 
 /**
  * Convert new date range format to legacy string format for API compatibility

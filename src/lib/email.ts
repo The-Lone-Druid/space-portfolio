@@ -4,11 +4,7 @@
  */
 
 import { Resend } from 'resend'
-
-interface EmailConfig {
-  from: string
-  service: 'console' | 'resend' | 'sendgrid' // Add more as needed
-}
+import { EmailConfig, EmailData } from '../types'
 
 const emailConfig: EmailConfig = {
   from: process.env.EMAIL_FROM || 'noreply@space-portfolio.com',
@@ -24,13 +20,6 @@ const getResendClient = () => {
     )
   }
   return new Resend(apiKey)
-}
-
-interface EmailData {
-  to: string
-  subject: string
-  html: string
-  text?: string
 }
 
 /**
@@ -107,10 +96,6 @@ async function sendEmail(emailData: EmailData): Promise<void> {
         throw error
       }
       break
-
-    case 'sendgrid':
-      // TODO: Implement SendGrid integration
-      throw new Error('SendGrid integration not implemented yet')
 
     default:
       throw new Error(`Unsupported email service: ${emailConfig.service}`)

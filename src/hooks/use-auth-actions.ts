@@ -2,26 +2,12 @@
 
 import { useState } from 'react'
 import { toast } from 'sonner'
-
-interface AuthActionResult {
-  success: boolean
-  error?: string
-  message?: string
-}
-
-interface PasswordResetRequest {
-  email: string
-}
-
-interface PasswordResetVerify {
-  token: string
-  password: string
-}
-
-interface ChangePasswordRequest {
-  currentPassword: string
-  newPassword: string
-}
+import {
+  PasswordResetRequest,
+  AuthActionResult,
+  PasswordResetVerify,
+  ChangePasswordRequest,
+} from '../types/auth'
 
 /**
  * Hook for authentication-related API actions
@@ -153,53 +139,10 @@ export function useAuthActions() {
     }
   }
 
-  /**
-   * Send test email (admin only)
-   */
-  const sendTestEmail = async (
-    email: string,
-    type: string = 'password-reset'
-  ): Promise<AuthActionResult> => {
-    setIsLoading(true)
-
-    try {
-      const response = await fetch('/api/admin/test-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, type }),
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        toast.success('Test email sent successfully!', {
-          description: result.message,
-        })
-        return { success: true, message: result.message }
-      } else {
-        toast.error('Failed to send test email', {
-          description: result.error || 'Please check your configuration',
-        })
-        return { success: false, error: result.error }
-      }
-    } catch {
-      const errorMessage = 'Failed to send test email. Please try again.'
-      toast.error('An error occurred', {
-        description: errorMessage,
-      })
-      return { success: false, error: errorMessage }
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return {
     isLoading,
     requestPasswordReset,
     resetPassword,
     changePassword,
-    sendTestEmail,
   }
 }

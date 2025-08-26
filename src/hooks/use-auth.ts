@@ -3,12 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
-
-interface UseAuthOptions {
-  required?: boolean
-  requiredRole?: 'ADMIN' | 'EDITOR' | string[]
-  redirectTo?: string
-}
+import { UseAuthOptions } from '../types/auth'
 
 /**
  * Hook for authentication state management and role-based access control

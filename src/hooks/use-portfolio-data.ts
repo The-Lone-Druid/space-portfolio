@@ -2,26 +2,13 @@ import type {
   ApiResponse,
   Hero,
   PersonalInfoWithSocials,
+  PortfolioData,
   ProjectWithDetails,
   Service,
   Skill,
+  UsePortfolioDataReturn,
 } from '@/types'
 import { useEffect, useState } from 'react'
-
-interface PortfolioData {
-  personalInfo: PersonalInfoWithSocials | null
-  heroStats: Hero | null
-  skills: Skill[]
-  projects: ProjectWithDetails[]
-  services: Service[]
-}
-
-interface UsePortfolioDataReturn {
-  data: PortfolioData | null
-  loading: boolean
-  error: string | null
-  refetch: () => Promise<void>
-}
 
 export function usePortfolioData(): UsePortfolioDataReturn {
   const [data, setData] = useState<PortfolioData | null>(null)

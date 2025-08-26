@@ -2,17 +2,15 @@ import { adminApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { settingUpdateSchema } from '@/lib/validations'
 import { NextRequest, NextResponse } from 'next/server'
+import type { ApiResponse, RouteParams, SiteSettings } from '@/types'
 import { z } from 'zod'
-
-interface RouteParams {
-  params: Promise<{
-    id: string
-  }>
-}
 
 // GET /api/settings/[id] - Get setting by ID (Admin only)
 export const GET = adminApiRoute(
-  async (request: NextRequest, { params }: RouteParams) => {
+  async (
+    request: NextRequest,
+    { params }: RouteParams
+  ): Promise<NextResponse<ApiResponse<SiteSettings>>> => {
     try {
       const { id } = await params
 
@@ -22,16 +20,19 @@ export const GET = adminApiRoute(
 
       if (!setting) {
         return NextResponse.json(
-          { message: 'Setting not found' },
+          { success: false, error: 'Setting not found' },
           { status: 404 }
         )
       }
 
-      return NextResponse.json(setting)
+      return NextResponse.json({
+        success: true,
+        data: setting,
+      })
     } catch (error) {
       console.error('Error fetching setting:', error)
       return NextResponse.json(
-        { message: 'Failed to fetch setting' },
+        { success: false, error: 'Failed to fetch setting' },
         { status: 500 }
       )
     }
@@ -40,7 +41,10 @@ export const GET = adminApiRoute(
 
 // PATCH /api/settings/[id] - Update setting (Admin only)
 export const PATCH = adminApiRoute(
-  async (request: NextRequest, { params }: RouteParams) => {
+  async (
+    request: NextRequest,
+    { params }: RouteParams
+  ): Promise<NextResponse<ApiResponse<SiteSettings>>> => {
     try {
       const { id } = await params
       const body = await request.json()
@@ -53,7 +57,7 @@ export const PATCH = adminApiRoute(
 
       if (!existingSetting) {
         return NextResponse.json(
-          { message: 'Setting not found' },
+          { success: false, error: 'Setting not found' },
           { status: 404 }
         )
       }
@@ -66,7 +70,7 @@ export const PATCH = adminApiRoute(
 
         if (keyExists) {
           return NextResponse.json(
-            { message: 'Setting with this key already exists' },
+            { success: false, error: 'Setting with this key already exists' },
             { status: 400 }
           )
         }
@@ -77,19 +81,23 @@ export const PATCH = adminApiRoute(
         data: validatedData,
       })
 
-      return NextResponse.json(setting)
+      return NextResponse.json({
+        success: true,
+        data: setting,
+        message: 'Setting updated successfully',
+      })
     } catch (error) {
       console.error('Error updating setting:', error)
 
       if (error instanceof z.ZodError) {
         return NextResponse.json(
-          { message: 'Validation error', errors: error.issues },
+          { success: false, error: 'Invalid setting data provided' },
           { status: 400 }
         )
       }
 
       return NextResponse.json(
-        { message: 'Failed to update setting' },
+        { success: false, error: 'Failed to update setting' },
         { status: 500 }
       )
     }
@@ -98,7 +106,10 @@ export const PATCH = adminApiRoute(
 
 // DELETE /api/settings/[id] - Delete setting (Admin only)
 export const DELETE = adminApiRoute(
-  async (request: NextRequest, { params }: RouteParams) => {
+  async (
+    request: NextRequest,
+    { params }: RouteParams
+  ): Promise<NextResponse<ApiResponse<null>>> => {
     try {
       const { id } = await params
 
@@ -109,7 +120,7 @@ export const DELETE = adminApiRoute(
 
       if (!existingSetting) {
         return NextResponse.json(
-          { message: 'Setting not found' },
+          { success: false, error: 'Setting not found' },
           { status: 404 }
         )
       }
@@ -118,11 +129,15 @@ export const DELETE = adminApiRoute(
         where: { id },
       })
 
-      return NextResponse.json({ message: 'Setting deleted successfully' })
+      return NextResponse.json({
+        success: true,
+        data: null,
+        message: 'Setting deleted successfully',
+      })
     } catch (error) {
       console.error('Error deleting setting:', error)
       return NextResponse.json(
-        { message: 'Failed to delete setting' },
+        { success: false, error: 'Failed to delete setting' },
         { status: 500 }
       )
     }

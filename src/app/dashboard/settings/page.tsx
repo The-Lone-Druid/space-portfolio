@@ -1,6 +1,5 @@
 import { DashboardPageHeader } from '@/components/dashboard/page-header'
 import { SettingListClient } from '@/components/dashboard/settings/setting-list-client'
-import { EmailTestingCard } from '@/components/dashboard/email-testing-card'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import {
@@ -103,9 +102,6 @@ export default async function SettingsPage() {
             </CardContent>
           </Card>
         )}
-
-        {/* Email Configuration Testing */}
-        <EmailTestingCard />
 
         {/* Settings List */}
         <SettingListClient settings={settings} />

@@ -1,18 +1,5 @@
 import { useState } from 'react'
-
-interface RevalidationResponse {
-  success: boolean
-  message?: string
-  error?: string
-  timestamp?: string
-  type?: 'path' | 'tag'
-  target?: string
-}
-
-interface UseRevalidationOptions {
-  onSuccess?: (response: RevalidationResponse) => void
-  onError?: (error: string) => void
-}
+import { UseRevalidationOptions, RevalidationResponse } from '../types'
 
 export function useRevalidation(options: UseRevalidationOptions = {}) {
   const [isLoading, setIsLoading] = useState(false)

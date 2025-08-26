@@ -1,147 +1,168 @@
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
 import {
   applyRateLimit,
   passwordResetCompletionRateLimit,
+  tokenValidationRateLimit,
   AuditLogger,
 } from '@/lib/rate-limit'
 import {
   consumePasswordResetToken,
   verifyPasswordResetToken,
-} from '../../../../services/password-reset-service'
+} from '@/services/password-reset-service'
+import { publicApiRoute } from '@/lib/auth-utils'
+import { resetPasswordSchema } from '@/lib/validations'
+import type { ApiResponse } from '@/types'
 
-const resetPasswordSchema = z.object({
-  token: z.string().min(1, 'Reset token is required'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one lowercase letter, one uppercase letter, and one number'
-    ),
-})
+export const POST = publicApiRoute(
+  async (request: NextRequest): Promise<NextResponse<ApiResponse<void>>> => {
+    try {
+      // Apply rate limiting for password reset completion
+      const rateLimitResult = await applyRateLimit(
+        request,
+        passwordResetCompletionRateLimit
+      )
 
-export async function POST(request: NextRequest) {
-  try {
-    // Apply rate limiting for password reset completion
-    const rateLimitResult = await applyRateLimit(
-      request,
-      passwordResetCompletionRateLimit
-    )
+      if (!rateLimitResult.success) {
+        return NextResponse.json(
+          { success: false, error: rateLimitResult.error },
+          {
+            status: 429,
+            headers: rateLimitResult.headers,
+          }
+        )
+      }
 
-    if (!rateLimitResult.success) {
+      // Parse and validate request body
+      const body = await request.json()
+      const { token, password } = resetPasswordSchema.parse(body)
+
+      // Verify the reset token
+      const email = await verifyPasswordResetToken(token)
+      if (!email) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Invalid or expired reset token',
+          },
+          {
+            status: 400,
+            headers: rateLimitResult.headers,
+          }
+        )
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(password, 12)
+
+      // Update user's password
+      await prisma.user.update({
+        where: { email },
+        data: {
+          password: hashedPassword,
+          updatedAt: new Date(),
+        },
+      })
+
+      // Mark the reset token as used
+      await consumePasswordResetToken(token)
+
+      // Log successful password reset
+      const clientIP =
+        request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+        request.headers.get('x-real-ip') ||
+        '127.0.0.1'
+
+      await AuditLogger.logPasswordChange('password-reset', clientIP)
+      console.warn(`Password successfully reset for email: ${email}`)
+
       return NextResponse.json(
-        { success: false, error: rateLimitResult.error },
         {
-          status: 429,
+          success: true,
+          message: 'Password reset successfully',
+        },
+        {
           headers: rateLimitResult.headers,
         }
       )
-    }
+    } catch (error) {
+      console.error('Reset password error:', error)
 
-    const body = await request.json()
-    const { token, password } = resetPasswordSchema.parse(body)
-
-    // Verify the reset token
-    const email = await verifyPasswordResetToken(token)
-    if (!email) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid or expired reset token',
-        },
-        { status: 400 }
-      )
-    }
-
-    // Hash the new password
-    const hashedPassword = await bcrypt.hash(password, 12)
-
-    // Update user's password
-    await prisma.user.update({
-      where: { email },
-      data: { password: hashedPassword },
-    })
-
-    // Mark the reset token as used
-    await consumePasswordResetToken(token)
-
-    // Log successful password reset
-    const clientIP =
-      request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
-      request.headers.get('x-real-ip') ||
-      '127.0.0.1'
-
-    await AuditLogger.logPasswordChange('password-reset', clientIP)
-    console.warn(`Password successfully reset for email: ${email}`)
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Password reset successfully',
-      },
-      {
-        headers: rateLimitResult.headers,
+      if (error instanceof Error && error.name === 'ZodError') {
+        return NextResponse.json(
+          { success: false, error: 'Invalid input data' },
+          { status: 400 }
+        )
       }
-    )
-  } catch (error) {
-    console.error('Reset password error:', error)
 
-    if (error instanceof z.ZodError) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid input',
-          details: error.issues,
-        },
-        { status: 400 }
+        { success: false, error: 'Internal server error' },
+        { status: 500 }
       )
     }
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'An error occurred while resetting your password',
-      },
-      { status: 500 }
-    )
   }
-}
+)
 
 // GET route to verify if a reset token is valid
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const token = searchParams.get('token')
+export const GET = publicApiRoute(
+  async (
+    request: NextRequest
+  ): Promise<NextResponse<ApiResponse<{ valid: boolean; email?: string }>>> => {
+    try {
+      // Apply rate limiting for token validation
+      const rateLimitResult = await applyRateLimit(
+        request,
+        tokenValidationRateLimit
+      )
 
-    if (!token) {
+      if (!rateLimitResult.success) {
+        return NextResponse.json(
+          { success: false, error: rateLimitResult.error },
+          {
+            status: 429,
+            headers: rateLimitResult.headers,
+          }
+        )
+      }
+
+      const { searchParams } = new URL(request.url)
+      const token = searchParams.get('token')
+
+      if (!token) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Reset token is required',
+          },
+          {
+            status: 400,
+            headers: rateLimitResult.headers,
+          }
+        )
+      }
+
+      // Verify the reset token
+      const email = await verifyPasswordResetToken(token)
+
       return NextResponse.json(
         {
-          success: false,
-          error: 'Reset token is required',
+          success: true,
+          data: {
+            valid: !!email,
+            email: email ? email.replace(/^(.{2}).*@/, '$1***@') : undefined, // Partially mask email
+          },
         },
-        { status: 400 }
+        {
+          headers: rateLimitResult.headers,
+        }
+      )
+    } catch (error) {
+      console.error('Token verification error:', error)
+      return NextResponse.json(
+        { success: false, error: 'Internal server error' },
+        { status: 500 }
       )
     }
-
-    // Verify the reset token
-    const email = await verifyPasswordResetToken(token)
-
-    return NextResponse.json({
-      success: true,
-      valid: !!email,
-      email: email ? email.replace(/^(.{2}).*@/, '$1***@') : null, // Partially mask email
-    })
-  } catch (error) {
-    console.error('Token verification error:', error)
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'An error occurred while verifying the token',
-      },
-      { status: 500 }
-    )
   }
-}
+)

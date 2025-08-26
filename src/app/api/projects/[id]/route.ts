@@ -1,14 +1,8 @@
 import { editorApiRoute, publicApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { projectUpdateSchema } from '@/lib/validations'
-import type { ApiResponse, ProjectWithDetails } from '@/types'
+import type { ApiResponse, ProjectWithDetails, RouteParams } from '@/types'
 import { NextRequest, NextResponse } from 'next/server'
-
-interface RouteParams {
-  params: Promise<{
-    id: string
-  }>
-}
 
 export const GET = publicApiRoute(
   async (

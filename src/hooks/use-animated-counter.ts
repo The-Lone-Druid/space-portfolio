@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-
-interface UseAnimatedCounterProps {
-  end: number
-  duration?: number
-  start?: number
-  suffix?: string
-}
+import { UseAnimatedCounterProps } from '../types'
 
 export const useAnimatedCounter = ({
   end,

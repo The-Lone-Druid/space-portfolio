@@ -1,28 +1,12 @@
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
-import { Hero, PersonalInfo, SocialLink } from '../types'
+import {
+  PersonalInfo,
+  PersonalInfoFormData,
+  SocialLink,
+  SocialLinkFormData,
+} from '../types'
 import { useCacheInvalidation } from './use-cache-invalidation'
-
-export interface PersonalInfoFormData {
-  name: string
-  title: string
-  bio: string
-  email: string
-  location: string
-  resumeUrl?: string
-  socialLinks?: Omit<
-    SocialLink,
-    'id' | 'createdAt' | 'updatedAt' | 'isActive' | 'personalInfoId'
-  >[]
-  heroStats: Omit<Hero, 'createdAt' | 'updatedAt' | 'isActive'>
-}
-
-export interface SocialLinkFormData {
-  name: string
-  url: string
-  icon?: string
-  order?: number
-}
 
 // Hook for personal info management
 export function usePersonalInfo() {

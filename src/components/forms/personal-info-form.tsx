@@ -20,10 +20,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { LoadingSpinnerInline } from '@/components/ui/loading-spinner'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  usePersonalInfo,
-  type PersonalInfoFormData,
-} from '@/hooks/use-personal-info'
+import { usePersonalInfo } from '@/hooks/use-personal-info'
 import {
   ExternalLink,
   FileText,
@@ -43,7 +40,12 @@ import {
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Hero, PersonalInfo, SocialLink } from '../../types'
+import {
+  Hero,
+  PersonalInfo,
+  PersonalInfoFormData,
+  SocialLink,
+} from '../../types'
 
 interface PersonalInfoFormProps {
   initialData?:

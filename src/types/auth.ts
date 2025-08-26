@@ -43,3 +43,35 @@ export class AuthError extends Error {
     this.name = 'AuthError'
   }
 }
+
+export interface ServiceResponse {
+  success: boolean
+  error?: string
+  data?: { message?: string; [key: string]: unknown }
+}
+
+export interface UseAuthOptions {
+  required?: boolean
+  requiredRole?: 'ADMIN' | 'EDITOR' | string[]
+  redirectTo?: string
+}
+
+export interface AuthActionResult {
+  success: boolean
+  error?: string
+  message?: string
+}
+
+export interface PasswordResetRequest {
+  email: string
+}
+
+export interface PasswordResetVerify {
+  token: string
+  password: string
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string
+  newPassword: string
+}
