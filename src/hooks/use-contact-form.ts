@@ -15,11 +15,18 @@ export const useContactForm = () => {
     setIsSubmitting(true)
 
     try {
-      // Simulate form submission - would normally send data to API
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      const response = await fetch('https://formspree.io/f/myzdybed', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
 
-      // Use data for API call in real implementation
-      void data
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
 
       toast.success('Mission Control Received! 🚀', {
         description:
@@ -27,7 +34,8 @@ export const useContactForm = () => {
       })
 
       form.reset()
-    } catch {
+    } catch (error) {
+      console.error('Contact form submission error:', error)
       toast.error('Houston, we have a problem! 🛰️', {
         description:
           'Something went wrong. Please try again or contact me directly.',

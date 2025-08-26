@@ -18,22 +18,6 @@ export const ContactForm = () => {
 
   return (
     <div className='h-fit'>
-      <div className='mb-6 md:mb-8'>
-        <div className='flex items-center space-x-3 md:space-x-4'>
-          <div className='bg-gradient-cosmic flex h-12 w-12 items-center justify-center rounded-xl shadow-lg md:h-14 md:w-14'>
-            <Send className='h-6 w-6 text-white md:h-7 md:w-7' />
-          </div>
-          <div>
-            <h3 className='text-lg font-bold text-white md:text-xl'>
-              Send me a message
-            </h3>
-            <p className='text-sm text-gray-400 md:text-base'>
-              Let&apos;s start a conversation
-            </p>
-          </div>
-        </div>
-      </div>
-
       <form onSubmit={onSubmit} className='space-y-4 md:space-y-5'>
         {/* Name Fields Row */}
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4'>

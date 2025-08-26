@@ -184,6 +184,19 @@ const Projects = ({ projects }: ProjectsProps) => {
   }
   return (
     <>
+      {/* Background Effects */}
+      <div className='pointer-events-none absolute inset-0 overflow-hidden'>
+        <div className='bg-space-gold/20 animate-float absolute top-20 right-10 h-4 w-4 rounded-full'></div>
+        <div
+          className='bg-space-accent/30 animate-float absolute bottom-32 left-20 h-2 w-2 rounded-full'
+          style={{ animationDelay: '2s' }}
+        ></div>
+        <div
+          className='animate-float absolute top-1/2 right-1/4 h-3 w-3 rounded-full bg-blue-400/20'
+          style={{ animationDelay: '4s' }}
+        ></div>
+      </div>
+
       <SectionHeader
         title='My'
         highlight='Featured Projects'
@@ -191,7 +204,9 @@ const Projects = ({ projects }: ProjectsProps) => {
       />
 
       {/* Featured Projects Grid (First 3) */}
-      <div className='mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+      <div
+        className={`mb-12 grid transform grid-cols-1 gap-8 transition-all duration-1000 md:grid-cols-2 lg:grid-cols-3 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+      >
         {featuredProjects.map((project, index) => (
           <ProjectCardEnhanced
             key={project.id}
@@ -201,97 +216,132 @@ const Projects = ({ projects }: ProjectsProps) => {
         ))}
       </div>
 
-      {/* Show More Projects Button */}
+      {/* Enhanced Show More Projects Button */}
       {hasMoreProjects && (
-        <div className='mb-8 text-center'>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                size='lg'
-                variant='cosmic'
-                className='group relative overflow-hidden'
-              >
-                <Grid3X3 className='mr-2 h-5 w-5' />
-                View All Projects ({projects.length})
-                <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className='border-space-accent/30 max-h-[90vh] max-w-6xl bg-black/95'>
-              <DialogHeader>
-                <DialogTitle className='text-2xl font-bold text-white'>
-                  All Projects ({filteredProjects.length})
-                </DialogTitle>
-              </DialogHeader>
-
-              {/* Search and Filter Controls */}
-              <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
-                <div className='relative flex-1'>
-                  <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
-                  <Input
-                    placeholder='Search projects...'
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className='border-white/20 bg-white/5 pl-10 text-white placeholder:text-gray-400'
-                  />
-                </div>
-                <div className='relative min-w-[200px]'>
-                  <Filter className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
-                  <select
-                    value={selectedSkill}
-                    onChange={e => setSelectedSkill(e.target.value)}
-                    className='focus:ring-space-accent/50 focus:border-space-accent/50 w-full rounded-md border border-white/20 bg-white/5 py-2 pr-4 pl-10 text-white focus:ring-2 focus:outline-none'
-                  >
-                    <option value=''>All Skills</option>
-                    {allSkills.map(skill => (
-                      <option key={skill} value={skill} className='bg-gray-900'>
-                        {skill}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Projects Grid in Dialog */}
-              <div className='max-h-[60vh] overflow-y-auto'>
-                {filteredProjects.length > 0 ? (
-                  <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                    {filteredProjects.map((project, index) => (
-                      <ProjectCardEnhanced
-                        key={project.id}
-                        project={project}
-                        index={index}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className='py-12 text-center'>
-                    <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-800'>
-                      <Search className='h-8 w-8 text-gray-500' />
+        <div
+          className={`mb-12 transform text-center transition-all delay-300 duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+        >
+          <div className='relative inline-block'>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  size='lg'
+                  variant='cosmic'
+                  className='group relative overflow-hidden px-8 py-4 text-lg font-semibold'
+                >
+                  <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+                  <div className='relative z-10 flex items-center gap-3'>
+                    <div className='from-space-accent flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br to-purple-500 transition-transform duration-300 group-hover:scale-110'>
+                      <Grid3X3 className='h-3 w-3 text-white' />
                     </div>
-                    <p className='mb-2 text-xl text-gray-400'>
-                      No projects found
-                    </p>
-                    <p className='text-gray-500'>
-                      Try adjusting your search or filter criteria
-                    </p>
+                    <span>Explore All Projects</span>
+                    <span className='text-space-gold'>({projects.length})</span>
                   </div>
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
+                  <div className='from-space-gold to-space-accent absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r transition-all duration-500 group-hover:w-full'></div>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className='border-space-accent/30 from-space-cosmic/70 max-h-[90vh] max-w-6xl bg-gradient-to-br to-gray-900/80 backdrop-blur-xl'>
+                <DialogHeader className='border-space-accent/20 border-b pb-4'>
+                  <DialogTitle className='flex items-center gap-3 text-2xl font-bold text-white'>
+                    <div className='from-space-accent flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br to-purple-500'>
+                      <Rocket className='h-4 w-4 text-white' />
+                    </div>
+                    Complete Project Portfolio
+                    <span className='text-space-gold'>
+                      ({filteredProjects.length})
+                    </span>
+                  </DialogTitle>
+                </DialogHeader>
+
+                {/* Enhanced Search and Filter Controls */}
+                <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
+                  <div className='group relative flex-1'>
+                    <Search className='group-focus-within:text-space-accent absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400 transition-colors duration-300' />
+                    <Input
+                      placeholder='Search projects by name or description...'
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      className='focus:border-space-accent/50 focus:ring-space-accent/50 border-white/20 bg-white/5 pl-10 text-white transition-all duration-300 placeholder:text-gray-400 hover:border-white/30'
+                    />
+                  </div>
+                  <div className='group relative min-w-[200px]'>
+                    <Filter className='group-focus-within:text-space-accent absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400 transition-colors duration-300' />
+                    <select
+                      value={selectedSkill}
+                      onChange={e => setSelectedSkill(e.target.value)}
+                      className='focus:ring-space-accent/50 focus:border-space-accent/50 w-full rounded-md border border-white/20 bg-white/5 py-2 pr-4 pl-10 text-white transition-all duration-300 hover:border-white/30 focus:ring-2 focus:outline-none'
+                    >
+                      <option value='' className='bg-gray-900'>
+                        All Technologies
+                      </option>
+                      {allSkills.map(skill => (
+                        <option
+                          key={skill}
+                          value={skill}
+                          className='bg-gray-900'
+                        >
+                          {skill}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Projects Grid in Dialog */}
+                <div className='max-h-[60vh] overflow-y-auto'>
+                  {filteredProjects.length > 0 ? (
+                    <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                      {filteredProjects.map((project, index) => (
+                        <ProjectCardEnhanced
+                          key={project.id}
+                          project={project}
+                          index={index}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className='flex flex-col items-center justify-center py-12'>
+                      <div className='mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-gray-800 to-gray-900'>
+                        <Search className='h-8 w-8 text-gray-500' />
+                      </div>
+                      <h3 className='mb-2 text-xl font-semibold text-gray-300'>
+                        No projects found
+                      </h3>
+                      <p className='text-center text-gray-500'>
+                        Try adjusting your search terms or
+                        <br />
+                        select a different technology filter
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </DialogContent>
+            </Dialog>
+            <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 -z-10 rounded-xl bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
+          </div>
         </div>
       )}
 
-      {/* Empty State */}
+      {/* Enhanced Empty State */}
       {projects.length === 0 && (
-        <div className='py-20 text-center'>
-          <div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-800'>
-            <Rocket className='h-10 w-10 text-gray-500' />
+        <div className='relative mx-auto max-w-md py-20 text-center'>
+          <div className='glass-cosmic rounded-2xl border border-white/10 p-12'>
+            <div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gray-800 to-gray-900'>
+              <Rocket className='h-10 w-10 text-gray-500' />
+            </div>
+            <h3 className='mb-2 text-xl font-semibold text-gray-300'>
+              No projects available
+            </h3>
+            <p className='text-gray-500'>
+              Amazing projects will appear here once they are added to the
+              cosmic portfolio.
+            </p>
+            <div className='mt-6 flex justify-center'>
+              <div className='from-space-gold/20 flex h-8 w-8 animate-pulse items-center justify-center rounded-full bg-gradient-to-br to-transparent'>
+                <Star className='text-space-gold h-4 w-4' />
+              </div>
+            </div>
           </div>
-          <p className='mb-2 text-xl text-gray-400'>No projects available</p>
-          <p className='text-gray-500'>
-            Projects will appear here once they are added.
-          </p>
         </div>
       )}
     </>
