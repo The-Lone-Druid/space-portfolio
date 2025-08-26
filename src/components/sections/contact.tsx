@@ -5,7 +5,7 @@ import { useAnimatedCounter } from '../../hooks/use-animated-counter'
 import { getLucideIcon } from '../../lib/utils'
 import { PersonalInfoWithSocials } from '../../types'
 import { ContactMethodCard } from '../cards/contact-method-card'
-import { SectionCard } from '../cards/section-card'
+import { SectionHeader } from '../shared/section-header'
 import { SocialLinkCard } from '../cards/social-link-card'
 import { ContactForm } from '../forms/contact-form'
 
@@ -50,13 +50,14 @@ const Contact = ({ personalInfo }: ContactProps) => {
   }))
 
   return (
-    <SectionCard
-      id='contact'
-      title="Let's"
-      highlight='Work Together'
-      subtitle="Ready to bring your vision to life? I'd love to hear about your project and explore how we can create something extraordinary together."
-      badge={{ text: 'Ready to collaborate?', emoji: '💫' }}
-    >
+    <>
+      <SectionHeader
+        title="Let's"
+        highlight='Work Together'
+        subtitle="Ready to bring your vision to life? I'd love to hear about your project and explore how we can create something extraordinary together."
+        badge={{ text: 'Ready to collaborate?', emoji: '💫' }}
+      />
+
       {/* Quick stats with improved visual appeal and responsive design */}
       <div className='relative mb-12 md:mb-16'>
         <div className='glass-cosmic rounded-2xl p-6 shadow-2xl md:rounded-3xl md:p-8'>
@@ -173,7 +174,7 @@ const Contact = ({ personalInfo }: ContactProps) => {
           </div>
         </div>
       </div>
-    </SectionCard>
+    </>
   )
 }
 

@@ -5,7 +5,7 @@ import { Code, Mail, Rocket, Star, Zap } from 'lucide-react'
 import { Hero } from '../../types'
 import { AchievementCard } from '../cards/achievement-card'
 import { HighlightCard } from '../cards/highlight-card'
-import { SectionCard } from '../cards/section-card'
+import { SectionHeader } from '../shared/section-header'
 import { StoryCard } from '../cards/story-card'
 
 interface AboutProps {
@@ -63,12 +63,13 @@ const About = ({ heroStats }: AboutProps) => {
   ]
 
   return (
-    <SectionCard
-      id='about'
-      title='About My'
-      highlight='Journey'
-      subtitle='Discover the story behind the cosmic code explorer who transforms ideas into digital realities'
-    >
+    <>
+      <SectionHeader
+        title='About My'
+        highlight='Journey'
+        subtitle='Discover the story behind the cosmic code explorer who transforms ideas into digital realities'
+      />
+
       <div className='mb-16 grid grid-cols-1 gap-12 lg:grid-cols-2'>
         {/* Left - Personal Story */}
         <div className='space-y-6'>
@@ -163,7 +164,7 @@ const About = ({ heroStats }: AboutProps) => {
           </div>
         </div>
       </div>
-    </SectionCard>
+    </>
   )
 }
 

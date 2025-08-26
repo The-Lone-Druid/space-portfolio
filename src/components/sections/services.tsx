@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { scrollToSection } from '../../lib/utils'
 import { Service } from '../../types'
-import { SectionCard } from '../cards/section-card'
+import { SectionHeader } from '../shared/section-header'
 import { ServiceCard } from '../cards/service-card'
 
 interface ServicesProps {
@@ -16,12 +16,13 @@ const Services = ({ services }: ServicesProps) => {
   }
 
   return (
-    <SectionCard
-      id='services'
-      title='Services I'
-      highlight='Offer'
-      subtitle='From concept to deployment, I provide comprehensive solutions to launch your digital presence into the stratosphere of success'
-    >
+    <>
+      <SectionHeader
+        title='Services I'
+        highlight='Offer'
+        subtitle='From concept to deployment, I provide comprehensive solutions to launch your digital presence into the stratosphere of success'
+      />
+
       {/* Services Grid */}
       <div className='mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
         {services.map((service, index) => (
@@ -66,7 +67,7 @@ const Services = ({ services }: ServicesProps) => {
           </Button>
         </div>
       </div>
-    </SectionCard>
+    </>
   )
 }
 

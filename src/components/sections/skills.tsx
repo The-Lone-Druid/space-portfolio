@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { Skill } from '../../types'
-import { SectionCard } from '../cards/section-card'
+import { SectionHeader } from '../shared/section-header'
 import { SkillCard } from '../cards/skill-card'
 
 interface SkillProps {
@@ -26,12 +26,13 @@ const Skills = ({ skills }: SkillProps) => {
       : skills.filter(skill => skill.category === selectedCategory)
 
   return (
-    <SectionCard
-      id='skills'
-      title='My'
-      highlight='Skill Constellation'
-      subtitle="Explore the technologies and tools I've mastered in my journey through the digital universe. Each skill represents countless hours of exploration and discovery."
-    >
+    <>
+      <SectionHeader
+        title='My'
+        highlight='Skill Constellation'
+        subtitle="Explore the technologies and tools I've mastered in my journey through the digital universe. Each skill represents countless hours of exploration and discovery."
+      />
+
       {/* Category Filter */}
       <div className='mb-12 flex flex-wrap justify-center gap-4'>
         {categories.map(category => (
@@ -70,7 +71,7 @@ const Skills = ({ skills }: SkillProps) => {
           </p>
         </div>
       )}
-    </SectionCard>
+    </>
   )
 }
 

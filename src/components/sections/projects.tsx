@@ -2,7 +2,7 @@
 
 import { ProjectWithDetails } from '../../types'
 import { ProjectCard } from '../cards/project-card'
-import { SectionCard } from '../cards/section-card'
+import { SectionHeader } from '../shared/section-header'
 
 interface ProjectsProps {
   projects: ProjectWithDetails[]
@@ -10,12 +10,13 @@ interface ProjectsProps {
 
 const Projects = ({ projects }: ProjectsProps) => {
   return (
-    <SectionCard
-      id='projects'
-      title='My'
-      highlight='Featured Projects'
-      subtitle="Explore a collection of applications I've built, each one solving real-world problems with innovative technology solutions"
-    >
+    <>
+      <SectionHeader
+        title='My'
+        highlight='Featured Projects'
+        subtitle="Explore a collection of applications I've built, each one solving real-world problems with innovative technology solutions"
+      />
+
       {/* Projects Grid */}
       <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
         {projects.map((project, index) => (
@@ -41,7 +42,7 @@ const Projects = ({ projects }: ProjectsProps) => {
           <p className='text-xl text-gray-400'>No projects found.</p>
         </div>
       )}
-    </SectionCard>
+    </>
   )
 }
 
