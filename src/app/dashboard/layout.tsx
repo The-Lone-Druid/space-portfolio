@@ -1,4 +1,4 @@
-import { DashboardAuthProvider } from '@/components/auth/dashboard-auth-provider'
+import { DashboardGuard } from '@/components/auth/dashboard-guard'
 import { DashboardHeader } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import type { Metadata } from 'next'
@@ -14,7 +14,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <DashboardAuthProvider>
+    <DashboardGuard>
       <div className='bg-gradient-cosmic flex h-screen overflow-hidden'>
         {/* Sidebar */}
         <Sidebar className='w-64' />
@@ -30,6 +30,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </main>
         </div>
       </div>
-    </DashboardAuthProvider>
+    </DashboardGuard>
   )
 }

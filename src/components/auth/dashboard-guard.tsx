@@ -5,13 +5,17 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-interface DashboardAuthProviderProps {
+interface DashboardGuardProps {
   children: React.ReactNode
 }
 
-export function DashboardAuthProvider({
-  children,
-}: DashboardAuthProviderProps) {
+/**
+ * Dashboard Guard Component
+ * Protects dashboard routes by checking authentication and role permissions
+ * Redirects unauthenticated users to signin page
+ * Redirects users without proper roles to unauthorized page
+ */
+export function DashboardGuard({ children }: DashboardGuardProps) {
   const { data: session, status } = useSession()
   const router = useRouter()
 
@@ -23,35 +27,44 @@ export function DashboardAuthProvider({
       return
     }
 
-    // Check if user has required role
+    // Check if user has required role (ADMIN or EDITOR)
     if (session.user.role !== 'ADMIN' && session.user.role !== 'EDITOR') {
       router.push('/auth/unauthorized')
       return
     }
   }, [session, status, router])
 
+  // Show loading screen while checking authentication
   if (status === 'loading') {
     return (
       <div className='bg-gradient-cosmic flex min-h-screen items-center justify-center'>
         <div className='space-y-4 text-center'>
-          <div className='flex items-center justify-center'>
-            <LoadingSpinner
-              variant='orbit'
-              size='xl'
-              message='Verifying authentication, Please wait....'
-            />
+          <LoadingSpinner
+            variant='orbit'
+            size='xl'
+            message='Verifying authentication...'
+          />
+          <div>
+            <h2 className='mb-2 text-2xl font-semibold text-white'>
+              Loading Dashboard
+            </h2>
+            <p className='text-lg text-white/70'>
+              Preparing your space control center
+            </p>
           </div>
         </div>
       </div>
     )
   }
 
+  // Return null if redirecting (handled in useEffect)
   if (
     !session ||
     (session.user.role !== 'ADMIN' && session.user.role !== 'EDITOR')
   ) {
-    return null // Redirect is handled in useEffect
+    return null
   }
 
+  // Render children if authenticated and authorized
   return <>{children}</>
 }

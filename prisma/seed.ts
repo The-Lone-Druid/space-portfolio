@@ -6,41 +6,40 @@ const prisma = new PrismaClient()
 async function main() {
   console.warn('🌌 Starting Space Portfolio seeding...')
 
-  // Create admin user
-  const hashedPassword = await bcrypt.hash(
-    process.env.ADMIN_PASSWORD || 'admin123',
-    12
-  )
+  if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
+    console.error('Missing admin email or password')
+    return
+  }
 
-  const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@spaceportfolio.com' },
+  // Create admin user
+  const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12)
+
+  await prisma.user.upsert({
+    where: { email: process.env.ADMIN_EMAIL },
     update: {},
     create: {
-      email: 'admin@spaceportfolio.com',
+      email: process.env.ADMIN_EMAIL,
       password: hashedPassword,
-      name: 'Space Admin',
+      name: 'Zahid Shaikh',
       role: 'ADMIN',
     },
   })
 
-  console.warn('👤 Admin user created:', adminUser.email)
+  console.warn('✅ Admin user created')
 
   // Create Personal Info
-  const personalInfo = await prisma.personalInfo.upsert({
-    where: { id: 'personal-info-1' },
-    update: {},
-    create: {
-      id: 'personal-info-1',
+  const personalInfo = await prisma.personalInfo.create({
+    data: {
       name: 'Zahid Shaikh',
       title: 'Full Stack Developer & Tech Innovator',
       bio: 'I craft modern web experiences and build scalable applications that drive user satisfaction. With a passion for clean code and innovative solutions, I transform ideas into powerful digital products.',
-      email: 'reachtozahid@gmail.com',
+      email: process.env.ADMIN_EMAIL,
       location: 'Pune, Maharashtra',
       resumeUrl: '#',
     },
   })
 
-  console.warn('👨‍💻 Personal info created:', personalInfo.name)
+  console.warn('✅ Personal info created')
 
   // Create Social Links for Personal Info
   const socialLinks = [
@@ -60,32 +59,22 @@ async function main() {
     },
   ]
 
-  for (const link of socialLinks) {
-    await prisma.socialLink.upsert({
-      where: { id: `social-${link.name.toLowerCase()}` },
-      update: {},
-      create: {
-        id: `social-${link.name.toLowerCase()}`,
-        ...link,
-      },
-    })
-  }
+  await prisma.socialLink.createMany({
+    data: socialLinks,
+  })
 
-  console.warn('🔗 Social links created')
+  console.warn('✅ Social links created')
 
   // Create Hero Stats
-  const hero = await prisma.hero.upsert({
-    where: { id: 'hero-stats-1' },
-    update: {},
-    create: {
-      id: 'hero-stats-1',
+  await prisma.hero.create({
+    data: {
       verifiedSkills: 25,
       professionalProjects: 12,
       personalProjects: 16,
     },
   })
 
-  console.warn('🦸‍♂️ Hero stats created:', hero)
+  console.warn('✅ Hero stats created')
 
   // Create Services
   const services = [
@@ -127,16 +116,9 @@ async function main() {
     },
   ]
 
-  for (const service of services) {
-    const existing = await prisma.service.findFirst({
-      where: { name: service.name },
-    })
-    if (!existing) {
-      await prisma.service.create({ data: service })
-    }
-  }
+  await prisma.service.createMany({ data: services })
 
-  console.warn('🛠️ Services created:', services.length)
+  console.warn('✅ Services created')
 
   // Create some site settings
   const settings = [
@@ -161,17 +143,13 @@ async function main() {
     },
   ]
 
-  for (const setting of settings) {
-    await prisma.siteSettings.upsert({
-      where: { key: setting.key },
-      update: {},
-      create: setting,
-    })
-  }
+  await prisma.siteSettings.createMany({
+    data: settings,
+  })
 
-  console.warn('⚙️ Site settings created:', settings.length)
+  console.warn('✅ Site settings created')
 
-  console.warn('✨ Space Portfolio seeding completed successfully!')
+  console.warn('💯 Space Portfolio seeding completed successfully!')
 }
 
 main()
