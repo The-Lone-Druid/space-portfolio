@@ -16,89 +16,455 @@ This is a **space-themed personal portfolio** built with Next.js 15 App Router, 
 
 ## 1. 🏗️ Coding Patterns & Architecture
 
-### Service Layer Pattern
+### API Route Patterns
 
-Always separate business logic from API routes and UI components:
+#### Security Wrapper Pattern (Required)
+
+Use consistent security wrappers for all API routes based on access level:
 
 ```typescript
-// ✅ Good: Service layer handles business logic
-export class UserService {
-  static async createUser(data: CreateUserData): Promise<ServiceResponse> {
+// ✅ Import security wrappers
+import {
+  editorApiRoute,
+  publicApiRoute,
+  adminApiRoute,
+  protectedApiRoute,
+} from '@/lib/auth-utils'
+
+// ✅ Public routes (portfolio display)
+export const GET = publicApiRoute(
+  async (): Promise<NextResponse<ApiResponse<DataType[]>>> => {
     try {
-      // Business logic here
-      return { success: true, data: user }
+      const data = await getDataFromService()
+      return NextResponse.json({
+        success: true,
+        data,
+      })
     } catch (error) {
-      return { success: false, error: 'Failed to create user' }
+      console.error('Error fetching data:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch data' },
+        { status: 500 }
+      )
     }
   }
-}
+)
 
-// ✅ API route delegates to service
-export async function POST(request: NextRequest) {
-  const result = await UserService.createUser(data)
-  return NextResponse.json(result)
-}
+// ✅ Editor/Admin routes (content management)
+export const POST = editorApiRoute(
+  async (
+    request: NextRequest
+  ): Promise<NextResponse<ApiResponse<DataType>>> => {
+    try {
+      const body = await request.json()
+      const validatedData = dataSchema.parse(body)
+
+      const result = await createDataInService(validatedData)
+
+      return NextResponse.json({
+        success: true,
+        data: result,
+        message: 'Data created successfully',
+      })
+    } catch (error) {
+      console.error('Error creating data:', error)
+
+      if (error instanceof Error && error.name === 'ZodError') {
+        return NextResponse.json(
+          { success: false, error: 'Invalid data provided' },
+          { status: 400 }
+        )
+      }
+
+      return NextResponse.json(
+        { success: false, error: 'Failed to create data' },
+        { status: 500 }
+      )
+    }
+  }
+)
 ```
 
-### API Route Security Wrapper Pattern
-
-Use consistent security wrappers for all API routes:
+#### Individual Resource API Pattern ([id]/route.ts)
 
 ```typescript
-// ✅ Consistent security pattern
-export const adminApiRoute = createApiWrapper('ADMIN')
-export const editorApiRoute = createApiWrapper('EDITOR')
-export const publicApiRoute = createApiWrapper('PUBLIC')
+import { editorApiRoute, publicApiRoute } from '@/lib/auth-utils'
+import { prisma } from '@/lib/prisma'
+import type { ApiResponse, DataType } from '@/types'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Usage in API routes
-export const POST = adminApiRoute(async (request, { user }) => {
-  // Handler with authenticated user context
+interface RouteParams {
+  params: Promise<{ id: string }>
+}
+
+export const GET = publicApiRoute(
+  async (
+    request: NextRequest,
+    { params }: RouteParams
+  ): Promise<NextResponse<ApiResponse<DataType>>> => {
+    try {
+      const { id } = await params
+      const itemId = parseInt(id)
+
+      if (isNaN(itemId)) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid ID' },
+          { status: 400 }
+        )
+      }
+
+      const item = await prisma.model.findUnique({
+        where: { id: itemId },
+        include: { relations: true },
+      })
+
+      if (!item) {
+        return NextResponse.json(
+          { success: false, error: 'Item not found' },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: item,
+      })
+    } catch (error) {
+      console.error('Error fetching item:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch item' },
+        { status: 500 }
+      )
+    }
+  }
+)
+```
+
+### Service Layer Pattern (Required)
+
+Always separate business logic from API routes using service layer:
+
+```typescript
+// ✅ Service layer with caching (src/services/*)
+import { prisma } from '@/lib/prisma'
+import { unstable_cache } from 'next/cache'
+
+export const getDataServer = unstable_cache(
+  async () => {
+    try {
+      const data = await prisma.model.findMany({
+        where: { isActive: true },
+        include: { relations: true },
+        orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
+      })
+      return data
+    } catch (error) {
+      console.error('Error fetching data server-side:', error)
+      return []
+    }
+  },
+  ['data-server'],
+  {
+    tags: ['data', 'portfolio-data'],
+    revalidate: 60,
+  }
+)
+
+// ✅ API route delegates to service
+export const GET = publicApiRoute(async () => {
+  try {
+    const data = await getDataServer()
+    return NextResponse.json({ success: true, data })
+  } catch (error) {
+    console.error('Error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch data' },
+      { status: 500 }
+    )
+  }
 })
 ```
 
-### Form Validation Pattern
+### Validation & Error Handling Pattern (Required)
 
 Centralize validation schemas and use consistent error handling:
 
 ```typescript
 // ✅ Centralized validation in lib/validations.ts
-export const createUserSchema = z.object({
+export const createDataSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
+  category: z.string().min(1, 'Category is required'),
+  level: z.number().min(1).max(5),
+  order: z.number().int().min(0).default(0),
+  isActive: z.boolean().default(true),
 })
 
-// ✅ Consistent form handling
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm({
-  resolver: zodResolver(createUserSchema),
-})
+export type CreateDataForm = z.infer<typeof createDataSchema>
+
+// ✅ Consistent API error handling
+try {
+  const body = await request.json()
+  const validatedData = createDataSchema.parse(body)
+
+  // Process with validated data...
+} catch (error) {
+  console.error('Error:', error)
+
+  if (error instanceof Error && error.name === 'ZodError') {
+    return NextResponse.json(
+      { success: false, error: 'Invalid data provided' },
+      { status: 400 }
+    )
+  }
+
+  return NextResponse.json(
+    { success: false, error: 'Failed to process request' },
+    { status: 500 }
+  )
+}
 ```
 
-### Error Handling Pattern
+### Rate Limiting Pattern (Required for Auth APIs)
 
-Use consistent error handling across the application:
+Use specific rate limits for different API endpoints:
 
 ```typescript
-// ✅ Standardized service response
-interface ServiceResponse<T = any> {
-  success: boolean
-  error?: string
-  data?: T
-}
+// ✅ Import specific rate limits from lib/rate-limit.ts
+import {
+  applyRateLimit,
+  passwordResetRequestRateLimit,
+  passwordResetCompletionRateLimit,
+  tokenValidationRateLimit,
+  loginRateLimit,
+} from '@/lib/rate-limit'
 
-// ✅ Consistent error boundaries
-export class AppError extends Error {
-  constructor(
-    message: string,
-    public status: number = 500,
-    public code: string = 'INTERNAL_ERROR'
-  ) {
-    super(message)
+// ✅ Apply appropriate rate limit per endpoint
+export const POST = publicApiRoute(async (request: NextRequest) => {
+  try {
+    // Apply rate limiting first
+    const rateLimitResult = await applyRateLimit(
+      request,
+      passwordResetRequestRateLimit // Use specific rate limit
+    )
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { success: false, error: rateLimitResult.error },
+        {
+          status: 429,
+          headers: rateLimitResult.headers,
+        }
+      )
+    }
+
+    // Continue with API logic...
+  } catch (error) {
+    // Handle errors...
   }
+})
+
+// ✅ Rate limit types for different actions:
+// - loginRateLimit: 5 attempts/15 minutes
+// - passwordResetRequestRateLimit: 3 attempts/hour
+// - passwordResetCompletionRateLimit: 5 attempts/hour
+// - tokenValidationRateLimit: 10 attempts/hour
+```
+
+````
+
+### Database Transaction Pattern
+
+Use Prisma transactions for complex operations:
+
+```typescript
+// ✅ Transaction for related data creation
+const result = await prisma.$transaction(async tx => {
+  const mainRecord = await tx.model.create({
+    data: mainData,
+  })
+
+  if (relatedData.length > 0) {
+    await tx.relatedModel.createMany({
+      data: relatedData.map(item => ({
+        ...item,
+        mainRecordId: mainRecord.id,
+      })),
+    })
+  }
+
+  return mainRecord
+})
+````
+
+### Page Component Patterns
+
+#### Server Component Pattern (Default)
+
+Use server components with server-side data fetching:
+
+```typescript
+// ✅ Server component with async data fetching
+export default async function DataPage() {
+  // Server-side data fetching with Promise.all for parallel requests
+  const [data, stats] = await Promise.all([
+    getDataServer(),
+    getDataStats(),
+  ])
+
+  return (
+    <div className='space-y-6'>
+      {/* Header with DashboardPageHeader component */}
+      <DashboardPageHeader
+        title='Data Management'
+        description='Manage your data across the digital cosmos.'
+      />
+
+      {/* Stats Overview */}
+      <div className='grid gap-4 md:grid-cols-3'>
+        <StatsCard icon={Icon} label="Total Items" value={stats.total} />
+      </div>
+
+      {/* Main Content */}
+      <DataListClient data={data} />
+    </div>
+  )
 }
+```
+
+#### Loading Component Pattern (Required)
+
+Create matching loading.tsx for each page with skeleton UI:
+
+```typescript
+// ✅ loading.tsx pattern matching page structure
+import { DashboardPageHeader } from '@/components/dashboard/page-header'
+import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+
+export default function DataLoading() {
+  return (
+    <div className='space-y-6'>
+      {/* Header skeleton */}
+      <DashboardPageHeader
+        title='Data Management'
+        description='Loading your data...'
+        isLoading={true}
+      />
+
+      {/* Stats skeleton */}
+      <div className='grid gap-4 md:grid-cols-3'>
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Card key={i} className='glass-nebula border-space-accent/30'>
+            <CardContent className='p-4'>
+              <div className='flex items-center justify-between'>
+                <div className='space-y-2'>
+                  <Skeleton className='h-4 w-24 bg-white/20' />
+                  <Skeleton className='h-6 w-8 bg-white/20' />
+                </div>
+                <Skeleton className='h-5 w-5 bg-white/20' />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Content skeleton */}
+      <Card className='glass-nebula border-space-accent/30'>
+        <CardContent className='p-6'>
+          <div className='space-y-4'>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className='h-20 w-full bg-white/20' />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+```
+
+### Client Component Pattern (When Needed)
+
+Use client components for interactivity with 'use client' directive:
+
+```typescript
+// ✅ Client component for interactivity
+'use client'
+
+import { useState } from 'react'
+import { useDataActions } from '@/hooks/use-data-actions'
+
+export function DataListClient({ data }: { data: DataType[] }) {
+  const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const { deleteData, isLoading } = useDataActions()
+
+  const handleDelete = async (id: number) => {
+    const result = await deleteData(id)
+    if (result.success) {
+      // Handle success (data will be revalidated automatically)
+    }
+  }
+
+  return (
+    <div className='space-y-4'>
+      {data.map(item => (
+        <DataCard
+          key={item.id}
+          data={item}
+          onDelete={() => handleDelete(item.id)}
+          isLoading={isLoading}
+        />
+      ))}
+    </div>
+  )
+}
+```
+
+### Hook Patterns
+
+#### API Action Hooks (Centralized)
+
+Create centralized hooks for API interactions:
+
+```typescript
+// ✅ Centralized API actions (src/hooks/use-data-actions.ts)
+export function useDataActions() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const createData = async (data: CreateDataForm): Promise<ActionResult> => {
+    setIsLoading(true)
+    try {
+      const response = await fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        toast.success('Data created successfully!')
+        revalidateTag('data')
+        return { success: true, data: result.data }
+      } else {
+        toast.error('Failed to create data', {
+          description: result.error,
+        })
+        return { success: false, error: result.error }
+      }
+    } catch (error) {
+      const errorMessage = 'Failed to create data. Please try again.'
+      toast.error('An error occurred', { description: errorMessage })
+      return { success: false, error: errorMessage }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return { createData, isLoading }
+}
+```
+
 ```
 
 ## 2. 📁 Folder Structure & Organization
@@ -108,43 +474,45 @@ export class AppError extends Error {
 Follow this exact structure for consistency and scalability:
 
 ```
+
 src/
-├── app/                 # Next.js 15 App Router
-│   ├── (routes)/        # Route groups for organization
-│   ├── api/             # API endpoints with route handlers
-│   ├── auth/            # Authentication pages
-│   ├── dashboard/       # Protected dashboard routes
-│   ├── globals.css      # Global styles and CSS variables
-│   ├── layout.tsx       # Root layout with providers
-│   └── page.tsx         # Homepage
-├── components/          # Reusable components by category
-│   ├── ui/              # shadcn/ui components ONLY
-│   ├── auth/            # Authentication-specific components
-│   ├── dashboard/       # Dashboard-specific components
-│   ├── forms/           # Form components with validation
-│   ├── cards/           # Card-based components
-│   ├── sections/        # Page section components
-│   ├── animations/      # Animation and motion components
-│   └── shared/          # Shared utility components
-├── hooks/               # Custom React hooks
-│   ├── use-auth.ts      # Authentication hooks
-│   ├── use-api.ts       # API interaction hooks
-│   └── use-*.ts         # Feature-specific hooks
-├── lib/                 # Utility libraries and configurations
-│   ├── auth.ts          # NextAuth configuration
-│   ├── db.ts            # Database configuration
-│   ├── utils.ts         # General utilities (cn, etc.)
-│   ├── validations.ts   # Zod validation schemas
-│   └── *.ts             # Feature-specific utilities
-├── services/            # Business logic layer
-│   ├── auth-service.ts  # Authentication business logic
-│   ├── user-service.ts  # User management logic
-│   └── *-service.ts     # Feature-specific services
-└── types/               # TypeScript type definitions
-    ├── auth.ts          # Authentication types
-    ├── api.ts           # API response types
-    └── index.ts         # Global type exports
-```
+├── app/ # Next.js 15 App Router
+│ ├── (routes)/ # Route groups for organization
+│ ├── api/ # API endpoints with route handlers
+│ ├── auth/ # Authentication pages
+│ ├── dashboard/ # Protected dashboard routes
+│ ├── globals.css # Global styles and CSS variables
+│ ├── layout.tsx # Root layout with providers
+│ └── page.tsx # Homepage
+├── components/ # Reusable components by category
+│ ├── ui/ # shadcn/ui components ONLY
+│ ├── auth/ # Authentication-specific components
+│ ├── dashboard/ # Dashboard-specific components
+│ ├── forms/ # Form components with validation
+│ ├── cards/ # Card-based components
+│ ├── sections/ # Page section components
+│ ├── animations/ # Animation and motion components
+│ └── shared/ # Shared utility components
+├── hooks/ # Custom React hooks
+│ ├── use-auth.ts # Authentication hooks
+│ ├── use-api.ts # API interaction hooks
+│ └── use-_.ts # Feature-specific hooks
+├── lib/ # Utility libraries and configurations
+│ ├── auth.ts # NextAuth configuration
+│ ├── db.ts # Database configuration
+│ ├── utils.ts # General utilities (cn, etc.)
+│ ├── validations.ts # Zod validation schemas
+│ └── _.ts # Feature-specific utilities
+├── services/ # Business logic layer
+│ ├── auth-service.ts # Authentication business logic
+│ ├── user-service.ts # User management logic
+│ └── \*-service.ts # Feature-specific services
+└── types/ # TypeScript type definitions
+├── auth.ts # Authentication types
+├── api.ts # API response types
+└── index.ts # Global type exports
+
+````
 
 ### Component Organization Rules
 
@@ -186,7 +554,7 @@ Use shadcn/ui's CSS variable system in `globals.css`:
 .gradient-stellar {
   @apply bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500;
 }
-```
+````
 
 ### Component Styling Patterns
 
@@ -292,36 +660,78 @@ export const metadata: Metadata = {
 
 ### TypeScript Integration
 
-Strict TypeScript patterns:
+Strict TypeScript patterns following our established conventions:
 
 ```typescript
+// ✅ API Response Interface (src/types/index.ts)
+export interface ApiResponse<T> {
+  success: boolean
+  data?: T
+  error?: string
+  message?: string
+}
+
+// ✅ Extended types with relations
+export type ProjectWithDetails = Project & {
+  projectTasks: ProjectTask[]
+  skillsUtilized: ProjectSkill[]
+}
+
+export type PersonalInfoWithSocials = PersonalInfo & {
+  socialLinks: SocialLink[]
+}
+
 // ✅ Strict component props
 interface ComponentProps {
   title: string
   description?: string
-  variant: 'primary' | 'secondary'
+  variant: 'cosmic' | 'stellar' | 'default'
   children: React.ReactNode
 }
 
-// ✅ API route typing
-export async function POST(
-  request: NextRequest
-): Promise<NextResponse<ApiResponse>> {
-  // Typed request/response
+// ✅ API route typing with proper response types
+export const GET = publicApiRoute(
+  async (): Promise<NextResponse<ApiResponse<DataType[]>>> => {
+    // Properly typed API handler
+  }
+)
+
+// ✅ Server component typing with route params
+interface RouteParams {
+  params: Promise<{ id: string }>
 }
 
-// ✅ Server component typing
-interface PageProps {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+export const GET = publicApiRoute(
+  async (
+    request: NextRequest,
+    { params }: RouteParams
+  ): Promise<NextResponse<ApiResponse<DataType>>> => {
+    const { id } = await params
+    // Handle route with typed params
+  }
+)
+
+// ✅ Hook return types
+interface ActionResult {
+  success: boolean
+  data?: any
+  error?: string
 }
 
-export default async function Page({ params, searchParams }: PageProps) {
-  // Properly typed page props
+export function useDataActions(): {
+  createData: (data: CreateDataForm) => Promise<ActionResult>
+  isLoading: boolean
+} {
+  // Properly typed hook
 }
 ```
 
-Typescript type interfaces should be consistently declared unser src/types folder, but if it's used as a prop then it should be with the component only, try to re-use types as much as possible and keep it clean and consistent.
+**Type Organization Rules:**
+
+- Global types in `src/types/index.ts`
+- Component-specific prop types co-located with components
+- Re-use Prisma types with extensions for API responses
+- Always type API responses with `ApiResponse<T>` wrapper
 
 ## 5. 🔄 Versioning & Commit Strategy
 
