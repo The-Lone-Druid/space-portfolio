@@ -9,8 +9,6 @@ import SpaceBackground from '../components/animations/background'
 import Footer from '../components/shared/footer'
 import Header from '../components/shared/header'
 
-export const dynamic = 'force-dynamic'
-
 export default async function Page() {
   const { personalInfo, heroStats, skills, projects, services } =
     await getPortfolioData()

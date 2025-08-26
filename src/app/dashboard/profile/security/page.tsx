@@ -11,9 +11,6 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Shield, AlertTriangle, Settings } from 'lucide-react'
 
-// Force dynamic rendering for security data
-export const dynamic = 'force-dynamic'
-
 async function SecurityContent() {
   return (
     <div className='space-y-6'>
