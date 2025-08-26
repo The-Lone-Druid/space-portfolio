@@ -14,7 +14,7 @@ import {
   Settings,
   AlertTriangle,
 } from 'lucide-react'
-import type { AuditLogWithUser } from '@/services/audit-service'
+import { AuditLogWithUser } from '../../../types/auth'
 
 interface AuditLogsCardProps {
   auditLogs: AuditLogWithUser[]

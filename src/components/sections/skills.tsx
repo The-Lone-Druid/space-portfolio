@@ -108,8 +108,8 @@ function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
 }
 
 const Skills = ({ skills }: SkillProps) => {
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory] = useState('all')
+  const [searchQuery] = useState('')
 
   // Sort skills by level (highest first) and take top 10 for main display
   const topSkills = skills.sort((a, b) => b.level - a.level).slice(0, 10)
@@ -129,16 +129,6 @@ const Skills = ({ skills }: SkillProps) => {
       selectedCategory === 'all' || skill.category === selectedCategory
     return matchesSearch && matchesCategory
   })
-
-  // Group skills by category for stats
-  const skillStats = skills.reduce(
-    (acc, skill) => {
-      const category = skill.category
-      acc[category] = (acc[category] || 0) + 1
-      return acc
-    },
-    {} as Record<string, number>
-  )
 
   return (
     <>
