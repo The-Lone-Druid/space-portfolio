@@ -2,11 +2,8 @@ import { sendPasswordResetEmail } from '@/lib/email'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import {
-  applyRateLimit,
-  passwordResetRequestRateLimit,
-  AuditLogger,
-} from '@/lib/rate-limit'
+import { applyRateLimit, passwordResetRequestRateLimit } from '@/lib/rate-limit'
+import { AuditService } from '@/services/audit-service'
 import { createPasswordResetToken } from '../../../../services/password-reset-service'
 
 const forgotPasswordSchema = z.object({
@@ -68,8 +65,13 @@ export async function POST(request: NextRequest) {
         request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
         request.headers.get('x-real-ip') ||
         '127.0.0.1'
+      const userAgent = request.headers.get('user-agent') || undefined
 
-      await AuditLogger.logPasswordReset(email.toLowerCase(), clientIP)
+      await AuditService.logPasswordResetRequest(
+        email.toLowerCase(),
+        clientIP,
+        userAgent
+      )
       console.warn(`Password reset email sent to: ${email.toLowerCase()}`)
 
       return NextResponse.json(

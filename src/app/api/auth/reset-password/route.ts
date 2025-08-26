@@ -5,8 +5,8 @@ import {
   applyRateLimit,
   passwordResetCompletionRateLimit,
   tokenValidationRateLimit,
-  AuditLogger,
 } from '@/lib/rate-limit'
+import { AuditService } from '@/services/audit-service'
 import {
   consumePasswordResetToken,
   verifyPasswordResetToken,
@@ -73,8 +73,9 @@ export const POST = publicApiRoute(
         request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
         request.headers.get('x-real-ip') ||
         '127.0.0.1'
+      const userAgent = request.headers.get('user-agent') || undefined
 
-      await AuditLogger.logPasswordChange('password-reset', clientIP)
+      await AuditService.logPasswordResetComplete(email, clientIP, userAgent)
       console.warn(`Password successfully reset for email: ${email}`)
 
       return NextResponse.json(

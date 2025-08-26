@@ -1,11 +1,8 @@
 import { protectedApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { changePasswordSchema } from '@/lib/validations'
-import {
-  applyRateLimit,
-  changePasswordRateLimit,
-  AuditLogger,
-} from '@/lib/rate-limit'
+import { applyRateLimit, changePasswordRateLimit } from '@/lib/rate-limit'
+import { AuditService } from '@/services/audit-service'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
@@ -81,11 +78,13 @@ export const POST = protectedApiRoute(
           request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
           request.headers.get('x-real-ip') ||
           '127.0.0.1'
+        const userAgent = request.headers.get('user-agent') || undefined
 
-        await AuditLogger.logFailedLogin(
-          clientIP,
+        await AuditService.logLoginFailed(
           userEmail,
-          'incorrect_current_password'
+          'incorrect_current_password',
+          clientIP,
+          userAgent
         )
 
         return NextResponse.json(
@@ -114,8 +113,14 @@ export const POST = protectedApiRoute(
         request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
         request.headers.get('x-real-ip') ||
         '127.0.0.1'
+      const userAgent = request.headers.get('user-agent') || undefined
 
-      await AuditLogger.logPasswordChange(user.id, clientIP)
+      await AuditService.logPasswordChange(
+        user.id,
+        userEmail,
+        clientIP,
+        userAgent
+      )
 
       return NextResponse.json(
         {

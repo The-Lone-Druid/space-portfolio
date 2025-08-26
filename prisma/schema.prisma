@@ -52,8 +52,9 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts Account[]
-  sessions Session[]
+  accounts  Account[]
+  sessions  Session[]
+  auditLogs AuditLog[]
 
   @@map("users")
 }
@@ -77,6 +78,35 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@map("password_reset_tokens")
+}
+
+// Audit Logs for security tracking and compliance
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  email     String?
+  action    String // login_success, login_failed, password_change, session_revoked, etc.
+  ipAddress String?
+  userAgent String?
+  details   Json? // Additional context data
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+// Account Lockout tracking to prevent brute force attacks
+model AccountLockout {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  failedAttempts Int       @default(0)
+  lockedUntil    DateTime?
+  lastAttempt    DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@map("account_lockouts")
 }
 
 enum Role {

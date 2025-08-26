@@ -1,4 +1,6 @@
 import { Suspense } from 'react'
+import { ChangePasswordForm } from '@/components/forms/change-password-form'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import {
   Card,
   CardContent,
@@ -6,12 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { Separator } from '@/components/ui/separator'
-import { ChangePasswordForm } from '@/components/forms/change-password-form'
-import { Shield, Settings, AlertTriangle } from 'lucide-react'
+import { Shield, AlertTriangle, Settings } from 'lucide-react'
 
-// Force dynamic rendering since we use authentication
+// Force dynamic rendering for security data
 export const dynamic = 'force-dynamic'
 
 async function SecurityContent() {

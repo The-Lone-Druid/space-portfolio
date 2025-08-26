@@ -919,6 +919,7 @@ Portfolio showcasing space exploration, astronomy, and space technology projects
 - Use `'use client'` for interactive components
 - Prefer server components when possible
 - Always type component props with interfaces
+- Make sure that all type interfaces except if it's used in component props, should be moved under /types folder appropriately
 - Use `cn()` utility for conditional classes
 - Import shadcn components from `@/components/ui/`
 - Follow space theme with cosmic colors and subtle animations

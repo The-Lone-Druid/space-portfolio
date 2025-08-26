@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Toaster } from 'sonner'
 import './globals.css'
+import { ThemeProvider } from '../components/theme/theme-provider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -82,11 +83,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
       >
-        <AuthProvider>
-          <main className='relative z-10'>{children}</main>
-          <Toaster />
-          <SpeedInsights />
-        </AuthProvider>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+          storageKey='space-portfolio-theme'
+        >
+          <AuthProvider>
+            <main className='relative z-10'>{children}</main>
+            <Toaster />
+            <SpeedInsights />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

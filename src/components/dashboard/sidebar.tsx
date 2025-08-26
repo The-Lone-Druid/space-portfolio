@@ -11,8 +11,12 @@ import {
   Menu,
   Rocket,
   Settings,
+  Shield,
   ToolCase,
   User,
+  User2,
+  UserCog,
+  ShieldCheck,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -51,6 +55,35 @@ const sidebarItems: SidebarItem[] = [
     title: 'Services',
     href: '/dashboard/services',
     icon: ToolCase,
+  },
+  {
+    title: 'Profile',
+    href: '/dashboard/profile',
+    icon: User2,
+    children: [
+      {
+        title: 'Account Settings',
+        href: '/dashboard/profile',
+        icon: User2,
+      },
+      {
+        title: 'Security',
+        href: '/dashboard/profile/security',
+        icon: Shield,
+      },
+    ],
+  },
+  {
+    title: 'Admin',
+    href: '/dashboard/admin',
+    icon: UserCog,
+    children: [
+      {
+        title: 'Security Monitor',
+        href: '/dashboard/admin/security',
+        icon: ShieldCheck,
+      },
+    ],
   },
   {
     title: 'Settings',
