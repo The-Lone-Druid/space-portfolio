@@ -145,8 +145,8 @@ export const loginRateLimit = new RateLimit({
   },
 })
 
-// Password reset: 3 attempts per hour
-export const passwordResetRateLimit = new RateLimit({
+// Password reset request: 3 attempts per hour (for requesting reset emails)
+export const passwordResetRequestRateLimit = new RateLimit({
   maxAttempts: 3,
   windowMs: 60 * 60 * 1000, // 1 hour
   keyGenerator: request => {
@@ -154,9 +154,38 @@ export const passwordResetRateLimit = new RateLimit({
       request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
       request.headers.get('x-real-ip') ||
       '127.0.0.1'
-    return `password-reset:${ip}`
+    return `password-reset-request:${ip}`
   },
 })
+
+// Password reset completion: 5 attempts per hour (for actual password changes)
+export const passwordResetCompletionRateLimit = new RateLimit({
+  maxAttempts: 5,
+  windowMs: 60 * 60 * 1000, // 1 hour
+  keyGenerator: request => {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      request.headers.get('x-real-ip') ||
+      '127.0.0.1'
+    return `password-reset-completion:${ip}`
+  },
+})
+
+// Token validation: 10 attempts per hour (for validating tokens)
+export const tokenValidationRateLimit = new RateLimit({
+  maxAttempts: 10,
+  windowMs: 60 * 60 * 1000, // 1 hour
+  keyGenerator: request => {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      request.headers.get('x-real-ip') ||
+      '127.0.0.1'
+    return `token-validation:${ip}`
+  },
+})
+
+// Legacy rate limit - kept for backward compatibility
+export const passwordResetRateLimit = passwordResetRequestRateLimit
 
 // Change password: 10 attempts per hour (higher since it requires current password)
 export const changePasswordRateLimit = new RateLimit({

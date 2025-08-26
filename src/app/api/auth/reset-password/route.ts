@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import {
   applyRateLimit,
-  passwordResetRateLimit,
+  passwordResetCompletionRateLimit,
   AuditLogger,
 } from '@/lib/rate-limit'
 import {
@@ -25,10 +25,10 @@ const resetPasswordSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // Apply rate limiting
+    // Apply rate limiting for password reset completion
     const rateLimitResult = await applyRateLimit(
       request,
-      passwordResetRateLimit
+      passwordResetCompletionRateLimit
     )
 
     if (!rateLimitResult.success) {

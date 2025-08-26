@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import {
   applyRateLimit,
-  passwordResetRateLimit,
+  passwordResetRequestRateLimit,
   AuditLogger,
 } from '@/lib/rate-limit'
 import { createPasswordResetToken } from '../../../../services/password-reset-service'
@@ -15,10 +15,10 @@ const forgotPasswordSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // Apply rate limiting
+    // Apply rate limiting for password reset requests
     const rateLimitResult = await applyRateLimit(
       request,
-      passwordResetRateLimit
+      passwordResetRequestRateLimit
     )
 
     if (!rateLimitResult.success) {
@@ -34,46 +34,68 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email } = forgotPasswordSchema.parse(body)
 
-    // Check if user exists
+    // Check if user exists - providing immediate feedback
+    // Note: This approach prioritizes user experience over preventing email enumeration
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
     })
 
-    // Always return success to prevent email enumeration attacks
-    // But only send email if user actually exists
-    if (user) {
-      try {
-        const resetToken = await createPasswordResetToken(email.toLowerCase())
-        await sendPasswordResetEmail(email.toLowerCase(), resetToken)
-
-        // Log successful password reset request
-        const clientIP =
-          request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
-          request.headers.get('x-real-ip') ||
-          '127.0.0.1'
-
-        await AuditLogger.logPasswordReset(email.toLowerCase(), clientIP)
-        console.warn(`Password reset email sent to: ${email.toLowerCase()}`)
-      } catch (error) {
-        console.error('Failed to send password reset email:', error)
-        // Don't reveal the error to the client
-      }
-    } else {
+    if (!user) {
       console.warn(
         `Password reset requested for non-existent email: ${email.toLowerCase()}`
       )
+
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            'No account found with this email address. Please check your email or sign up for a new account.',
+        },
+        {
+          status: 404,
+          headers: rateLimitResult.headers,
+        }
+      )
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        message:
-          'If an account with that email exists, we have sent a password reset link.',
-      },
-      {
-        headers: rateLimitResult.headers,
-      }
-    )
+    // User exists, proceed with password reset
+    try {
+      const resetToken = await createPasswordResetToken(email.toLowerCase())
+      await sendPasswordResetEmail(email.toLowerCase(), resetToken)
+
+      // Log successful password reset request
+      const clientIP =
+        request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+        request.headers.get('x-real-ip') ||
+        '127.0.0.1'
+
+      await AuditLogger.logPasswordReset(email.toLowerCase(), clientIP)
+      console.warn(`Password reset email sent to: ${email.toLowerCase()}`)
+
+      return NextResponse.json(
+        {
+          success: true,
+          message:
+            'Password reset email sent successfully. Please check your inbox and follow the instructions.',
+        },
+        {
+          headers: rateLimitResult.headers,
+        }
+      )
+    } catch (error) {
+      console.error('Failed to send password reset email:', error)
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Failed to send password reset email. Please try again later.',
+        },
+        {
+          status: 500,
+          headers: rateLimitResult.headers,
+        }
+      )
+    }
   } catch (error) {
     console.error('Forgot password error:', error)
 

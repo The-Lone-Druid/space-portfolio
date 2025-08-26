@@ -57,6 +57,10 @@ export function ForgotPasswordForm() {
             We&apos;ve sent a password reset link to{' '}
             <span className='font-medium'>{getValues('email')}</span>
           </p>
+          <p className='text-muted-foreground text-sm'>
+            Please check your email inbox and follow the instructions to reset
+            your password.
+          </p>
         </div>
 
         <div className='space-y-4'>
@@ -134,6 +138,15 @@ export function ForgotPasswordForm() {
             </>
           )}
         </Button>
+
+        {/* Security Notice */}
+        <div className='rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-950'>
+          <p className='text-xs text-blue-700 dark:text-blue-300'>
+            <span className='font-medium'>Security Note:</span> For your
+            protection, we&apos;ll only send reset instructions to registered
+            email addresses. Reset links expire after 1 hour.
+          </p>
+        </div>
 
         <div className='text-center'>
           <Link

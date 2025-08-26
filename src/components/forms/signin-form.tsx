@@ -11,10 +11,17 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { LoadingSpinnerInline } from '@/components/ui/loading-spinner'
-import { AlertCircle, Eye, EyeOff, Rocket, Shield } from 'lucide-react'
+import {
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Rocket,
+  Shield,
+  CheckCircle,
+} from 'lucide-react'
 import { getSession, signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface SigninFormProps {
@@ -27,7 +34,9 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   // Check if user is already authenticated
   useEffect(() => {
@@ -39,6 +48,20 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
     }
     checkAuth()
   }, [router])
+
+  // Handle success messages from URL parameters
+  useEffect(() => {
+    const message = searchParams.get('message')
+    if (message === 'password-reset-success') {
+      setSuccessMessage(
+        'Password reset successfully! You can now sign in with your new password.'
+      )
+      // Clear the URL parameter
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete('message')
+      window.history.replaceState({}, '', newUrl.pathname + newUrl.search)
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -149,6 +172,24 @@ export function SigninForm({ callbackUrl = '/dashboard' }: SigninFormProps) {
                 </Button>
               </div>
             </div>
+
+            {/* Forgot Password Link */}
+            <div className='flex justify-end'>
+              <Link
+                href='/auth/forgot-password'
+                className='text-space-gold hover:text-space-gold/80 text-sm font-medium transition-colors'
+              >
+                Forgot your password?
+              </Link>
+            </div>
+
+            {/* Success Message */}
+            {successMessage && (
+              <div className='flex items-center space-x-2 rounded-lg border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-400'>
+                <CheckCircle className='h-4 w-4 flex-shrink-0' />
+                <span>{successMessage}</span>
+              </div>
+            )}
 
             {/* Error Message */}
             {error && (

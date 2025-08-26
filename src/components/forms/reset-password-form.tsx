@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { Eye, EyeOff, Lock, Loader2 } from 'lucide-react'
+import { Eye, EyeOff, Lock, Loader2, AlertTriangle } from 'lucide-react'
+import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -26,6 +27,8 @@ export function ResetPasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [isValidatingToken, setIsValidatingToken] = useState(true)
+  const [tokenValid, setTokenValid] = useState<boolean | null>(null)
 
   const {
     register,
@@ -37,6 +40,35 @@ export function ResetPasswordForm() {
       token: token || '',
     },
   })
+
+  // Validate token on component mount
+  useEffect(() => {
+    const validateToken = async () => {
+      if (!token) {
+        setTokenValid(false)
+        setIsValidatingToken(false)
+        return
+      }
+
+      try {
+        const response = await fetch('/api/auth/validate-reset-token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        })
+
+        const result = await response.json()
+        setTokenValid(result.valid)
+      } catch (error) {
+        console.error('Token validation error:', error)
+        setTokenValid(false)
+      } finally {
+        setIsValidatingToken(false)
+      }
+    }
+
+    validateToken()
+  }, [token])
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     if (!token) {
@@ -61,13 +93,29 @@ export function ResetPasswordForm() {
     }
   }
 
-  if (!token) {
+  if (!token || tokenValid === false) {
     return (
       <Alert className='border-destructive/50 text-destructive'>
+        <AlertTriangle className='h-4 w-4' />
         <AlertDescription>
-          Invalid or missing reset token. Please check your email and click the
-          reset link again.
+          {!token
+            ? 'Invalid or missing reset token. Please check your email and click the reset link again.'
+            : 'This reset link has expired or is invalid. Please request a new password reset.'}
+          <div className='mt-3'>
+            <Button asChild variant='outline' size='sm'>
+              <Link href='/auth/forgot-password'>Request New Reset Link</Link>
+            </Button>
+          </div>
         </AlertDescription>
+      </Alert>
+    )
+  }
+
+  if (isValidatingToken) {
+    return (
+      <Alert>
+        <Loader2 className='h-4 w-4 animate-spin' />
+        <AlertDescription>Validating reset link...</AlertDescription>
       </Alert>
     )
   }
