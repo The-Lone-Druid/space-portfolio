@@ -10,6 +10,10 @@ interface UseAuthOptions {
   redirectTo?: string
 }
 
+/**
+ * Hook for authentication state management and role-based access control
+ * Handles session state, role checks, and automatic route protection
+ */
 export function useAuth(options: UseAuthOptions = {}) {
   const {
     required = false,

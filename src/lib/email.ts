@@ -1,11 +1,9 @@
 /**
  * Email configuration and utilities for authentication
- * Note: This is a basic implementation. In production, use services like:
- * - Resend (recommended)
- * - SendGrid
- * - AWS SES
- * - Nodemailer with SMTP
+ * Production-ready with Resend integration
  */
+
+import { Resend } from 'resend'
 
 interface EmailConfig {
   from: string
@@ -15,6 +13,17 @@ interface EmailConfig {
 const emailConfig: EmailConfig = {
   from: process.env.EMAIL_FROM || 'noreply@space-portfolio.com',
   service: (process.env.EMAIL_SERVICE as EmailConfig['service']) || 'console',
+}
+
+// Initialize Resend client only when API key is available
+const getResendClient = () => {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    throw new Error(
+      'RESEND_API_KEY environment variable is required when using Resend service'
+    )
+  }
+  return new Resend(apiKey)
 }
 
 interface EmailData {
@@ -77,8 +86,27 @@ async function sendEmail(emailData: EmailData): Promise<void> {
       break
 
     case 'resend':
-      // TODO: Implement Resend integration
-      throw new Error('Resend integration not implemented yet')
+      try {
+        const resend = getResendClient()
+        const { data, error } = await resend.emails.send({
+          from: emailConfig.from,
+          to: emailData.to,
+          subject: emailData.subject,
+          html: emailData.html,
+          text: emailData.text,
+        })
+
+        if (error) {
+          console.error('Resend error:', error)
+          throw new Error(`Failed to send email: ${error.message}`)
+        }
+
+        console.warn(`📧 Email sent successfully via Resend. ID: ${data?.id}`)
+      } catch (error) {
+        console.error('Failed to send email via Resend:', error)
+        throw error
+      }
+      break
 
     case 'sendgrid':
       // TODO: Implement SendGrid integration

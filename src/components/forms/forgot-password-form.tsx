@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { toast } from 'sonner'
+import { useAuthActions } from '@/hooks/use-auth-actions'
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -18,9 +18,9 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>
 
 export function ForgotPasswordForm() {
-  const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { requestPasswordReset, isLoading } = useAuthActions()
 
   const {
     register,
@@ -32,39 +32,14 @@ export function ForgotPasswordForm() {
   })
 
   const onSubmit = async (data: ForgotPasswordForm) => {
-    setIsLoading(true)
     setError(null)
 
-    try {
-      const response = await fetch('/api/auth/forgot-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
+    const result = await requestPasswordReset({ email: data.email })
 
-      const result = await response.json()
-
-      if (result.success) {
-        setIsSuccess(true)
-        toast.success('Password reset email sent!', {
-          description: result.message,
-        })
-      } else {
-        toast.error('Failed to send reset email', {
-          description: result.error || 'Please try again',
-        })
-        setError(result.error || 'An error occurred')
-      }
-    } catch {
-      const errorMessage = 'Failed to send reset email. Please try again.'
-      toast.error('An error occurred', {
-        description: errorMessage,
-      })
-      setError(errorMessage)
-    } finally {
-      setIsLoading(false)
+    if (result.success) {
+      setIsSuccess(true)
+    } else {
+      setError(result.error || 'An error occurred')
     }
   }
 

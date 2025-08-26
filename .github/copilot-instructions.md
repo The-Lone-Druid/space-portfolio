@@ -321,6 +321,8 @@ export default async function Page({ params, searchParams }: PageProps) {
 }
 ```
 
+Typescript type interfaces should be consistently declared unser src/types folder, but if it's used as a prop then it should be with the component only, try to re-use types as much as possible and keep it clean and consistent.
+
 ## 5. 🔄 Versioning & Commit Strategy
 
 ### Conventional Commits (Enforced)

@@ -379,10 +379,54 @@ DATABASE_URL_POOLED="postgresql://prod_user:password@pooler_host:5432/space_port
 NEXTAUTH_URL="https://your-domain.com"
 NEXTAUTH_SECRET="secure-production-secret"
 
+# Email Configuration (Resend)
+EMAIL_SERVICE="resend"
+EMAIL_FROM="noreply@yourdomain.com"
+RESEND_API_KEY="re_your_resend_api_key_here"
+
 # Optional: OAuth Providers
 GITHUB_ID="prod-github-client-id"
 GITHUB_SECRET="prod-github-client-secret"
 ```
+
+### Email Configuration (Resend)
+
+This application uses [Resend](https://resend.com) for transactional emails including password reset functionality.
+
+#### Setup Steps:
+
+1. **Create Resend Account**: Sign up at [resend.com](https://resend.com)
+2. **Add Domain**: Verify your sending domain in Resend dashboard
+3. **Get API Key**: Generate an API key from your Resend settings
+4. **Configure Environment**:
+   ```env
+   EMAIL_SERVICE="resend"
+   EMAIL_FROM="noreply@yourdomain.com"  # Must be verified domain
+   RESEND_API_KEY="re_your_api_key_here"
+   ```
+
+#### Development Mode:
+
+For development, use console logging:
+
+```env
+EMAIL_SERVICE="console"
+EMAIL_FROM="noreply@localhost.com"
+```
+
+#### Email Testing:
+
+- Access `/dashboard/settings` as admin
+- Use the "Email Configuration Test" card
+- Send test emails to verify setup
+- Check Resend dashboard for delivery status
+
+#### Features:
+
+- Beautiful HTML email templates with space theme
+- Password reset with secure token generation
+- Rate limiting to prevent abuse
+- Audit logging for security monitoring
 
 ### Performance Optimizations
 

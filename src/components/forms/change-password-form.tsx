@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff, Lock, Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -20,12 +19,13 @@ import {
   changePasswordSchema,
   type ChangePasswordFormData,
 } from '@/lib/validations'
+import { useAuthActions } from '@/hooks/use-auth-actions'
 
 export function ChangePasswordForm() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const { changePassword, isLoading } = useAuthActions()
 
   const {
     register,
@@ -37,39 +37,13 @@ export function ChangePasswordForm() {
   })
 
   const onSubmit = async (data: ChangePasswordFormData) => {
-    setIsLoading(true)
+    const result = await changePassword({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    })
 
-    try {
-      const response = await fetch('/api/auth/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        toast.success('Password changed successfully!', {
-          description: 'Your account is now more secure.',
-          duration: 5000,
-        })
-        reset() // Clear form
-      } else {
-        toast.error('Failed to change password', {
-          description: result.error || 'Please try again.',
-          duration: 5000,
-        })
-      }
-    } catch (error) {
-      console.error('Change password error:', error)
-      toast.error('Unexpected error occurred', {
-        description: 'Please try again later.',
-        duration: 5000,
-      })
-    } finally {
-      setIsLoading(false)
+    if (result.success) {
+      reset() // Clear form
     }
   }
 
