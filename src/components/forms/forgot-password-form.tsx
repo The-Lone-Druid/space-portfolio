@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { toast } from 'sonner'
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -47,11 +48,21 @@ export function ForgotPasswordForm() {
 
       if (result.success) {
         setIsSuccess(true)
+        toast.success('Password reset email sent!', {
+          description: result.message,
+        })
       } else {
+        toast.error('Failed to send reset email', {
+          description: result.error || 'Please try again',
+        })
         setError(result.error || 'An error occurred')
       }
     } catch {
-      setError('Failed to send reset email. Please try again.')
+      const errorMessage = 'Failed to send reset email. Please try again.'
+      toast.error('An error occurred', {
+        description: errorMessage,
+      })
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }

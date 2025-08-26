@@ -3,6 +3,11 @@ import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import {
+  applyRateLimit,
+  passwordResetRateLimit,
+  AuditLogger,
+} from '@/lib/rate-limit'
+import {
   consumePasswordResetToken,
   verifyPasswordResetToken,
 } from '../../../../services/password-reset-service'
@@ -20,6 +25,22 @@ const resetPasswordSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await applyRateLimit(
+      request,
+      passwordResetRateLimit
+    )
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { success: false, error: rateLimitResult.error },
+        {
+          status: 429,
+          headers: rateLimitResult.headers,
+        }
+      )
+    }
+
     const body = await request.json()
     const { token, password } = resetPasswordSchema.parse(body)
 
@@ -47,10 +68,24 @@ export async function POST(request: NextRequest) {
     // Mark the reset token as used
     await consumePasswordResetToken(token)
 
-    return NextResponse.json({
-      success: true,
-      message: 'Password reset successfully',
-    })
+    // Log successful password reset
+    const clientIP =
+      request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      request.headers.get('x-real-ip') ||
+      '127.0.0.1'
+
+    await AuditLogger.logPasswordChange('password-reset', clientIP)
+    console.warn(`Password successfully reset for email: ${email}`)
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Password reset successfully',
+      },
+      {
+        headers: rateLimitResult.headers,
+      }
+    )
   } catch (error) {
     console.error('Reset password error:', error)
 

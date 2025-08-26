@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Eye, EyeOff, Lock, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -55,15 +56,27 @@ export function ResetPasswordForm() {
 
       if (result.success) {
         setSuccess(true)
+        toast.success('Password reset successfully!', {
+          description: 'You can now sign in with your new password',
+        })
         setTimeout(() => {
           router.push('/auth/signin?message=password-reset-success')
         }, 2000)
       } else {
-        setError(result.error || 'Failed to reset password. Please try again.')
+        const errorMessage =
+          result.error || 'Failed to reset password. Please try again.'
+        toast.error('Password reset failed', {
+          description: errorMessage,
+        })
+        setError(errorMessage)
       }
     } catch (error) {
       console.error('Password reset error:', error)
-      setError('An unexpected error occurred. Please try again.')
+      const errorMessage = 'An unexpected error occurred. Please try again.'
+      toast.error('An error occurred', {
+        description: errorMessage,
+      })
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
