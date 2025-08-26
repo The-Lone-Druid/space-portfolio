@@ -1,4 +1,4 @@
-import { adminApiRoute } from '@/lib/api-auth'
+import { adminApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { settingUpdateSchema } from '@/lib/validations'
 import { NextRequest, NextResponse } from 'next/server'

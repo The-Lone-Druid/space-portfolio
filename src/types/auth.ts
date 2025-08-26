@@ -19,3 +19,27 @@ declare module 'next-auth/jwt' {
     role: string
   }
 }
+
+type AuthLevel = 'none' | 'user' | 'editor' | 'admin'
+
+export interface AuthOptions {
+  level: AuthLevel
+}
+
+export interface AuthUser {
+  id: string
+  email: string
+  name?: string | null
+  role: string
+}
+
+export class AuthError extends Error {
+  constructor(
+    message: string,
+    public status: number = 401,
+    public code: string = 'UNAUTHORIZED'
+  ) {
+    super(message)
+    this.name = 'AuthError'
+  }
+}

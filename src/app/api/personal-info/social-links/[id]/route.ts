@@ -1,4 +1,4 @@
-import { editorApiRoute, publicApiRoute } from '@/lib/api-auth'
+import { editorApiRoute, publicApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'

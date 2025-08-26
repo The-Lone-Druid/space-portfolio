@@ -1,4 +1,4 @@
-import { editorApiRoute } from '@/lib/api-auth'
+import { editorApiRoute } from '@/lib/auth-utils'
 import { getPersonalInfoServer } from '@/services/personal-info-service'
 import { getHeroStats } from '@/services/portfolio-service'
 import {
