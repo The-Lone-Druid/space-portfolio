@@ -1,4 +1,5 @@
-import { DefaultSession, DefaultUser } from 'next-auth'
+import { AuditLog } from '@prisma/client'
+import { DefaultSession, DefaultUser, User } from 'next-auth'
 import { DefaultJWT } from 'next-auth/jwt'
 
 declare module 'next-auth' {
@@ -74,4 +75,52 @@ export interface PasswordResetVerify {
 export interface ChangePasswordRequest {
   currentPassword: string
   newPassword: string
+}
+
+export interface LockedAccount {
+  email: string
+  failedAttempts: number
+  lockedUntil: Date | null
+  lastAttempt: Date
+  remainingTime?: number
+}
+
+export interface LockoutConfig {
+  maxAttempts: number
+  lockoutDurationMinutes: number
+  cleanupAfterDays: number
+}
+
+export interface LockoutStatus {
+  isLocked: boolean
+  failedAttempts: number
+  lockedUntil?: Date | null
+  remainingTime?: number // minutes
+}
+
+export type AuditAction =
+  | 'login_success'
+  | 'login_failed'
+  | 'logout'
+  | 'password_change'
+  | 'password_reset_request'
+  | 'password_reset_complete'
+  | 'session_revoked'
+  | 'account_locked'
+  | 'account_unlocked'
+  | 'admin_unlock'
+  | 'profile_updated'
+  | 'settings_changed'
+
+export interface AuditLogData {
+  userId?: string
+  email?: string
+  action: AuditAction
+  ipAddress?: string
+  userAgent?: string
+  details?: Record<string, unknown>
+}
+
+export interface AuditLogWithUser extends AuditLog {
+  user?: User | null
 }

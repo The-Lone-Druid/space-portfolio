@@ -5,24 +5,12 @@
 
 import { prisma } from '@/lib/prisma'
 import { AuditService } from './audit-service'
-
-export interface LockoutConfig {
-  maxAttempts: number
-  lockoutDurationMinutes: number
-  cleanupAfterDays: number
-}
+import { LockoutConfig, LockoutStatus } from '../types/auth'
 
 export const DEFAULT_LOCKOUT_CONFIG: LockoutConfig = {
   maxAttempts: 5,
   lockoutDurationMinutes: 15,
   cleanupAfterDays: 30,
-}
-
-export interface LockoutStatus {
-  isLocked: boolean
-  failedAttempts: number
-  lockedUntil?: Date | null
-  remainingTime?: number // minutes
 }
 
 /**

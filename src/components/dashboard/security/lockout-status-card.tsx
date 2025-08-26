@@ -8,14 +8,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { Lock, Unlock, AlertTriangle, Clock } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-
-interface LockedAccount {
-  email: string
-  failedAttempts: number
-  lockedUntil: Date | null
-  lastAttempt: Date
-  remainingTime?: number
-}
+import { LockedAccount } from '../../../types/auth'
 
 interface LockoutStatusCardProps {
   lockedAccounts: LockedAccount[]

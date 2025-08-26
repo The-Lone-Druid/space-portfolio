@@ -4,34 +4,7 @@
  */
 
 import { prisma } from '@/lib/prisma'
-import type { AuditLog, User } from '@prisma/client'
-
-export type AuditAction =
-  | 'login_success'
-  | 'login_failed'
-  | 'logout'
-  | 'password_change'
-  | 'password_reset_request'
-  | 'password_reset_complete'
-  | 'session_revoked'
-  | 'account_locked'
-  | 'account_unlocked'
-  | 'admin_unlock'
-  | 'profile_updated'
-  | 'settings_changed'
-
-export interface AuditLogData {
-  userId?: string
-  email?: string
-  action: AuditAction
-  ipAddress?: string
-  userAgent?: string
-  details?: Record<string, unknown>
-}
-
-export interface AuditLogWithUser extends AuditLog {
-  user?: User | null
-}
+import { AuditAction, AuditLogData, AuditLogWithUser } from '../types/auth'
 
 /**
  * Main audit logging service

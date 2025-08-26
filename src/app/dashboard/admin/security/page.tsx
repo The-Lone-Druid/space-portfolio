@@ -6,19 +6,12 @@ import { AuditService } from '@/services/audit-service'
 import { AccountLockoutService } from '@/services/account-lockout-service'
 import { prisma } from '@/lib/prisma'
 import type { Metadata } from 'next'
+import { LockedAccount } from '../../../../types/auth'
 
 export const metadata: Metadata = {
   title: 'Security Dashboard - Space Portfolio',
   description:
     'Monitor security events and account protection across the digital cosmos.',
-}
-
-interface LockedAccount {
-  email: string
-  failedAttempts: number
-  lockedUntil: Date | null
-  lastAttempt: Date
-  remainingTime?: number
 }
 
 async function getLockedAccounts(): Promise<LockedAccount[]> {

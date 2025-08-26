@@ -2,14 +2,7 @@ import { adminApiRoute } from '@/lib/auth-utils'
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import type { ApiResponse } from '@/types'
-
-interface LockedAccount {
-  email: string
-  failedAttempts: number
-  lockedUntil: Date | null
-  lastAttempt: Date
-  remainingTime?: number
-}
+import { LockedAccount } from '../../../../types/auth'
 
 export const GET = adminApiRoute(
   async (): Promise<NextResponse<ApiResponse<LockedAccount[]>>> => {
