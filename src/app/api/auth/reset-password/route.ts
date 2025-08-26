@@ -12,7 +12,7 @@ import {
   verifyPasswordResetToken,
 } from '@/services/password-reset-service'
 import { publicApiRoute } from '@/lib/auth-utils'
-import { resetPasswordSchema } from '@/lib/validations'
+import { resetPasswordApiSchema } from '@/lib/validations'
 import type { ApiResponse } from '@/types'
 
 export const POST = publicApiRoute(
@@ -36,7 +36,7 @@ export const POST = publicApiRoute(
 
       // Parse and validate request body
       const body = await request.json()
-      const { token, password } = resetPasswordSchema.parse(body)
+      const { token, password } = resetPasswordApiSchema.parse(body)
 
       // Verify the reset token
       const email = await verifyPasswordResetToken(token)

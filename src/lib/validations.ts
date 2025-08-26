@@ -34,6 +34,18 @@ export const resetPasswordSchema = z
     path: ['confirmPassword'],
   })
 
+// API validation schema for reset password (only token and password needed)
+export const resetPasswordApiSchema = z.object({
+  token: z.string().min(1, 'Reset token is required'),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      'Password must contain at least one lowercase letter, one uppercase letter, and one number'
+    ),
+})
+
 export const signupSchema = z
   .object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -71,6 +83,7 @@ export const changePasswordSchema = z
 
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
+export type ResetPasswordApiData = z.infer<typeof resetPasswordApiSchema>
 export type SignupFormData = z.infer<typeof signupSchema>
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
 
