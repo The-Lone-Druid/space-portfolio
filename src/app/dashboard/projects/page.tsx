@@ -9,7 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { getProjectsServer, getProjectsStats } from '@/services/projects-server'
+import {
+  getProjectsServer,
+  getProjectsStats,
+} from '@/services/projects-service'
 import { formatDistanceToNow } from 'date-fns'
 import { Calendar, FolderOpen, Plus, Star } from 'lucide-react'
 

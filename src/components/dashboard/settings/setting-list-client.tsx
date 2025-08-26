@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { useSettings } from '@/hooks/use-settings'
-import type { SiteSettingWithDetails } from '@/services/settings-server'
+import type { SiteSettingWithDetails } from '@/services/settings-service'
 import { Edit, Eye, EyeOff, Search, Settings2, Trash2, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'

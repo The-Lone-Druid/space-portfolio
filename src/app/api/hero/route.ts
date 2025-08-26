@@ -1,4 +1,4 @@
-import { getHeroStats } from '@/services/portfolio-data'
+import { getHeroStats } from '@/services/portfolio-service'
 import type { ApiResponse, Hero } from '@/types'
 import { NextResponse } from 'next/server'
 

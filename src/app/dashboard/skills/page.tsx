@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { getSkillsServer, getSkillsStats } from '@/services/skills-server'
+import { getSkillsServer, getSkillsStats } from '@/services/skills-service'
 import { formatDistanceToNow } from 'date-fns'
 import { BarChart3, Calendar, Plus, Star, Target } from 'lucide-react'
 

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { formatProjectDateRange } from '@/lib/project-date-utils'
-import { getProjectByIdServer } from '@/services/projects-server'
+import { getProjectByIdServer } from '@/services/projects-service'
 import { formatDistanceToNow } from 'date-fns'
 import {
   ArrowLeft,

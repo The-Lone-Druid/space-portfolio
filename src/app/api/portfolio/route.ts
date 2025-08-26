@@ -1,4 +1,4 @@
-import { getPortfolioData } from '@/services/portfolio-data'
+import { getPortfolioData } from '@/services/portfolio-service'
 import type { ApiResponse, PortfolioData } from '@/types'
 import { NextResponse } from 'next/server'
 

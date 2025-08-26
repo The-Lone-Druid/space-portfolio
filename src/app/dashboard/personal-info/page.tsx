@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import {
   getPersonalInfoServer,
   getPersonalInfoStats,
-} from '@/services/personal-info-server'
+} from '@/services/personal-info-service'
 import { formatDistanceToNow } from 'date-fns'
 import {
   Activity,
@@ -32,7 +32,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { PersonalInfoForm } from '../../../components/forms/personal-info-form'
-import { getHeroStats } from '../../../services/portfolio-data'
+import { getHeroStats } from '../../../services/portfolio-service'
 
 // Icon mapping for social platforms
 const socialIcons: Record<string, React.ElementType> = {

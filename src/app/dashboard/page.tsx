@@ -5,7 +5,7 @@ import { PortfolioCompletion } from '@/components/dashboard/portfolio-completion
 import { QuickActions } from '@/components/dashboard/quick-actions'
 import { QuickStatsOverview } from '@/components/dashboard/quick-stats-overview'
 import { RecentActivity } from '@/components/dashboard/recent-activity'
-import { getDashboardDataServer } from '@/services/dashboard-server'
+import { getDashboardDataServer } from '@/services/dashboard-service'
 
 export default async function DashboardPage() {
   // Server-side data fetching

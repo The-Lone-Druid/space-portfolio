@@ -1,7 +1,10 @@
 import { DashboardPageHeader } from '@/components/dashboard/page-header'
 import { ServiceListClient } from '@/components/dashboard/service/service-list-client'
 import { Card, CardContent } from '@/components/ui/card'
-import { getServicesServer, getServicesStats } from '@/services/services-server'
+import {
+  getServicesServer,
+  getServicesStats,
+} from '@/services/services-service'
 import { formatDistanceToNow } from 'date-fns'
 import { Calendar, Eye, EyeOff, Package } from 'lucide-react'
 

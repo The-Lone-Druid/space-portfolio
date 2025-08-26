@@ -1,11 +1,11 @@
-import { getPersonalInfoServer } from '@/services/personal-info-server'
-import { getHeroStats } from '@/services/portfolio-data'
+import { getPersonalInfoServer } from '@/services/personal-info-service'
+import { getHeroStats } from '@/services/portfolio-service'
 import {
   getFeaturedProjectsServer,
   getProjectsStats,
-} from '@/services/projects-server'
-import { getServicesStats } from '@/services/services-server'
-import { getSkillsStats } from '@/services/skills-server'
+} from '@/services/projects-service'
+import { getServicesStats } from '@/services/services-service'
+import { getSkillsStats } from '@/services/skills-service'
 import { DashboardStats } from '../types'
 
 /**

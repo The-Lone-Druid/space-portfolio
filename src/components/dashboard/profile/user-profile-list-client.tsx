@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { Separator } from '@/components/ui/separator'
-import type { UserProfile } from '@/services/user-profile'
+import type { UserProfile } from '@/services/user-profile-service'
 import {
   Activity,
   AlertCircle,

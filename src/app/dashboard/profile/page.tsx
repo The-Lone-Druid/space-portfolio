@@ -8,7 +8,7 @@ import {
   getCurrentUserProfile,
   getUserAccounts,
   getUserSessions,
-} from '@/services/user-profile'
+} from '@/services/user-profile-service'
 import { Settings } from 'lucide-react'
 import { Suspense } from 'react'
 

@@ -2,7 +2,10 @@ import { DashboardPageHeader } from '@/components/dashboard/page-header'
 import { SettingListClient } from '@/components/dashboard/settings/setting-list-client'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { getSettingsServer, getSettingsStats } from '@/services/settings-server'
+import {
+  getSettingsServer,
+  getSettingsStats,
+} from '@/services/settings-service'
 import { Activity, Database, Eye, EyeOff } from 'lucide-react'
 
 export default async function SettingsPage() {

@@ -67,6 +67,18 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
+// Password Reset Tokens
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("password_reset_tokens")
+}
+
 enum Role {
   ADMIN
   EDITOR

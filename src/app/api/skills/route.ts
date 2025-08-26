@@ -1,7 +1,7 @@
 import { editorApiRoute, publicApiRoute } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 import { skillSchema } from '@/lib/validations'
-import { getSkills } from '@/services/portfolio-data'
+import { getSkills } from '@/services/portfolio-service'
 import type { ApiResponse, Skill, SkillWithDetails } from '@/types'
 import { NextRequest, NextResponse } from 'next/server'
 
