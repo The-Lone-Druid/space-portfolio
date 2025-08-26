@@ -1,7 +1,6 @@
 'use client'
 
 import { Github, Mail, MapPin, Phone } from 'lucide-react'
-import { useAnimatedCounter } from '../../hooks/use-animated-counter'
 import { getLucideIcon } from '../../lib/utils'
 import { PersonalInfoWithSocials } from '../../types'
 import { ContactMethodCard } from '../cards/contact-method-card'
@@ -14,10 +13,6 @@ interface ContactProps {
 }
 
 const Contact = ({ personalInfo }: ContactProps) => {
-  const responseTimeCounter = useAnimatedCounter({ end: 24, suffix: 'h' })
-  const projectsCounter = useAnimatedCounter({ end: 100, suffix: '+' })
-  const satisfactionCounter = useAnimatedCounter({ end: 5, suffix: '★' })
-
   const contactMethods = [
     {
       icon: Mail,
@@ -57,52 +52,6 @@ const Contact = ({ personalInfo }: ContactProps) => {
         subtitle="Ready to bring your vision to life? I'd love to hear about your project and explore how we can create something extraordinary together."
         badge={{ text: 'Ready to collaborate?', emoji: '💫' }}
       />
-
-      {/* Quick stats with improved visual appeal and responsive design */}
-      <div className='relative mb-12 md:mb-16'>
-        <div className='glass-cosmic rounded-2xl p-6 shadow-2xl md:rounded-3xl md:p-8'>
-          <h3 className='sr-only'>Contact Statistics</h3>
-          <div className='grid grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8'>
-            <div className='group text-center' ref={responseTimeCounter.ref}>
-              <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
-                <div className='text-xl font-bold text-white md:text-2xl'>
-                  {responseTimeCounter.count}
-                </div>
-              </div>
-              <h4 className='text-base font-semibold text-white md:text-lg'>
-                Response Time
-              </h4>
-              <p className='text-xs text-gray-400 md:text-sm'>
-                Lightning fast replies
-              </p>
-            </div>
-            <div className='group text-center' ref={projectsCounter.ref}>
-              <div className='bg-gradient-nebula group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
-                <div className='text-xl font-bold text-white md:text-2xl'>
-                  {projectsCounter.count}
-                </div>
-              </div>
-              <h4 className='text-base font-semibold text-white md:text-lg'>
-                Projects Delivered
-              </h4>
-              <p className='text-xs text-gray-400 md:text-sm'>
-                Successful launches
-              </p>
-            </div>
-            <div className='group text-center' ref={satisfactionCounter.ref}>
-              <div className='bg-gradient-stellar group-hover:animate-pulse-cosmic mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl shadow-lg transition-all duration-300 md:mb-4 md:h-20 md:w-20 md:rounded-2xl'>
-                <div className='text-xl font-bold text-white md:text-2xl'>
-                  {satisfactionCounter.count}
-                </div>
-              </div>
-              <h4 className='text-base font-semibold text-white md:text-lg'>
-                Client Satisfaction
-              </h4>
-              <p className='text-xs text-gray-400 md:text-sm'>Perfect rating</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className='grid grid-cols-1 gap-6 lg:gap-8 xl:grid-cols-3 xl:gap-12'>
         {/* Contact Form - Takes 2 columns on xl screens */}
