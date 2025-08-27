@@ -73,7 +73,6 @@ const Projects = ({ projects }: ProjectsProps) => {
       const dateObj = typeof date === 'string' ? new Date(date) : date
       return dateObj.toLocaleDateString('en-US', {
         month: 'long',
-        day: 'numeric',
         year: 'numeric',
       })
     }
