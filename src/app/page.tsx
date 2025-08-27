@@ -4,6 +4,7 @@ import Hero from '@/components/sections/hero'
 import Projects from '@/components/sections/projects'
 import Services from '@/components/sections/services'
 import Skills from '@/components/sections/skills'
+import { StructuredData } from '@/components/seo/structured-data'
 import { getPortfolioData } from '@/services/portfolio-service'
 import SpaceBackground from '../components/animations/background'
 import Footer from '../components/shared/footer'
@@ -35,6 +36,13 @@ export default async function Page() {
 
   return (
     <>
+      {/* Structured Data for SEO */}
+      <StructuredData
+        personalInfo={personalInfo}
+        skills={skills}
+        projects={projects}
+      />
+
       <SpaceBackground />
       <Header />
       <main id='main' role='main' className='overflow-x-hidden'>
@@ -42,6 +50,8 @@ export default async function Page() {
         <section
           id='home'
           className='relative flex min-h-screen items-center justify-center pt-20 md:pt-10'
+          role='banner'
+          aria-label='Hero section introducing Zahid Shaikh'
         >
           <div className='container mx-auto px-6'>
             <Hero personalInfo={personalInfo} heroStats={heroStats} />
@@ -49,35 +59,55 @@ export default async function Page() {
         </section>
 
         {/* About Section */}
-        <section id='about' className='py-16'>
+        <section
+          id='about'
+          className='py-16'
+          aria-label='About Zahid Shaikh - Background and experience'
+        >
           <div className='container mx-auto px-6'>
             <About heroStats={heroStats} />
           </div>
         </section>
 
         {/* Projects Section */}
-        <section id='projects' className='py-16'>
+        <section
+          id='projects'
+          className='py-16'
+          aria-label='Portfolio projects and work samples'
+        >
           <div className='container mx-auto px-6'>
             <Projects projects={projects} />
           </div>
         </section>
 
         {/* Skills Section */}
-        <section id='skills' className='py-16'>
+        <section
+          id='skills'
+          className='py-16'
+          aria-label='Technical skills and expertise'
+        >
           <div className='container mx-auto px-6'>
             <Skills skills={skills} />
           </div>
         </section>
 
         {/* Services Section */}
-        <section id='services' className='py-16'>
+        <section
+          id='services'
+          className='py-16'
+          aria-label='Professional services offered'
+        >
           <div className='container mx-auto px-6'>
             <Services services={services} />
           </div>
         </section>
 
         {/* Contact Section */}
-        <section id='contact' className='py-16'>
+        <section
+          id='contact'
+          className='py-16'
+          aria-label='Contact information and form'
+        >
           <div className='container mx-auto px-6'>
             <Contact personalInfo={personalInfo} />
           </div>
