@@ -14,7 +14,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { Zap, Sparkles, Code, Grid3X3, Search, X } from 'lucide-react'
+import { Zap, Sparkles, Code, Search, X } from 'lucide-react'
 import { Skill } from '../../types'
 import { SectionHeader } from '../shared/section-header'
 
@@ -32,13 +32,15 @@ function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
 
   // Proficiency level for badge color
   const getProficiencyColor = (level: number) => {
-    if (level >= 90) return 'bg-green-500/20 text-green-400 border-green-500/30'
-    if (level >= 80) return 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+    if (level >= 90)
+      return 'bg-green-500/20 text-green-400 shadow-md shadow-green-500/20'
+    if (level >= 80)
+      return 'bg-blue-500/20 text-blue-400 shadow-md shadow-blue-500/20'
     if (level >= 70)
-      return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+      return 'bg-yellow-500/20 text-yellow-400 shadow-md shadow-yellow-500/20'
     if (level >= 60)
-      return 'bg-orange-500/20 text-orange-400 border-orange-500/30'
-    return 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+      return 'bg-orange-500/20 text-orange-400 shadow-md shadow-orange-500/20'
+    return 'bg-gray-500/20 text-gray-400 shadow-md shadow-gray-500/20'
   }
 
   const getProficiencyLevel = (level: number) => {
@@ -59,48 +61,86 @@ function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
 
   return (
     <Card
-      className={`group animate-fade-in glass-cosmic border-space-accent/30 hover:border-space-accent/50 hover:shadow-space-accent/25 relative transform overflow-hidden transition-all duration-500 hover:scale-110 hover:shadow-lg`}
+      className={`group animate-fade-in glass-cosmic hover:shadow-space-accent/30 relative transform overflow-hidden border border-white/10 transition-all duration-500 hover:scale-105 hover:border-white/20 hover:shadow-xl`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
-      {/* Background glow effect */}
-      <div className='from-space-gold/10 to-space-accent/10 absolute inset-0 -z-10 bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
+      <CardContent className='relative p-4 text-center'>
+        {/* Background glow effect */}
+        <div className='from-space-accent/5 to-space-gold/5 absolute inset-0 rounded-xl bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
+        {/* Skill Icon from Simple Icons with Orbital Animation */}
+        <div className='relative mx-auto mb-3 h-20 w-20'>
+          {/* Outer Orbital Ring - Matching space-orbital timing */}
+          <div className='animate-spin-slow border-space-gold/50 absolute inset-0 rounded-full border-2 border-dashed'>
+            <div className='absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 animate-pulse rounded-full bg-gradient-to-r from-orange-500 to-red-600 shadow-lg shadow-orange-500/60'></div>
+            <div
+              className='absolute top-1/2 -right-1 h-2 w-2 -translate-y-1/2 animate-pulse rounded-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg shadow-blue-500/60'
+              style={{ animationDelay: '0.5s' }}
+            ></div>
+            <div
+              className='absolute -bottom-1 left-1/2 h-1.5 w-1.5 -translate-x-1/2 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-teal-600 shadow-lg shadow-green-500/60'
+              style={{ animationDelay: '1s' }}
+            ></div>
+            <div
+              className='absolute top-1/2 -left-1 h-1.5 w-1.5 -translate-y-1/2 animate-pulse rounded-full bg-gradient-to-r from-yellow-500 to-orange-600 shadow-lg shadow-yellow-500/60'
+              style={{ animationDelay: '1.5s' }}
+            ></div>
+          </div>
 
-      <CardContent className='p-4 text-center'>
-        {/* Skill Icon from Simple Icons */}
-        <div className='from-space-accent/20 to-space-gold/20 relative mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br transition-transform duration-300 group-hover:scale-110'>
-          {!imageError ? (
-            <Image
-              src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${getSkillSlug()}.svg`}
-              alt={skill.name}
-              width={34}
-              height={34}
-              className='brightness-0 invert filter transition-all duration-300 group-hover:drop-shadow-lg'
-              style={{ filter: 'brightness(0) invert(1)' }}
-              onError={() => setImageError(true)}
-              unoptimized
-            />
-          ) : (
-            <Code className='h-6 w-6 text-white' />
-          )}
+          {/* Inner Orbital Ring - Matching space-orbital reverse timing */}
+          <div className='animate-spin-reverse absolute inset-3 rounded-full border border-dashed border-purple-400/40'>
+            <div className='absolute -top-0.5 left-1/2 h-1 w-1 -translate-x-1/2 animate-pulse rounded-full bg-gradient-to-r from-pink-500 to-rose-600 shadow-md shadow-pink-500/50'></div>
+            <div
+              className='absolute top-1/2 -right-0.5 h-1 w-1 -translate-y-1/2 animate-pulse rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 shadow-md shadow-cyan-500/50'
+              style={{ animationDelay: '0.7s' }}
+            ></div>
+            <div
+              className='absolute -bottom-0.5 left-1/2 h-0.5 w-0.5 -translate-x-1/2 animate-pulse rounded-full bg-gradient-to-r from-violet-500 to-purple-600 shadow-md shadow-violet-500/50'
+              style={{ animationDelay: '1.3s' }}
+            ></div>
+            <div
+              className='absolute top-1/2 -left-0.5 h-0.5 w-0.5 -translate-y-1/2 animate-pulse rounded-full bg-gradient-to-r from-indigo-500 to-blue-600 shadow-md shadow-indigo-500/50'
+              style={{ animationDelay: '1.8s' }}
+            ></div>
+          </div>
+
+          {/* Central Icon Container - Enhanced presentation */}
+          <div className='absolute inset-4 z-10 flex items-center justify-center rounded-full bg-gradient-to-br from-white/20 to-white/5 shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:from-white/25 group-hover:to-white/10 group-hover:shadow-lg group-hover:shadow-white/20'>
+            {/* Inner glow container for better icon visibility */}
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm transition-all duration-300 group-hover:ring-white/40'>
+              {!imageError ? (
+                <Image
+                  src={`https://cdn.simpleicons.org/${getSkillSlug()}`}
+                  alt={skill.name}
+                  width={28}
+                  height={28}
+                  className='h-full w-full object-contain transition-all duration-300 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-md'
+                  onError={() => setImageError(true)}
+                  unoptimized
+                />
+              ) : (
+                <Code className='h-6 w-6 text-white' />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Skill Name */}
-        <h3 className='group-hover:text-space-accent mb-2 truncate text-sm font-semibold text-white transition-colors duration-300'>
+        <h3 className='group-hover:text-space-accent relative z-10 mb-2 truncate text-sm font-semibold text-white transition-colors duration-300'>
           {skill.name}
         </h3>
 
         {/* Proficiency Badge */}
         <Badge
           variant='outline'
-          className={`text-xs font-medium ${getProficiencyColor(skill.level)}`}
+          className={`relative z-10 text-xs font-medium ${getProficiencyColor(skill.level)}`}
         >
           <Zap className='mr-1 h-2 w-2' />
           {getProficiencyLevel(skill.level)}
         </Badge>
 
-        {/* Sparkle effects on hover */}
-        <div className='absolute top-2 right-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-          <Sparkles className='text-space-gold h-3 w-3 animate-pulse' />
+        {/* Enhanced sparkle effects on hover */}
+        <div className='absolute top-2 right-2 z-20 opacity-0 transition-all duration-300 group-hover:scale-110 group-hover:opacity-100'>
+          <Sparkles className='text-space-gold h-3 w-3 animate-pulse drop-shadow-sm' />
         </div>
       </CardContent>
     </Card>
@@ -113,12 +153,6 @@ const Skills = ({ skills }: SkillProps) => {
 
   // Sort skills by level (highest first) and take top 10 for main display
   const topSkills = skills.sort((a, b) => b.level - a.level).slice(0, 10)
-
-  // Get unique categories for filter in dialog
-  const categories = [
-    'all',
-    ...Array.from(new Set(skills.map(skill => skill.category))),
-  ]
 
   // Filter skills for dialog
   const filteredSkills = skills.filter(skill => {
@@ -138,89 +172,6 @@ const Skills = ({ skills }: SkillProps) => {
         subtitle='Discover the cutting-edge technologies and tools that power my digital creations across the cosmos.'
       />
 
-      {/* Enhanced Skills Statistics */}
-      <div className='mb-12 grid grid-cols-2 gap-4 md:grid-cols-4'>
-        <div className='group relative transform transition-all duration-500 hover:scale-105'>
-          <div className='glass-cosmic border-space-accent/30 hover:border-space-accent/50 relative overflow-hidden rounded-xl p-6 text-center transition-all duration-300'>
-            <div className='from-space-accent/10 absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
-            <div className='relative z-10'>
-              <div className='mb-2 flex items-center justify-center'>
-                <div className='from-space-accent flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br to-purple-500 shadow-lg'>
-                  <Code className='h-5 w-5 text-white' />
-                </div>
-              </div>
-              <div className='text-space-accent mb-1 text-2xl font-bold'>
-                {skills.length}
-              </div>
-              <div className='text-sm font-medium text-gray-400'>
-                Total Skills
-              </div>
-            </div>
-          </div>
-          <div className='from-space-accent/20 absolute inset-0 -z-10 rounded-xl bg-gradient-to-br to-purple-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
-        </div>
-
-        <div className='group relative transform transition-all duration-500 hover:scale-105'>
-          <div className='glass-cosmic border-space-gold/30 hover:border-space-gold/50 relative overflow-hidden rounded-xl p-6 text-center transition-all duration-300'>
-            <div className='from-space-gold/10 absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
-            <div className='relative z-10'>
-              <div className='mb-2 flex items-center justify-center'>
-                <div className='from-space-gold flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br to-yellow-500 shadow-lg'>
-                  <Grid3X3 className='h-5 w-5 text-white' />
-                </div>
-              </div>
-              <div className='text-space-gold mb-1 text-2xl font-bold'>
-                {categories.length - 1}
-              </div>
-              <div className='text-sm font-medium text-gray-400'>
-                Categories
-              </div>
-            </div>
-          </div>
-          <div className='from-space-gold/20 absolute inset-0 -z-10 rounded-xl bg-gradient-to-br to-yellow-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
-        </div>
-
-        <div className='group relative transform transition-all duration-500 hover:scale-105'>
-          <div className='glass-cosmic relative overflow-hidden rounded-xl border-green-500/30 p-6 text-center transition-all duration-300 hover:border-green-500/50'>
-            <div className='absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
-            <div className='relative z-10'>
-              <div className='mb-2 flex items-center justify-center'>
-                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-500 shadow-lg'>
-                  <Sparkles className='h-5 w-5 text-white' />
-                </div>
-              </div>
-              <div className='mb-1 text-2xl font-bold text-green-400'>
-                {skills.filter(s => s.level >= 80).length}
-              </div>
-              <div className='text-sm font-medium text-gray-400'>Advanced+</div>
-            </div>
-          </div>
-          <div className='absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
-        </div>
-
-        <div className='group relative transform transition-all duration-500 hover:scale-105'>
-          <div className='glass-cosmic relative overflow-hidden rounded-xl border-purple-500/30 p-6 text-center transition-all duration-300 hover:border-purple-500/50'>
-            <div className='absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
-            <div className='relative z-10'>
-              <div className='mb-2 flex items-center justify-center'>
-                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg'>
-                  <Zap className='h-5 w-5 text-white' />
-                </div>
-              </div>
-              <div className='mb-1 text-2xl font-bold text-purple-400'>
-                {Math.round(
-                  skills.reduce((sum, skill) => sum + skill.level, 0) /
-                    skills.length
-                )}
-                %
-              </div>
-              <div className='text-sm font-medium text-gray-400'>Avg Level</div>
-            </div>
-          </div>
-          <div className='absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
-        </div>
-      </div>
-
       {/* Top 10 Skills Grid */}
       <div className='mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5'>
         {topSkills.map((skill, index) => (
@@ -234,24 +185,13 @@ const Skills = ({ skills }: SkillProps) => {
           <div className='relative inline-block'>
             <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  size='lg'
-                  variant='cosmic'
-                  className='group relative overflow-hidden px-8 py-4 text-lg font-semibold'
-                >
-                  <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-                  <div className='relative z-10 flex items-center gap-3'>
-                    <div className='from-space-gold flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br to-yellow-500 transition-transform duration-300 group-hover:scale-110'>
-                      <Grid3X3 className='h-3 w-3 text-white' />
-                    </div>
-                    <span>Explore All Skills</span>
-                    <span className='text-space-gold'>({skills.length})</span>
-                  </div>
-                  <div className='from-space-gold to-space-accent absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r transition-all duration-500 group-hover:w-full'></div>
+                <Button variant='cosmic'>
+                  Explore All Skills
+                  <span className='text-space-gold'>({skills.length})</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className='border-space-accent/30 from-space-cosmic/70 h-[95vh] max-h-[95vh] w-[98vw] max-w-[98vw] bg-gradient-to-br to-gray-900/80 p-0 backdrop-blur-xl sm:h-[90vh] sm:w-[95vw] sm:max-w-[95vw] lg:h-[85vh] lg:w-[90vw] lg:max-w-[90vw] xl:max-w-7xl'>
-                <DialogHeader className='border-space-accent/20 border-b p-3 sm:p-4 lg:p-6'>
+              <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 h-[95vh] max-h-[95vh] w-[98vw] max-w-[98vw] bg-gradient-to-br to-gray-900/80 p-0 shadow-2xl backdrop-blur-xl sm:h-[90vh] sm:w-[95vw] sm:max-w-[95vw] lg:h-[85vh] lg:w-[90vw] lg:max-w-[90vw] xl:max-w-7xl'>
+                <DialogHeader className='shadow-space-accent/10 p-3 shadow-sm sm:p-4 lg:p-6'>
                   <DialogTitle className='flex items-center gap-3 text-xl font-bold text-white'>
                     <div className='from-space-accent flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br to-purple-500'>
                       <Code className='h-4 w-4 text-white' />
@@ -293,12 +233,12 @@ const Skills = ({ skills }: SkillProps) => {
                 </div>
 
                 {/* Enhanced Footer with Close Button */}
-                <div className='border-space-accent/20 flex justify-center border-t p-3 sm:p-4 lg:p-6'>
+                <div className='shadow-space-accent/10 flex justify-center p-3 shadow-sm sm:p-4 lg:p-6'>
                   <DialogClose asChild>
                     <Button
                       variant='outline'
                       size='sm'
-                      className='border-space-accent/50 hover:bg-space-accent/20 hover:border-space-accent/70 group relative w-full overflow-hidden text-white sm:w-auto'
+                      className='group hover:bg-space-accent/20 hover:shadow-space-accent/20 relative w-full overflow-hidden text-white hover:shadow-lg sm:w-auto'
                     >
                       <div className='from-space-accent/10 absolute inset-0 bg-gradient-to-r to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100'></div>
                       <div className='relative z-10 flex items-center gap-2'>

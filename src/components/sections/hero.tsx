@@ -78,38 +78,6 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
 
   return (
     <>
-      {/* Background Effects */}
-      <div className='pointer-events-none absolute inset-0 overflow-hidden'>
-        {/* Floating Particles */}
-        <div className='animate-float absolute top-20 left-10'>
-          <div className='bg-space-gold/30 h-3 w-3 rounded-full shadow-lg shadow-yellow-500/20'></div>
-        </div>
-        <div
-          className='animate-float absolute top-40 right-20'
-          style={{ animationDelay: '2s' }}
-        >
-          <div className='bg-space-accent/40 h-2 w-2 rounded-full shadow-lg shadow-purple-500/20'></div>
-        </div>
-        <div
-          className='animate-float absolute bottom-40 left-20'
-          style={{ animationDelay: '4s' }}
-        >
-          <div className='h-4 w-4 rounded-full bg-blue-400/30 shadow-lg shadow-blue-500/20'></div>
-        </div>
-        <div
-          className='animate-float absolute top-1/3 left-1/4'
-          style={{ animationDelay: '1s' }}
-        >
-          <div className='h-1 w-1 rounded-full bg-white/50'></div>
-        </div>
-        <div
-          className='animate-float absolute right-1/3 bottom-1/3'
-          style={{ animationDelay: '3s' }}
-        >
-          <div className='bg-space-gold/20 h-2 w-2 rounded-full'></div>
-        </div>
-      </div>
-
       <div className='relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
         {/* Left Content */}
         <div
@@ -150,7 +118,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
 
           {/* Enhanced Bio */}
           <div className='relative'>
-            <p className='max-w-2xl rounded-lg border border-white/10 bg-white/5 p-4 text-lg leading-relaxed text-gray-400 backdrop-blur-sm'>
+            <p className='max-w-2xl rounded-lg bg-white/5 p-4 text-lg leading-relaxed text-gray-400 shadow-lg shadow-white/5 backdrop-blur-sm'>
               {personalInfo.bio}
             </p>
             <div className='border-space-gold absolute -top-2 -left-2 h-4 w-4 rounded-tl-lg border-t-2 border-l-2'></div>
@@ -159,7 +127,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
 
           {/* Enhanced Contact Info */}
           <div className='flex flex-col gap-4 text-gray-400 sm:flex-row'>
-            <div className='group hover:border-space-gold/50 flex items-center space-x-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-all duration-300'>
+            <div className='group hover:shadow-space-gold/20 flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-all duration-300 hover:bg-white/10 hover:shadow-md'>
               <div className='bg-space-gold/20 group-hover:bg-space-gold/30 rounded-full p-1 transition-colors'>
                 <Mail className='text-space-gold h-4 w-4' />
               </div>
@@ -170,7 +138,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
                 {personalInfo.email}
               </a>
             </div>
-            <div className='group hover:border-space-accent/50 flex items-center space-x-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-all duration-300'>
+            <div className='group hover:shadow-space-accent/20 flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-all duration-300 hover:bg-white/10 hover:shadow-md'>
               <div className='bg-space-accent/20 group-hover:bg-space-accent/30 rounded-full p-1 transition-colors'>
                 <MapPin className='text-space-accent h-4 w-4' />
               </div>
@@ -216,7 +184,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
 
             {/* Enhanced floating elements with improved animations */}
             <div className='animate-float absolute top-8 right-8 z-30 transition-transform duration-300 group-hover:scale-110'>
-              <div className='from-space-accent flex h-14 w-14 items-center justify-center rounded-full border border-purple-400/30 bg-gradient-to-br to-purple-600 text-2xl shadow-xl shadow-purple-500/40'>
+              <div className='from-space-accent flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br to-purple-600 text-2xl shadow-xl shadow-purple-500/40'>
                 <span className='animate-pulse'>⭐</span>
               </div>
             </div>
@@ -224,7 +192,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               className='animate-float absolute bottom-8 left-8 z-30 transition-transform duration-300 group-hover:scale-110'
               style={{ animationDelay: '1s' }}
             >
-              <div className='from-space-gold flex h-12 w-12 items-center justify-center rounded-full border border-yellow-400/30 bg-gradient-to-br to-yellow-500 text-xl shadow-xl shadow-yellow-500/40'>
+              <div className='from-space-gold flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br to-yellow-500 text-xl shadow-xl shadow-yellow-500/40'>
                 <span className='animate-pulse'>🌟</span>
               </div>
             </div>
@@ -232,7 +200,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               className='animate-float absolute top-1/2 right-0 z-30 transition-transform duration-300 group-hover:scale-110'
               style={{ animationDelay: '2s' }}
             >
-              <div className='flex h-10 w-10 items-center justify-center rounded-full border border-blue-400/30 bg-gradient-to-br from-blue-500 to-cyan-400 text-lg shadow-xl shadow-blue-500/40'>
+              <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-lg shadow-xl shadow-blue-500/40'>
                 <span className='animate-pulse'>✨</span>
               </div>
             </div>
@@ -258,7 +226,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
 
           {/* Enhanced Stats Grid */}
           <div className='grid grid-cols-3 gap-4'>
-            <div className='group glass-nebula hover:shadow-space-gold/20 border-space-gold/20 hover:border-space-gold/40 rounded-xl border p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl'>
+            <div className='group glass-nebula hover:shadow-space-gold/20 rounded-xl p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl'>
               <div className='relative'>
                 <div className='text-space-gold from-space-gold bg-gradient-to-br to-yellow-300 bg-clip-text text-3xl font-bold text-transparent md:text-4xl'>
                   {counts.skills}+
@@ -271,7 +239,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               <div className='via-space-gold mt-2 h-1 w-full rounded-full bg-gradient-to-r from-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
             </div>
 
-            <div className='group glass-nebula hover:shadow-space-accent/20 border-space-accent/20 hover:border-space-accent/40 rounded-xl border p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl'>
+            <div className='group glass-nebula hover:shadow-space-accent/20 rounded-xl p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl'>
               <div className='relative'>
                 <div className='text-space-accent from-space-accent bg-gradient-to-br to-purple-300 bg-clip-text text-3xl font-bold text-transparent md:text-4xl'>
                   {counts.professionalProjects}+
@@ -284,7 +252,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               <div className='via-space-accent mt-2 h-1 w-full rounded-full bg-gradient-to-r from-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
             </div>
 
-            <div className='group glass-nebula rounded-xl border border-blue-500/20 p-5 text-center transition-all duration-500 hover:scale-105 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/20'>
+            <div className='group glass-nebula rounded-xl p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20'>
               <div className='relative'>
                 <div className='bg-gradient-to-br from-blue-400 to-cyan-300 bg-clip-text text-3xl font-bold text-transparent md:text-4xl'>
                   {counts.personalProjects}+

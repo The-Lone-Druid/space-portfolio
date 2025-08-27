@@ -78,27 +78,17 @@ const About = ({ heroStats }: AboutProps) => {
 
   return (
     <>
-      {/* Background Effects */}
-      <div className='pointer-events-none absolute inset-0 overflow-hidden'>
-        <div className='bg-space-gold/20 animate-float absolute top-20 right-10 h-4 w-4 rounded-full'></div>
-        <div
-          className='bg-space-accent/30 animate-float absolute bottom-32 left-20 h-2 w-2 rounded-full'
-          style={{ animationDelay: '2s' }}
-        ></div>
-        <div
-          className='animate-float absolute top-1/2 right-1/4 h-3 w-3 rounded-full bg-blue-400/20'
-          style={{ animationDelay: '4s' }}
-        ></div>
+      {/* Section Header */}
+      <div className='mb-12 sm:mb-16'>
+        <SectionHeader
+          title='About My'
+          highlight='Journey'
+          subtitle='Discover the story behind the cosmic code explorer who transforms ideas into digital realities'
+        />
       </div>
 
-      <SectionHeader
-        title='About My'
-        highlight='Journey'
-        subtitle='Discover the story behind the cosmic code explorer who transforms ideas into digital realities'
-      />
-
       <div
-        className={`mb-16 grid transform grid-cols-1 gap-12 transition-all duration-1000 lg:grid-cols-2 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+        className={`mb-12 grid transform grid-cols-1 gap-8 transition-all duration-1000 lg:mb-16 lg:grid-cols-2 lg:gap-12 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
       >
         {/* Left - Enhanced Personal Story */}
         <div className='space-y-6'>
@@ -151,14 +141,12 @@ const About = ({ heroStats }: AboutProps) => {
             <div className='from-space-gold absolute -top-2 left-8 h-1 w-20 rounded-full bg-gradient-to-r to-transparent'></div>
           </div>
 
-          <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6'>
             {highlights.map((highlight, index) => (
               <div
                 key={index}
-                className={`group glass-cosmic relative transform rounded-xl border p-6 transition-all duration-500 hover:scale-105 hover:${highlight.shadowColor} hover:shadow-2xl ${
-                  hoveredCard === index
-                    ? 'scale-105 border-white/30'
-                    : 'border-white/10 hover:border-white/20'
+                className={`group glass-cosmic relative transform rounded-xl p-4 transition-all duration-500 hover:scale-105 hover:${highlight.shadowColor} hover:shadow-2xl sm:p-6 ${
+                  hoveredCard === index ? 'scale-105' : ''
                 }`}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -198,106 +186,195 @@ const About = ({ heroStats }: AboutProps) => {
 
       {/* Redesigned Statistics & Philosophy Section */}
       <div
-        className={`transform space-y-8 transition-all delay-300 duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+        className={`transform space-y-8 transition-all delay-300 duration-1000 sm:space-y-12 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
       >
-        {/* Mission Statistics - Redesigned as compact cards */}
+        {/* Mission Statistics - Enhanced Responsive Design */}
         <div className='relative'>
-          <h3 className='mb-8 flex items-center justify-center gap-3 text-center text-2xl font-bold text-white'>
-            <div className='from-space-accent flex h-8 w-8 animate-pulse items-center justify-center rounded-full bg-gradient-to-br to-purple-400'>
-              <Orbit className='h-4 w-4 text-white' />
+          <h3 className='mb-6 flex items-center justify-center gap-3 text-center text-xl font-bold text-white sm:mb-8 sm:text-2xl'>
+            <div className='from-space-accent flex h-7 w-7 animate-pulse items-center justify-center rounded-full bg-gradient-to-br to-purple-400 sm:h-8 sm:w-8'>
+              <Orbit className='h-3.5 w-3.5 text-white sm:h-4 sm:w-4' />
             </div>
             Mission <span className='text-space-gold'>Statistics</span>
           </h3>
 
-          <div className='mb-12 grid grid-cols-2 gap-4 md:grid-cols-4'>
+          <div className='mb-10 grid grid-cols-2 gap-3 sm:mb-12 sm:gap-4 md:grid-cols-4'>
             {achievements.map((achievement, index) => (
               <div
                 key={index}
                 className='group relative transform transition-all duration-500 hover:scale-105'
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className='glass-cosmic rounded-xl border border-white/10 p-4 text-center transition-all duration-300 hover:border-white/20'>
-                  <div className='mb-2 text-2xl'>{achievement.icon}</div>
-                  <div className='text-space-gold mb-1 text-xl font-bold'>
+                <div className='glass-cosmic rounded-lg p-3 text-center transition-all duration-300 sm:rounded-xl sm:p-4'>
+                  <div className='mb-2 text-xl sm:text-2xl'>
+                    {achievement.icon}
+                  </div>
+                  <div className='text-space-gold mb-1 text-lg font-bold sm:text-xl'>
                     {achievement.value}
                   </div>
-                  <div className='text-xs font-medium text-gray-400'>
+                  <div className='text-xs font-medium text-gray-400 sm:text-sm'>
                     {achievement.label}
                   </div>
                 </div>
                 {/* Hover glow effect */}
-                <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 -z-10 rounded-xl bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
+                <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 -z-10 rounded-lg bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100 sm:rounded-xl'></div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Philosophy Section - Redesigned as an elegant card */}
-        <div className='relative mx-auto max-w-5xl'>
-          <div className='glass-nebula group relative overflow-hidden rounded-2xl border border-white/10 p-8 transition-all duration-500 hover:border-white/20'>
-            {/* Animated background elements */}
-            <div className='absolute inset-0 opacity-5 transition-opacity duration-500 group-hover:opacity-10'>
-              <div className='bg-gradient-radial from-space-gold/30 absolute top-0 right-0 h-32 w-32 rounded-full to-transparent'></div>
-              <div className='bg-gradient-radial from-space-accent/30 absolute bottom-0 left-0 h-24 w-24 rounded-full to-transparent'></div>
+        {/* Philosophy Section - Enhanced Visual Design */}
+        <div className='relative'>
+          <div className='glass-cosmic group relative overflow-hidden rounded-3xl transition-all duration-500'>
+            {/* Enhanced Background Effects */}
+            <div className='absolute inset-0 opacity-10 transition-opacity duration-700'>
+              <div className='from-space-gold/10 to-space-accent/10 absolute inset-0 bg-gradient-to-br via-transparent'></div>
+              <div className='bg-gradient-radial from-space-gold/20 absolute top-0 right-0 h-40 w-40 rounded-full to-transparent opacity-60'></div>
+              <div className='bg-gradient-radial from-space-accent/20 absolute bottom-0 left-0 h-32 w-32 rounded-full to-transparent opacity-40'></div>
+              <div className='bg-gradient-radial absolute top-1/2 left-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full from-purple-500/10 to-transparent opacity-50'></div>
             </div>
 
-            <div className='relative z-10'>
-              {/* Header with icon */}
-              <div className='mb-6 flex items-center justify-center gap-3'>
-                <div className='from-space-gold flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br to-yellow-400 transition-transform duration-300 group-hover:scale-110'>
-                  <Code className='h-5 w-5 text-white' />
+            {/* Decorative Header Bar */}
+            <div className='via-space-gold h-1 w-full bg-gradient-to-r from-transparent to-transparent'></div>
+
+            <div className='relative z-10 px-6 py-10 sm:px-8 sm:py-12 md:px-12 md:py-16'>
+              {/* Enhanced Header */}
+              <div className='mb-10 text-center sm:mb-12'>
+                <div className='mb-6 flex items-center justify-center gap-4'>
+                  <div className='relative'>
+                    <div className='from-space-gold group-hover:shadow-space-gold/30 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br to-amber-500 shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl sm:h-20 sm:w-20'>
+                      <Code className='h-8 w-8 text-white sm:h-10 sm:w-10' />
+                    </div>
+                    <div className='from-space-accent absolute -top-1 -right-1 h-6 w-6 animate-pulse rounded-full bg-gradient-to-br to-purple-500 opacity-80 sm:h-8 sm:w-8'>
+                      <Sparkles className='m-1 h-4 w-4 text-white sm:m-1.5 sm:h-5 sm:w-5' />
+                    </div>
+                  </div>
                 </div>
-                <h3 className='text-2xl font-bold text-white'>
-                  My Development{' '}
-                  <span className='text-space-gold'>Philosophy</span>
+
+                <h3 className='via-space-gold mb-4 bg-gradient-to-r from-white to-white bg-clip-text text-2xl font-bold text-transparent transition-all duration-300 sm:text-3xl md:text-4xl'>
+                  My Development Philosophy
                 </h3>
+
+                <div className='from-space-gold via-space-accent mx-auto h-1 w-32 rounded-full bg-gradient-to-r to-purple-500 sm:w-40'></div>
               </div>
 
-              {/* Quote content */}
-              <div className='relative'>
-                <div className='grid items-center gap-6 md:grid-cols-3'>
-                  {/* Left decoration */}
-                  <div className='hidden justify-center md:flex'>
-                    <div className='from-space-gold/20 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br to-transparent'>
-                      <div className='text-space-gold/60 font-serif text-3xl'>
+              {/* Enhanced Quote Layout */}
+              <div className='group/point relative mb-10 overflow-hidden rounded-xl bg-white/5 p-4 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10'>
+                <div className='mx-auto max-w-4xl'>
+                  {/* Mobile Quote Marks */}
+                  <div className='mb-6 flex justify-center md:hidden'>
+                    <div className='from-space-gold/20 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br to-transparent'>
+                      <div className='text-space-gold/60 font-serif text-2xl'>
                         &ldquo;
                       </div>
                     </div>
                   </div>
 
-                  {/* Main quote */}
-                  <div className='text-center'>
-                    <p className='text-lg leading-relaxed text-gray-300 italic transition-colors duration-500 group-hover:text-white'>
+                  {/* Desktop Layout */}
+                  <div className='hidden items-center gap-8 md:grid md:grid-cols-7'>
+                    {/* Left Quote Mark */}
+                    <div className='flex justify-center'>
+                      <div className='group/quote relative'>
+                        <div className='from-space-gold/20 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br to-transparent transition-all duration-300 group-hover/quote:scale-110'>
+                          <div className='text-space-gold/60 group-hover:text-space-gold/80 font-serif text-4xl transition-colors duration-300'>
+                            &ldquo;
+                          </div>
+                        </div>
+                        <div className='from-space-gold/10 absolute inset-0 rounded-full bg-gradient-to-br to-transparent opacity-0 blur-lg transition-opacity duration-300 group-hover/quote:opacity-100'></div>
+                      </div>
+                    </div>
+
+                    {/* Main Quote Content */}
+                    <div className='col-span-5 px-4'>
+                      <blockquote className='text-center text-lg leading-relaxed text-gray-300 italic transition-colors duration-500 group-hover:text-white sm:text-xl md:text-2xl'>
+                        Code is poetry written in logic. Every function is a
+                        verse, every component is a stanza, and every
+                        application is an epic that tells the story of solving
+                        real-world problems.
+                      </blockquote>
+                    </div>
+
+                    {/* Right Quote Mark */}
+                    <div className='flex justify-center'>
+                      <div className='group/quote relative'>
+                        <div className='from-space-accent/20 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br to-transparent transition-all duration-300 group-hover/quote:scale-110'>
+                          <div className='text-space-accent/60 group-hover:text-space-accent/80 rotate-180 font-serif text-4xl transition-colors duration-300'>
+                            &rdquo;
+                          </div>
+                        </div>
+                        <div className='from-space-accent/10 absolute inset-0 rounded-full bg-gradient-to-br to-transparent opacity-0 blur-lg transition-opacity duration-300 group-hover/quote:opacity-100'></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mobile Quote Content */}
+                  <div className='px-4 text-center md:hidden'>
+                    <blockquote className='text-base leading-relaxed text-gray-300 italic transition-colors duration-500 group-hover:text-white sm:text-lg'>
                       Code is poetry written in logic. Every function is a
                       verse, every component is a stanza, and every application
                       is an epic that tells the story of solving real-world
                       problems.
-                    </p>
+                    </blockquote>
                   </div>
 
-                  {/* Right decoration */}
-                  <div className='hidden justify-center md:flex'>
-                    <div className='from-space-accent/20 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br to-transparent'>
-                      <div className='text-space-accent/60 rotate-180 font-serif text-3xl'>
+                  {/* Mobile Closing Quote */}
+                  <div className='mt-6 flex justify-center md:hidden'>
+                    <div className='from-space-accent/20 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br to-transparent'>
+                      <div className='text-space-accent/60 rotate-180 font-serif text-2xl'>
                         &rdquo;
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Badge */}
-                <div className='mt-8 flex justify-center'>
-                  <div className='group/badge relative'>
-                    <Badge
-                      variant='outline'
-                      className='text-space-gold border-space-gold hover:bg-space-gold px-6 py-3 text-base font-medium transition-all duration-300 hover:text-white'
-                    >
-                      <Sparkles className='mr-2 h-4 w-4' />
-                      Clean Code Advocate
-                    </Badge>
-                    <div className='bg-space-gold/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-md transition-opacity duration-300 group-hover/badge:opacity-100'></div>
-                  </div>
+              {/* Enhanced Badge Section */}
+              <div className='flex justify-center'>
+                <div className='group/badge relative'>
+                  {/* Outer glow effect */}
+                  <div className='from-space-gold/20 via-space-accent/20 absolute -inset-4 rounded-2xl bg-gradient-to-r to-purple-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover/badge:opacity-100'></div>
+
+                  <Badge
+                    variant='outline'
+                    className='bg-space-gold/5 text-space-gold hover:bg-space-gold hover:shadow-space-gold/25 relative px-6 py-3 text-base font-semibold backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:text-white hover:shadow-xl sm:px-8 sm:py-4 sm:text-lg'
+                  >
+                    <Sparkles className='mr-3 h-5 w-5 animate-pulse' />
+                    Clean Code Advocate
+                    <div className='ml-2 h-2 w-2 animate-ping rounded-full bg-current opacity-75'></div>
+                  </Badge>
                 </div>
+              </div>
+
+              {/* Additional Philosophy Points */}
+              <div className='mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+                {[
+                  {
+                    icon: '🎯',
+                    title: 'Purpose-Driven',
+                    desc: 'Every line of code serves a purpose',
+                  },
+                  {
+                    icon: '🔧',
+                    title: 'Clean & Maintainable',
+                    desc: 'Building for the future, not just today',
+                  },
+                  {
+                    icon: '🚀',
+                    title: 'Performance First',
+                    desc: 'Optimized for speed and efficiency',
+                  },
+                ].map((point, index) => (
+                  <div
+                    key={index}
+                    className='group/point relative overflow-hidden rounded-xl bg-white/5 p-4 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10'
+                  >
+                    <div className='mb-3 text-2xl'>{point.icon}</div>
+                    <h4 className='mb-2 text-sm font-semibold text-white'>
+                      {point.title}
+                    </h4>
+                    <p className='text-xs text-gray-400'>{point.desc}</p>
+                    <div className='from-space-gold to-space-accent absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r transition-all duration-300 group-hover/point:w-full'></div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

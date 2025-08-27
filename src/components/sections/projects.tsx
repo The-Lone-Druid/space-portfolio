@@ -85,22 +85,19 @@ const Projects = ({ projects }: ProjectsProps) => {
         className={`group relative transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
         style={{ animationDelay: `${index * 0.2}s` }}
       >
-        {/* Background glow effect */}
-        <div className='from-space-gold/20 to-space-accent/20 absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
-
-        <div className='glass-cosmic flex h-full flex-col rounded-2xl border border-white/10 p-6 transition-all duration-500 group-hover:scale-105 group-hover:transform hover:border-white/30'>
+        <div className='glass-cosmic hover:shadow-space-accent/20 flex h-full flex-col rounded-2xl p-6 transition-all duration-500 group-hover:scale-105 group-hover:transform hover:shadow-lg'>
           {/* Project Header */}
           <div className='mb-4 flex items-start justify-between'>
             <div className='flex-1'>
               <div className='mb-2 flex items-center gap-2'>
                 {project.featured && (
-                  <div className='bg-space-gold/20 text-space-gold border-space-gold/30 rounded-full border px-2 py-1 text-xs font-medium'>
-                    <Star className='mr-1 inline h-3 w-3' />
+                  <div className='text-space-gold flex items-center gap-1 rounded-full bg-[#ffd700]/30 px-2 py-1 text-xs font-medium shadow-md shadow-yellow-500/20'>
+                    <Star className='inline h-3 w-3' />
                     Featured
                   </div>
                 )}
                 {project.isOngoing && (
-                  <div className='rounded-full border border-green-500/30 bg-green-500/20 px-2 py-1 text-xs font-medium text-green-400'>
+                  <div className='rounded-full bg-green-500/20 px-2 py-1 text-xs font-medium text-green-400 shadow-md shadow-green-500/20'>
                     <Rocket className='mr-1 inline h-3 w-3' />
                     Active
                   </div>
@@ -130,7 +127,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                   <Badge
                     key={skillIndex}
                     variant='outline'
-                    className='hover:border-space-accent/50 hover:text-space-accent border-white/20 bg-white/5 text-xs text-gray-300 transition-colors duration-300'
+                    className='hover:text-space-accent bg-white/5 text-xs text-gray-300 transition-colors duration-300 hover:bg-white/10 hover:shadow-md'
                   >
                     {skillItem.name}
                   </Badge>
@@ -138,7 +135,7 @@ const Projects = ({ projects }: ProjectsProps) => {
               {project.skillsUtilized.length > 4 && (
                 <Badge
                   variant='outline'
-                  className='border-white/20 bg-white/5 text-xs text-gray-400'
+                  className='bg-white/5 text-xs text-gray-400 shadow-sm'
                 >
                   +{project.skillsUtilized.length - 4} more
                 </Badge>
@@ -173,7 +170,7 @@ const Projects = ({ projects }: ProjectsProps) => {
             <Button
               size='sm'
               variant='outline'
-              className='hover:border-space-gold/50 hover:text-space-gold h-9 border-white/20 px-3'
+              className='hover:text-space-gold h-9 px-3 hover:bg-white/10 hover:shadow-md'
             >
               <Eye className='h-4 w-4' />
             </Button>
@@ -240,8 +237,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                   <div className='from-space-gold to-space-accent absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r transition-all duration-500 group-hover:w-full'></div>
                 </Button>
               </DialogTrigger>
-              <DialogContent className='border-space-accent/30 from-space-cosmic/70 max-h-[90vh] max-w-6xl bg-gradient-to-br to-gray-900/80 backdrop-blur-xl'>
-                <DialogHeader className='border-space-accent/20 border-b pb-4'>
+              <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 max-h-[90vh] max-w-6xl bg-gradient-to-br to-gray-900/80 shadow-2xl backdrop-blur-xl'>
+                <DialogHeader className='shadow-space-accent/10 pb-4 shadow-sm'>
                   <DialogTitle className='flex items-center gap-3 text-2xl font-bold text-white'>
                     <div className='from-space-accent flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br to-purple-500'>
                       <Rocket className='h-4 w-4 text-white' />
@@ -261,7 +258,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                       placeholder='Search projects by name or description...'
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
-                      className='focus:border-space-accent/50 focus:ring-space-accent/50 border-white/20 bg-white/5 pl-10 text-white transition-all duration-300 placeholder:text-gray-400 hover:border-white/30'
+                      className='focus:ring-space-accent/50 bg-white/5 pl-10 text-white shadow-md transition-all duration-300 placeholder:text-gray-400 hover:bg-white/10 focus:ring-2 focus:outline-none'
                     />
                   </div>
                   <div className='group relative min-w-[200px]'>
@@ -269,7 +266,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                     <select
                       value={selectedSkill}
                       onChange={e => setSelectedSkill(e.target.value)}
-                      className='focus:ring-space-accent/50 focus:border-space-accent/50 w-full rounded-md border border-white/20 bg-white/5 py-2 pr-4 pl-10 text-white transition-all duration-300 hover:border-white/30 focus:ring-2 focus:outline-none'
+                      className='focus:ring-space-accent/50 w-full rounded-md bg-white/5 py-2 pr-4 pl-10 text-white shadow-md transition-all duration-300 hover:bg-white/10 focus:ring-2 focus:outline-none'
                     >
                       <option value='' className='bg-gray-900'>
                         All Technologies
@@ -325,7 +322,7 @@ const Projects = ({ projects }: ProjectsProps) => {
       {/* Enhanced Empty State */}
       {projects.length === 0 && (
         <div className='relative mx-auto max-w-md py-20 text-center'>
-          <div className='glass-cosmic rounded-2xl border border-white/10 p-12'>
+          <div className='glass-cosmic shadow-space-accent/20 rounded-2xl p-12 shadow-lg'>
             <div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gray-800 to-gray-900'>
               <Rocket className='h-10 w-10 text-gray-500' />
             </div>

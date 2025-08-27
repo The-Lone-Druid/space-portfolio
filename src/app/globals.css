@@ -484,3 +484,30 @@ select:focus-visible {
     transition: none !important;
   }
 }
+
+/* Orbital Ring Animations for Skills */
+.orbital-ring-outer {
+  animation: orbital-spin-clockwise 4s linear infinite;
+}
+
+.orbital-ring-inner {
+  animation: orbital-spin-counter 3s linear infinite;
+}
+
+@keyframes orbital-spin-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbital-spin-counter {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}

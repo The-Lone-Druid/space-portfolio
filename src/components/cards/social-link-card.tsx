@@ -25,19 +25,19 @@ export const SocialLinkCard = ({
 
   return (
     <div
-      className='glass-nebula hover:border-space-gold/50 group cursor-pointer rounded-lg border border-purple-500/20 p-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg md:rounded-xl md:p-6'
+      className='glass-nebula hover:border-space-gold/50 group cursor-pointer rounded-lg border border-purple-500/20 p-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg sm:rounded-xl sm:p-4'
       onClick={handleClick}
     >
-      <div className='flex items-center space-x-3 md:space-x-4'>
-        <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl md:h-14 md:w-14'>
-          <Icon className='h-6 w-6 text-white md:h-7 md:w-7' />
+      <div className='flex items-center space-x-2 sm:space-x-3 md:space-x-4'>
+        <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg sm:h-12 sm:w-12 sm:rounded-xl md:h-14 md:w-14'>
+          <Icon className='h-5 w-5 text-white sm:h-6 sm:w-6 md:h-7 md:w-7' />
         </div>
 
         <div className='min-w-0 flex-1'>
-          <h3 className='group-hover:text-space-gold truncate text-base font-semibold text-white transition-colors duration-300 md:text-lg'>
+          <h3 className='group-hover:text-space-gold truncate text-sm font-semibold text-white transition-colors duration-300 sm:text-base md:text-lg'>
             {name}
           </h3>
-          <p className='truncate text-xs text-gray-400 md:text-sm'>
+          <p className='truncate text-xs text-gray-400 sm:text-sm'>
             {username}
           </p>
         </div>

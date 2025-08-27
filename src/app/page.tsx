@@ -37,11 +37,11 @@ export default async function Page() {
     <>
       <SpaceBackground />
       <Header />
-      <main id='main' role='main'>
+      <main id='main' role='main' className='overflow-x-hidden'>
         {/* Hero Section - Full height, no padding */}
         <section
           id='home'
-          className='relative flex min-h-screen items-center justify-center pt-20'
+          className='relative flex min-h-screen items-center justify-center pt-10'
         >
           <div className='container mx-auto px-6'>
             <Hero personalInfo={personalInfo} heroStats={heroStats} />
@@ -49,35 +49,35 @@ export default async function Page() {
         </section>
 
         {/* About Section */}
-        <section id='about' className='py-20'>
+        <section id='about' className='py-16'>
           <div className='container mx-auto px-6'>
             <About heroStats={heroStats} />
           </div>
         </section>
 
         {/* Projects Section */}
-        <section id='projects' className='py-20'>
+        <section id='projects' className='py-16'>
           <div className='container mx-auto px-6'>
             <Projects projects={projects} />
           </div>
         </section>
 
         {/* Skills Section */}
-        <section id='skills' className='py-20'>
+        <section id='skills' className='py-16'>
           <div className='container mx-auto px-6'>
             <Skills skills={skills} />
           </div>
         </section>
 
         {/* Services Section */}
-        <section id='services' className='py-20'>
+        <section id='services' className='py-16'>
           <div className='container mx-auto px-6'>
             <Services services={services} />
           </div>
         </section>
 
         {/* Contact Section */}
-        <section id='contact' className='py-20'>
+        <section id='contact' className='py-16'>
           <div className='container mx-auto px-6'>
             <Contact personalInfo={personalInfo} />
           </div>

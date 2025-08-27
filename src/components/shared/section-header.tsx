@@ -17,24 +17,24 @@ export const SectionHeader = ({
   className = '',
 }: SectionHeaderProps) => {
   return (
-    <div className={`mb-16 text-center ${className}`}>
+    <div className={`mb-12 text-center sm:mb-16 ${className}`}>
       {badge && (
-        <div className='mb-6'>
-          <span className='text-space-gold text-lg font-medium'>
+        <div className='mb-4 sm:mb-6'>
+          <span className='text-space-gold text-base font-medium sm:text-lg'>
             {badge.emoji && `${badge.emoji} `}
             {badge.text}
           </span>
         </div>
       )}
 
-      <h2 className='mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl'>
+      <h2 className='mb-3 text-3xl font-bold text-white sm:mb-4 sm:text-4xl md:text-5xl lg:text-6xl'>
         {title}{' '}
         {highlight && <span className='text-space-gold'>{highlight}</span>}
       </h2>
 
-      <div className='bg-gradient-stellar mx-auto mb-6 h-1 w-24'></div>
+      <div className='bg-gradient-stellar mx-auto mb-4 h-1 w-20 sm:mb-6 sm:w-24'></div>
 
-      <p className='mx-auto max-w-3xl text-lg leading-relaxed text-gray-400 md:text-xl'>
+      <p className='mx-auto max-w-3xl text-base leading-relaxed text-gray-400 sm:text-lg md:text-xl'>
         {subtitle}
       </p>
     </div>
