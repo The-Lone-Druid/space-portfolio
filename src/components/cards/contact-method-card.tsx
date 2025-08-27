@@ -27,12 +27,12 @@ export const ContactMethodCard = ({
 
   return (
     <div
-      className='glass-nebula hover:border-space-gold/50 group cursor-pointer rounded-lg border border-purple-500/20 p-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg sm:rounded-xl sm:p-4'
+      className='glass-nebula hover:border-space-gold/50 group cursor-pointer rounded-lg border border-purple-500/20 p-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg sm:rounded-xl sm:p-3 md:p-4'
       onClick={handleClick}
     >
-      <div className='flex items-center space-x-2 sm:space-x-3 md:space-x-4'>
-        <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg shadow-md sm:h-10 sm:w-10 md:h-12 md:w-12 md:rounded-xl'>
-          <Icon className='h-4 w-4 text-white sm:h-5 sm:w-5 md:h-6 md:w-6' />
+      <div className='flex items-center space-x-2 sm:space-x-3'>
+        <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md shadow-md sm:h-8 sm:w-8 sm:rounded-lg md:h-10 md:w-10 md:rounded-xl'>
+          <Icon className='h-3 w-3 text-white sm:h-4 sm:w-4 md:h-5 md:w-5' />
         </div>
 
         <div className='min-w-0 flex-1'>
@@ -42,15 +42,13 @@ export const ContactMethodCard = ({
           <p className='text-space-gold truncate text-xs font-medium sm:text-sm'>
             {value}
           </p>
-          <p className='truncate text-xs text-gray-400 sm:text-xs'>
-            {description}
-          </p>
+          <p className='truncate text-xs text-gray-400'>{description}</p>
         </div>
 
         {href !== '#' && (
           <div className='text-space-gold flex-shrink-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
             <svg
-              className='h-3.5 w-3.5 md:h-4 md:w-4'
+              className='h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'

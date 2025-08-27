@@ -17,7 +17,7 @@ export const ContactForm = () => {
   } = useContactForm()
 
   return (
-    <div className='h-fit'>
+    <div>
       <form onSubmit={onSubmit} className='space-y-4 md:space-y-5'>
         {/* Name Fields Row */}
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4'>
