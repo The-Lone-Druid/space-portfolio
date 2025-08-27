@@ -1,5 +1,6 @@
 import AuthProvider from '@/components/auth/auth-provider'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Toaster } from 'sonner'
@@ -93,9 +94,12 @@ export default function RootLayout({
           <AuthProvider>
             <main className='relative z-10'>{children}</main>
             <Toaster />
-            <SpeedInsights />
           </AuthProvider>
         </ThemeProvider>
+
+        {/* Vercel features */}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )
