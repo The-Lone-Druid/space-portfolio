@@ -41,7 +41,7 @@ export default async function Page() {
         {/* Hero Section - Full height, no padding */}
         <section
           id='home'
-          className='relative flex min-h-screen items-center justify-center pt-10'
+          className='relative flex min-h-screen items-center justify-center pt-20 md:pt-10'
         >
           <div className='container mx-auto px-6'>
             <Hero personalInfo={personalInfo} heroStats={heroStats} />
