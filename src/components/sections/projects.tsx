@@ -108,12 +108,13 @@ const Projects = ({ projects }: ProjectsProps) => {
     return (
       <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 flex h-screen max-h-screen w-screen min-w-screen flex-col bg-gradient-to-br to-gray-900/80 p-0 shadow-2xl backdrop-blur-xl'>
         <DialogHeader className='shadow-space-accent/10 flex-shrink-0 p-3 shadow-sm sm:p-4 lg:p-6'>
-          <DialogTitle className='flex items-center gap-3 text-xl font-bold text-white'>
-            <div className='from-space-accent flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br to-purple-500'>
-              <Eye className='h-4 w-4 text-white' />
+          <DialogTitle className='flex flex-col gap-2 text-lg font-bold text-white sm:flex-row sm:items-center sm:gap-3 sm:text-xl'>
+            <div className='flex items-center gap-2 sm:gap-3'>
+              <div className='from-space-accent flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br to-purple-500 sm:h-8 sm:w-8'>
+                <Eye className='h-3 w-3 text-white sm:h-4 sm:w-4' />
+              </div>
+              <span className='whitespace-nowrap'>Project Details</span>
             </div>
-            Project Details
-            <span className='text-space-gold'>- {project.projectName}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -384,7 +385,7 @@ const Projects = ({ projects }: ProjectsProps) => {
           </div>
 
           {/* Action Buttons - Always visible on mobile, hover on desktop */}
-          <div className='flex gap-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:translate-y-0 md:opacity-100'>
+          <div className='flex flex-wrap gap-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:translate-y-0 md:opacity-100'>
             {project.projectLink && (
               <Button
                 size='sm'
@@ -409,11 +410,7 @@ const Projects = ({ projects }: ProjectsProps) => {
             )}
             <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  size='sm'
-                  variant='outline'
-                  className='hover:text-space-accent border-space-accent/30 bg-space-accent/10 hover:bg-space-accent/20 hover:shadow-space-accent/20 h-9 min-w-[100px] text-white hover:shadow-md'
-                >
+                <Button size='sm' variant='nebula' className='w-full'>
                   <Eye className='mr-2 h-4 w-4' />
                   Details
                 </Button>
