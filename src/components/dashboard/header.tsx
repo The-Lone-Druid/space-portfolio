@@ -55,7 +55,10 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
               className='relative h-8 w-8 rounded-full transition-colors hover:bg-white/10'
             >
               <Avatar className='ring-space-gold/50 h-8 w-8 ring-2'>
-                <AvatarImage src='/placeholder-avatar.jpg' alt='@username' />
+                <AvatarImage
+                  src='/placeholder-avatar.jpg'
+                  alt='Zahid Shaikh profile picture'
+                />
                 <AvatarFallback className='bg-space-accent font-semibold text-white'>
                   ZS
                 </AvatarFallback>

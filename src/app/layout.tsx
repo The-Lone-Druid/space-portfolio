@@ -105,7 +105,10 @@ export const metadata: Metadata = {
     canonical: 'https://zahidshaikh.space',
   },
   verification: {
-    google: 'google-site-verification-code', // Replace with actual code
+    // TODO: Replace with actual verification codes from:
+    // Google Search Console: https://search.google.com/search-console/
+    // Yandex Webmaster: https://webmaster.yandex.com/
+    google: 'tixYge9COMl16mLiyQ424MQXyNMyUC_HCU4K_CD_p6o', // Replace with actual code
     yandex: 'yandex-verification-code', // Replace with actual code
   },
   other: {
