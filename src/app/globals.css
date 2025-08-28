@@ -88,6 +88,33 @@
   --space-gold: #ffd700;
   --space-silver: #c0c0c0;
 
+  /* Space Theme Transparency Variables */
+  --space-white: #ffffff;
+  --space-white-01: rgba(255, 255, 255, 0.1);
+  --space-white-02: rgba(255, 255, 255, 0.2);
+  --space-white-03: rgba(255, 255, 255, 0.3);
+  --space-white-05: rgba(255, 255, 255, 0.05);
+  --space-white-5: rgba(255, 255, 255, 0.5);
+  --space-white-8: rgba(255, 255, 255, 0.8);
+  --space-cosmic-03: rgba(26, 26, 46, 0.3);
+  --space-nebula-04: rgba(22, 33, 62, 0.4);
+  --space-stellar-04: rgba(83, 52, 131, 0.4);
+
+  /* Component-specific color variables */
+  --space-component-border: var(--space-white-02);
+  --space-component-bg: var(--space-white-05);
+  --space-component-bg-hover: var(--space-white-01);
+  --space-component-text: var(--space-white);
+  --space-component-text-muted: var(--space-white-5);
+  --space-component-text-secondary: var(--space-white-8);
+
+  /* Focus and State Colors */
+  --space-focus-border: #fbbf24;
+  --space-focus-shadow: rgba(251, 191, 36, 0.3);
+  --space-text-50: #f9fafb;
+  --space-text-100: #f3f4f6;
+  --space-text-200: #e5e7eb;
+
   /* Space Gradients */
   --gradient-cosmic: linear-gradient(
     135deg,
@@ -154,7 +181,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(
+      135deg,
+      var(--space-deep) 0%,
+      var(--space-cosmic) 50%,
+      var(--space-nebula) 100%
+    );
   }
 
   /* Custom Themed Scrollbar */
@@ -405,21 +437,21 @@
 
 /* Glass Morphism for Space Cards */
 .glass-cosmic {
-  background: rgba(26, 26, 46, 0.3);
+  background: var(--space-cosmic-03);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--space-white-02);
 }
 
 .glass-nebula {
-  background: rgba(22, 33, 62, 0.4);
+  background: var(--space-nebula-04);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(83, 52, 131, 0.4);
+  border: 1px solid var(--space-stellar-04);
 }
 
 /* Non-blur version for SpaceOrbital component */
 .glass-cosmic-clear {
-  background: rgba(26, 26, 46, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--space-cosmic-03);
+  border: 1px solid var(--space-white-02);
 }
 
 /* Accessibility Improvements */
@@ -452,23 +484,23 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid #fbbf24;
+  outline: 2px solid var(--space-focus-border);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3);
+  box-shadow: 0 0 0 4px var(--space-focus-shadow);
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .text-gray-400 {
-    color: #e5e7eb !important;
+    color: var(--space-text-200) !important;
   }
 
   .text-gray-300 {
-    color: #f3f4f6 !important;
+    color: var(--space-text-100) !important;
   }
 
   .text-gray-200 {
-    color: #f9fafb !important;
+    color: var(--space-text-50) !important;
   }
 }
 
@@ -518,5 +550,82 @@ select:focus-visible {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Line clamp utilities for text truncation */
+@layer utilities {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .line-clamp-4 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+
+  /* Space theme component enhancements */
+  .space-card {
+    background: var(--space-cosmic-03);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--space-white-02);
+    color: var(--space-white);
+  }
+
+  .space-input {
+    background: var(--space-white-05);
+    border: 1px solid var(--space-white-02);
+    color: var(--space-white);
+    backdrop-filter: blur(8px);
+  }
+
+  .space-input::placeholder {
+    color: var(--space-white-5);
+  }
+
+  .space-button-outline {
+    background: var(--space-white-05);
+    border: 1px solid var(--space-white-02);
+    color: var(--space-white);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+
+  .space-button-outline:hover {
+    background: var(--space-white-01);
+    border-color: var(--space-white-03);
+  }
+
+  .space-button-ghost {
+    color: var(--space-white-8);
+    transition: all 0.2s ease;
+  }
+
+  .space-button-ghost:hover {
+    background: var(--space-white-01);
+    color: var(--space-white);
   }
 }

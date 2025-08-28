@@ -35,12 +35,13 @@ import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useProjects } from '../../../hooks/use-projects'
 import { EditProjectDialog } from './edit-project-dialog'
+import { cn } from '../../../lib/utils'
 
 interface ProjectListClientProps {
   projects: ProjectWithDetails[]
 }
 
-const ITEMS_PER_PAGE = 5
+const ITEMS_PER_PAGE = 6
 
 export function ProjectListClient({ projects }: ProjectListClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
@@ -223,113 +224,142 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
       ) : (
         <div className='space-y-6'>
           {/* Projects Grid */}
-          <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-1'>
+          <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
             {paginatedProjects.map(project => (
               <Card
                 key={project.id}
-                className='glass-nebula hover:border-space-accent/50 border-white/10 transition-all'
+                className='glass-nebula hover:border-space-accent/50 flex h-full flex-col border-white/10 transition-all duration-300'
               >
-                <CardContent className='p-6'>
-                  <div className='flex items-start justify-between'>
-                    <div className='flex-1 space-y-3'>
-                      <div className='flex items-center gap-3'>
-                        <h3 className='text-lg font-semibold text-white'>
-                          {project.projectName}
-                        </h3>
-                        {project.featured && (
-                          <Badge className='border-yellow-500/30 bg-yellow-500/20 text-yellow-400'>
-                            <Star className='mr-1 h-3 w-3' />
-                            Featured
+                <CardContent className='flex h-full flex-col p-6'>
+                  {/* Header with title and featured badge */}
+                  <div className='mb-4'>
+                    <div className='mb-3 flex items-start justify-between'>
+                      <h3 className='line-clamp-2 flex-1 pr-2 text-lg font-semibold text-white'>
+                        {project.projectName}
+                      </h3>
+                      {project.featured && (
+                        <Badge className='flex-shrink-0 border-yellow-500/30 bg-yellow-500/20 text-yellow-400'>
+                          <Star className='mr-1 h-3 w-3' />
+                          Featured
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Description - truncated to 3 lines */}
+                    <p className='mb-3 line-clamp-3 text-sm text-white/70'>
+                      {project.projectDescription}
+                    </p>
+
+                    {/* Date */}
+                    <div className='mb-4 text-xs text-white/60'>
+                      {formatProjectDateRange({
+                        startDate: project.startDate,
+                        endDate: project.endDate || undefined,
+                        isOngoing: project.isOngoing,
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Skills - limited display */}
+                  {project.skillsUtilized.length > 0 && (
+                    <div className='mb-4'>
+                      <div className='flex flex-wrap gap-1'>
+                        {project.skillsUtilized.slice(0, 3).map(skill => (
+                          <Badge
+                            key={skill.id}
+                            variant={
+                              selectedSkill === skill.name
+                                ? 'default'
+                                : 'outline'
+                            }
+                            className={`cursor-pointer text-xs transition-all ${
+                              selectedSkill === skill.name
+                                ? 'bg-space-accent border-space-accent hover:bg-space-stellar text-white'
+                                : 'border-white/20 text-white/80 hover:border-white/30 hover:bg-white/10 hover:text-white'
+                            }`}
+                            onClick={() =>
+                              setSelectedSkill(
+                                selectedSkill === skill.name
+                                  ? 'all'
+                                  : skill.name
+                              )
+                            }
+                          >
+                            {skill.name}
+                          </Badge>
+                        ))}
+                        {project.skillsUtilized.length > 3 && (
+                          <Badge
+                            variant='outline'
+                            className='border-white/20 text-xs text-white/50'
+                          >
+                            +{project.skillsUtilized.length - 3}
                           </Badge>
                         )}
                       </div>
-
-                      <p className='text-sm text-white/70'>
-                        {project.projectDescription}
-                      </p>
-
-                      <div className='text-xs text-white/60'>
-                        Created:{' '}
-                        {formatProjectDateRange({
-                          startDate: project.startDate,
-                          endDate: project.endDate || undefined,
-                          isOngoing: project.isOngoing,
-                        })}
-                      </div>
-
-                      {/* Skills */}
-                      {project.skillsUtilized.length > 0 && (
-                        <div className='flex flex-wrap gap-2'>
-                          {project.skillsUtilized.map(skill => (
-                            <Badge
-                              key={skill.id}
-                              variant='secondary'
-                              className={`border-space-accent/30 bg-space-accent/20 text-space-accent cursor-pointer transition-colors ${
-                                selectedSkill === skill.name
-                                  ? 'bg-space-accent/40 border-space-accent/60'
-                                  : 'hover:bg-space-accent/30'
-                              }`}
-                              onClick={() =>
-                                setSelectedSkill(
-                                  selectedSkill === skill.name
-                                    ? 'all'
-                                    : skill.name
-                                )
-                              }
-                            >
-                              {skill.name}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Links */}
-                      <div className='flex gap-2'>
-                        {project.projectLink && (
-                          <Button size='sm' variant='nebula' asChild>
-                            <a
-                              href={project.projectLink}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                            >
-                              <ExternalLink className='mr-2 h-3 w-3' />
-                              Live Demo
-                            </a>
-                          </Button>
-                        )}
-                        {project.githubLink && (
-                          <Button size='sm' variant='cosmic' asChild>
-                            <a
-                              href={project.githubLink}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                            >
-                              <Github className='mr-2 h-3 w-3' />
-                              Source Code
-                            </a>
-                          </Button>
-                        )}
-                      </div>
                     </div>
+                  )}
 
-                    <div className='flex items-center gap-2'>
+                  {/* Action Links */}
+                  <div className='mb-4 flex gap-2'>
+                    {project.projectLink && (
+                      <Button
+                        size='sm'
+                        variant='nebula'
+                        className='flex-1'
+                        asChild
+                      >
+                        <a
+                          href={project.projectLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          <ExternalLink className='mr-1 h-3 w-3' />
+                          Demo
+                        </a>
+                      </Button>
+                    )}
+                    {project.githubLink && (
+                      <Button
+                        size='sm'
+                        variant='cosmic'
+                        className='flex-1'
+                        asChild
+                      >
+                        <a
+                          href={project.githubLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          <Github className='mr-1 h-3 w-3' />
+                          Code
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Management Actions - pushed to bottom */}
+                  <div className='mt-auto border-t border-white/10 pt-4'>
+                    <div className='flex items-center justify-between'>
                       <Button size='sm' variant='outline' asChild>
                         <Link href={`/dashboard/projects/${project.id}`}>
                           View Details
                         </Link>
                       </Button>
-                      <EditProjectDialog project={project}>
-                        <Button size='sm' variant='stellar'>
-                          <Edit className='h-3 w-3' />
+                      <div className='flex items-center gap-1'>
+                        <EditProjectDialog project={project}>
+                          <Button size='sm' variant='stellar'>
+                            <Edit className='h-3 w-3' />
+                          </Button>
+                        </EditProjectDialog>
+                        <Button
+                          size='sm'
+                          variant='destructive'
+                          onClick={() => handleDeleteProject(project.id)}
+                        >
+                          <Trash className='h-3 w-3' />
                         </Button>
-                      </EditProjectDialog>
-                      <Button
-                        size='sm'
-                        variant='destructive'
-                        onClick={() => handleDeleteProject(project.id)}
-                      >
-                        <Trash className='h-3 w-3' />
-                      </Button>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
