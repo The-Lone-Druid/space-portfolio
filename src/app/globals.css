@@ -511,3 +511,12 @@ select:focus-visible {
     transform: rotate(0deg);
   }
 }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
