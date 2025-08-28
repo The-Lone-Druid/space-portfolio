@@ -11,8 +11,11 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 20)
     }
+
+    // Set initial scroll state on mount
+    handleScroll()
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -101,6 +104,7 @@ const Header = () => {
                     className='hover:text-space-gold text-left text-gray-300 transition-colors duration-300'
                     aria-label={`Navigate to ${item.name} section`}
                     href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.name}
                   </Link>

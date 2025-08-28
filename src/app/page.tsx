@@ -49,7 +49,7 @@ export default async function Page() {
         {/* Hero Section - Full height, no padding */}
         <section
           id='home'
-          className='relative flex min-h-screen items-center justify-center pt-20 md:pt-10'
+          className='relative flex min-h-screen items-center justify-center pt-24'
           role='banner'
           aria-label='Hero section introducing Zahid Shaikh'
         >
@@ -60,8 +60,8 @@ export default async function Page() {
 
         {/* About Section */}
         <section
+          className='pt-24'
           id='about'
-          className='py-16'
           aria-label='About Zahid Shaikh - Background and experience'
         >
           <div className='container mx-auto px-6'>
@@ -71,8 +71,8 @@ export default async function Page() {
 
         {/* Projects Section */}
         <section
+          className='pt-24'
           id='projects'
-          className='py-16'
           aria-label='Portfolio projects and work samples'
         >
           <div className='container mx-auto px-6'>
@@ -82,8 +82,8 @@ export default async function Page() {
 
         {/* Skills Section */}
         <section
+          className='pt-24'
           id='skills'
-          className='py-16'
           aria-label='Technical skills and expertise'
         >
           <div className='container mx-auto px-6'>
@@ -93,8 +93,8 @@ export default async function Page() {
 
         {/* Services Section */}
         <section
+          className='pt-24'
           id='services'
-          className='py-16'
           aria-label='Professional services offered'
         >
           <div className='container mx-auto px-6'>
@@ -104,8 +104,8 @@ export default async function Page() {
 
         {/* Contact Section */}
         <section
+          className='pt-24'
           id='contact'
-          className='py-16'
           aria-label='Contact information and form'
         >
           <div className='container mx-auto px-6'>

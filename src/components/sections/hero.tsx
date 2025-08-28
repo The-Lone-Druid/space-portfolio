@@ -72,10 +72,6 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
     scrollToSection('#contact')
   }
 
-  const handleScrollToNext = () => {
-    scrollToSection('#about')
-  }
-
   return (
     <>
       <div className='relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
@@ -265,22 +261,6 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               <div className='mt-2 h-1 w-full rounded-full bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100'></div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Simplified Scroll indicator */}
-      <div className='mt-16 flex items-center justify-center lg:mt-8'>
-        <div className='lg:absolute lg:bottom-8'>
-          <button
-            onClick={handleScrollToNext}
-            className='hover:text-space-gold group flex cursor-pointer flex-col items-center space-y-2 text-gray-400 transition-all duration-300 hover:scale-110'
-            aria-label='Scroll to next section'
-          >
-            <span className='group-hover:text-space-gold text-sm transition-colors duration-300'>
-              Scroll to explore
-            </span>
-            <ArrowDown className='h-5 w-5 animate-bounce transition-transform duration-300 group-hover:translate-y-1' />
-          </button>
         </div>
       </div>
     </>

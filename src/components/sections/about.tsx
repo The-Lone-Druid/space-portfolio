@@ -136,7 +136,9 @@ const About = ({ heroStats }: AboutProps) => {
               <div className='from-space-gold flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br to-yellow-400'>
                 <Sparkles className='h-4 w-4 text-white' />
               </div>
-              What Makes Me <span className='text-space-gold'>Stellar</span>
+              <span>
+                What Makes Me <span className='text-space-gold'>Stellar</span>
+              </span>
             </h3>
             <div className='from-space-gold absolute -top-2 left-8 h-1 w-20 rounded-full bg-gradient-to-r to-transparent'></div>
           </div>
@@ -194,7 +196,9 @@ const About = ({ heroStats }: AboutProps) => {
             <div className='from-space-accent flex h-7 w-7 animate-pulse items-center justify-center rounded-full bg-gradient-to-br to-purple-400 sm:h-8 sm:w-8'>
               <Orbit className='h-3.5 w-3.5 text-white sm:h-4 sm:w-4' />
             </div>
-            Mission <span className='text-space-gold'>Statistics</span>
+            <span>
+              Mission <span className='text-space-gold'>Statistics</span>
+            </span>
           </h3>
 
           <div className='mb-10 grid grid-cols-2 gap-3 sm:mb-12 sm:gap-4 md:grid-cols-4'>
