@@ -65,7 +65,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       </div>
 
       {/* Project Overview Card */}
-      <Card className='glass-nebula border-space-accent/30'>
+      <Card className='glass-cosmic border-white/10'>
         <CardHeader className='pb-4'>
           <div className='flex items-start justify-between'>
             <div className='space-y-3'>
@@ -135,15 +135,67 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 {project.projectTasks.map(task => (
                   <div
                     key={task.id}
-                    className='flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10'
+                    className='flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-4 transition-all duration-200 hover:border-white/20 hover:bg-white/10'
                   >
-                    <CheckCircle className='h-5 w-5 flex-shrink-0 text-green-400' />
-                    <span className='text-white/80'>{task.task}</span>
+                    <div className='rounded-full bg-green-400/20 p-1'>
+                      <CheckCircle className='h-4 w-4 text-green-400' />
+                    </div>
+                    <span className='font-medium text-white/90'>
+                      {task.task}
+                    </span>
                   </div>
                 ))}
               </CardContent>
             </Card>
           )}
+
+          {/* Project Performance */}
+          <Card className='glass-cosmic border-white/10'>
+            <CardHeader>
+              <CardTitle className='text-white'>Project Performance</CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <div className='grid gap-4 md:grid-cols-2'>
+                <div className='rounded-lg border border-white/10 bg-white/5 p-4'>
+                  <div className='mb-2 flex items-center gap-2'>
+                    <CheckCircle className='h-4 w-4 text-green-400' />
+                    <span className='text-sm font-medium text-white/90'>
+                      Tasks Completed
+                    </span>
+                  </div>
+                  <p className='text-xl font-bold text-white'>
+                    {project.projectTasks.length}
+                  </p>
+                </div>
+
+                <div className='rounded-lg border border-white/10 bg-white/5 p-4'>
+                  <div className='mb-2 flex items-center gap-2'>
+                    <Star className='h-4 w-4 text-yellow-400' />
+                    <span className='text-sm font-medium text-white/90'>
+                      Technologies Used
+                    </span>
+                  </div>
+                  <p className='text-xl font-bold text-white'>
+                    {project.skillsUtilized.length}
+                  </p>
+                </div>
+              </div>
+
+              {project.featured && (
+                <div className='rounded-lg border border-yellow-500/20 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 p-4'>
+                  <div className='mb-2 flex items-center gap-2'>
+                    <Star className='h-4 w-4 text-yellow-400' />
+                    <span className='text-sm font-medium text-yellow-300'>
+                      Featured Project
+                    </span>
+                  </div>
+                  <p className='text-sm text-yellow-200/80'>
+                    This project is highlighted in your portfolio showcase
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         {/* Right Column - Sidebar */}
@@ -154,6 +206,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <CardTitle className='text-white'>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className='space-y-3'>
+              <EditProjectDialog project={project}>
+                <Button variant='stellar' className='w-full justify-start'>
+                  <Edit className='mr-2 h-4 w-4' />
+                  Edit Project Details
+                </Button>
+              </EditProjectDialog>
+
               {project.projectLink && (
                 <Button
                   variant='nebula'
@@ -186,6 +245,17 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   </a>
                 </Button>
               )}
+
+              <Button
+                variant='outline'
+                className='w-full justify-start'
+                asChild
+              >
+                <Link href='/dashboard/projects'>
+                  <ArrowLeft className='mr-2 h-4 w-4' />
+                  Back to Projects
+                </Link>
+              </Button>
             </CardContent>
           </Card>
 
@@ -200,11 +270,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <CardContent>
                 <div className='flex flex-wrap gap-2'>
                   {project.skillsUtilized.map(skill => (
-                    <Badge
-                      key={skill.id}
-                      variant='secondary'
-                      className='border-space-accent/30 bg-space-accent/20 text-space-accent hover:bg-space-accent/30 cursor-default transition-colors'
-                    >
+                    <Badge key={skill.id} variant='outline'>
                       {skill.name}
                     </Badge>
                   ))}
@@ -219,8 +285,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <CardTitle className='text-white'>Project Stats</CardTitle>
             </CardHeader>
             <CardContent className='space-y-4'>
-              <div className='flex items-center justify-between'>
-                <span className='text-white/70'>Status</span>
+              <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                <span className='text-sm font-medium text-white/70'>
+                  Status
+                </span>
                 <Badge
                   variant='outline'
                   className={
@@ -233,23 +301,29 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </Badge>
               </div>
 
-              <div className='flex items-center justify-between'>
-                <span className='text-white/70'>Tasks</span>
-                <span className='font-medium text-white'>
+              <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                <span className='text-sm font-medium text-white/70'>
+                  Tasks Completed
+                </span>
+                <span className='font-semibold text-white'>
                   {project.projectTasks.length}
                 </span>
               </div>
 
-              <div className='flex items-center justify-between'>
-                <span className='text-white/70'>Technologies</span>
-                <span className='font-medium text-white'>
+              <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                <span className='text-sm font-medium text-white/70'>
+                  Technologies Used
+                </span>
+                <span className='font-semibold text-white'>
                   {project.skillsUtilized.length}
                 </span>
               </div>
 
               {project.featured && (
-                <div className='flex items-center justify-between'>
-                  <span className='text-white/70'>Featured</span>
+                <div className='flex items-center justify-between rounded-lg border border-yellow-500/20 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 p-3'>
+                  <span className='text-sm font-medium text-yellow-300'>
+                    Featured Project
+                  </span>
                   <Star className='h-4 w-4 text-yellow-400' />
                 </div>
               )}

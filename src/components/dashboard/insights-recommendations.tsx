@@ -65,30 +65,32 @@ export function InsightsRecommendations({
   }
 
   return (
-    <Card className='glass-nebula border-space-accent/30'>
-      <CardHeader>
-        <CardTitle className='flex items-center text-white'>
-          <Lightbulb className='text-space-gold mr-2 h-5 w-5' />
+    <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+      <CardHeader className='pb-4'>
+        <CardTitle className='flex items-center text-xl text-white'>
+          <div className='mr-3 rounded-full bg-yellow-500/20 p-2'>
+            <Lightbulb className='h-5 w-5 text-yellow-400' />
+          </div>
           Insights & Recommendations
         </CardTitle>
       </CardHeader>
       <CardContent className='space-y-6'>
         {/* Key Insights */}
-        <div className='space-y-3'>
-          <h4 className='text-sm font-medium text-white/90'>Key Insights</h4>
-          <div className='grid gap-3'>
+        <div className='space-y-4'>
+          <h4 className='text-sm font-semibold text-white/90'>Key Insights</h4>
+          <div className='grid gap-4'>
             {insights.map((insight, index) => (
               <div
                 key={index}
-                className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'
+                className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/10'
               >
                 <div className='flex-1'>
                   <div className='flex items-center gap-2'>
-                    <span className='text-sm font-medium text-white'>
+                    <span className='text-sm font-semibold text-white'>
                       {insight.title}
                     </span>
                     <TrendingUp
-                      className={`h-3 w-3 ${
+                      className={`h-4 w-4 ${
                         insight.trend === 'up'
                           ? 'text-green-400'
                           : insight.trend === 'down'
@@ -97,10 +99,12 @@ export function InsightsRecommendations({
                       }`}
                     />
                   </div>
-                  <p className='text-xs text-white/60'>{insight.description}</p>
+                  <p className='mt-1 text-xs text-white/60'>
+                    {insight.description}
+                  </p>
                 </div>
                 <div className='text-right'>
-                  <div className={`text-sm font-semibold ${insight.color}`}>
+                  <div className={`text-lg font-bold ${insight.color}`}>
                     {insight.value}
                   </div>
                 </div>
@@ -110,23 +114,34 @@ export function InsightsRecommendations({
         </div>
 
         {/* Recommendations */}
-        <div className='space-y-3'>
-          <h4 className='text-sm font-medium text-white/90'>Recommendations</h4>
-          <div className='space-y-2'>
+        <div className='space-y-4'>
+          <h4 className='text-sm font-semibold text-white/90'>
+            Recommendations
+          </h4>
+          <div className='space-y-3'>
             {quickInsights.recommendations
               .slice(0, 3)
               .map((recommendation, index) => (
                 <div
                   key={index}
-                  className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'
+                  className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/10'
                 >
                   <div className='flex items-start gap-3'>
-                    {getRecommendationIcon(recommendation)}
+                    <div className='mt-0.5 rounded-full bg-white/10 p-1'>
+                      {getRecommendationIcon(recommendation)}
+                    </div>
                     <div className='flex-1'>
-                      <p className='text-sm text-white/90'>{recommendation}</p>
+                      <p className='text-sm font-medium text-white/90'>
+                        {recommendation}
+                      </p>
                     </div>
                   </div>
-                  <Button variant='ghost' size='sm' asChild>
+                  <Button
+                    variant='ghost'
+                    size='sm'
+                    asChild
+                    className='hover:bg-white/10'
+                  >
                     <Link href={getRecommendationAction(recommendation)}>
                       <ArrowRight className='h-3 w-3' />
                     </Link>
@@ -137,26 +152,27 @@ export function InsightsRecommendations({
         </div>
 
         {/* Portfolio Strength */}
-        <div className='rounded-lg border border-purple-500/30 bg-purple-500/10 p-4'>
+        <div className='rounded-lg border border-purple-500/30 bg-purple-500/10 p-5 transition-all hover:bg-purple-500/15'>
           <div className='flex items-center justify-between'>
             <div>
-              <h4 className='text-sm font-medium text-purple-200'>
+              <h4 className='text-sm font-semibold text-purple-200'>
                 Portfolio Strength
               </h4>
-              <p className='mt-1 text-xs text-purple-200/80'>
-                Based on completeness and quality metrics
+              <p className='mt-2 text-xs leading-relaxed text-purple-200/80'>
+                Based on completeness and quality metrics across your cosmic
+                portfolio
               </p>
             </div>
             <Badge
               variant='outline'
-              className={`${
+              className={`text-sm font-medium ${
                 quickInsights.portfolioStrength === 'excellent'
-                  ? 'border-green-500/30 text-green-400'
+                  ? 'border-green-500/30 bg-green-500/10 text-green-400'
                   : quickInsights.portfolioStrength === 'strong'
-                    ? 'border-blue-500/30 text-blue-400'
+                    ? 'border-blue-500/30 bg-blue-500/10 text-blue-400'
                     : quickInsights.portfolioStrength === 'moderate'
-                      ? 'border-yellow-500/30 text-yellow-400'
-                      : 'border-red-500/30 text-red-400'
+                      ? 'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'
+                      : 'border-red-500/30 bg-red-500/10 text-red-400'
               }`}
             >
               {quickInsights.portfolioStrength.charAt(0).toUpperCase() +

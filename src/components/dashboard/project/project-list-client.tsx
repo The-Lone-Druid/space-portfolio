@@ -35,7 +35,6 @@ import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useProjects } from '../../../hooks/use-projects'
 import { EditProjectDialog } from './edit-project-dialog'
-import { cn } from '../../../lib/utils'
 
 interface ProjectListClientProps {
   projects: ProjectWithDetails[]
@@ -121,49 +120,51 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
             <span className='text-sm font-medium text-white'>Filters</span>
           </div>
 
-          <div className='flex flex-col gap-2 sm:flex-row'>
-            {/* Featured Filter */}
-            <Select
-              value={showFeaturedOnly}
-              onValueChange={setShowFeaturedOnly}
-            >
-              <SelectTrigger className='w-full border-white/20 bg-white/5 text-white sm:w-[140px]'>
-                <SelectValue placeholder='All Projects' />
-              </SelectTrigger>
-              <SelectContent className='bg-space-cosmic/90 border-white/20 text-white backdrop-blur-xl'>
-                <SelectItem value='all'>All Projects</SelectItem>
-                <SelectItem value='featured'>Featured Only</SelectItem>
-                <SelectItem value='regular'>Regular Only</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Filter Row */}
+          <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+            <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
+              {/* Featured Filter */}
+              <div className='flex items-center gap-2'>
+                <Select
+                  value={showFeaturedOnly}
+                  onValueChange={setShowFeaturedOnly}
+                >
+                  <SelectTrigger className='w-[140px] border-white/20 bg-white/5 text-white'>
+                    <SelectValue placeholder='All Projects' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='all'>All Projects</SelectItem>
+                    <SelectItem value='featured'>Featured Only</SelectItem>
+                    <SelectItem value='regular'>Regular Only</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Skills Filter */}
-            <Select value={selectedSkill} onValueChange={setSelectedSkill}>
-              <SelectTrigger className='w-full border-white/20 bg-white/5 text-white sm:w-[160px]'>
-                <SelectValue placeholder='All Skills' />
-              </SelectTrigger>
-              <SelectContent className='bg-space-cosmic/90 border-white/20 text-white backdrop-blur-xl'>
-                <SelectItem value='all'>All Skills</SelectItem>
-                {allSkills.map(skill => (
-                  <SelectItem key={skill} value={skill}>
-                    {skill}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              {/* Skills Filter */}
+              <div className='flex items-center gap-2'>
+                <Select value={selectedSkill} onValueChange={setSelectedSkill}>
+                  <SelectTrigger className='w-[160px] border-white/20 bg-white/5 text-white'>
+                    <SelectValue placeholder='All Skills' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='all'>All Skills</SelectItem>
+                    {allSkills.map(skill => (
+                      <SelectItem key={skill} value={skill}>
+                        {skill}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
-            {/* Clear Filters Button */}
+            {/* Clear Filters */}
             {(searchQuery ||
               selectedSkill !== 'all' ||
               showFeaturedOnly !== 'all') && (
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={clearAllFilters}
-                className='border-white/20 bg-white/5 text-white hover:bg-white/10'
-              >
-                <X className='mr-2 h-3 w-3' />
-                Clear
+              <Button variant='outline' size='sm' onClick={clearAllFilters}>
+                <X className='mr-2 h-4 w-4' />
+                Clear Filters
               </Button>
             )}
           </div>
@@ -181,7 +182,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className='absolute top-1/2 right-3 -translate-y-1/2 text-white/50 hover:text-white'
+              className='absolute top-1/2 right-3 -translate-y-1/2 text-white/50 transition-colors hover:text-white'
             >
               <X className='h-4 w-4' />
             </button>
@@ -228,13 +229,13 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
             {paginatedProjects.map(project => (
               <Card
                 key={project.id}
-                className='glass-nebula hover:border-space-accent/50 flex h-full flex-col border-white/10 transition-all duration-300'
+                className='glass-cosmic hover:border-space-accent/50 flex h-full flex-col border-white/10 transition-all duration-300 hover:scale-[1.02]'
               >
                 <CardContent className='flex h-full flex-col p-6'>
                   {/* Header with title and featured badge */}
                   <div className='mb-4'>
                     <div className='mb-3 flex items-start justify-between'>
-                      <h3 className='line-clamp-2 flex-1 pr-2 text-lg font-semibold text-white'>
+                      <h3 className='line-clamp-2 flex-1 pr-2 text-lg leading-tight font-semibold text-white'>
                         {project.projectName}
                       </h3>
                       {project.featured && (
@@ -246,24 +247,31 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                     </div>
 
                     {/* Description - truncated to 3 lines */}
-                    <p className='mb-3 line-clamp-3 text-sm text-white/70'>
+                    <p className='mb-3 line-clamp-3 text-sm leading-relaxed text-white/80'>
                       {project.projectDescription}
                     </p>
 
                     {/* Date */}
-                    <div className='mb-4 text-xs text-white/60'>
-                      {formatProjectDateRange({
-                        startDate: project.startDate,
-                        endDate: project.endDate || undefined,
-                        isOngoing: project.isOngoing,
-                      })}
+                    <div className='mb-4 flex items-center gap-2'>
+                      <div className='text-xs text-white/60'>
+                        {formatProjectDateRange({
+                          startDate: project.startDate,
+                          endDate: project.endDate || undefined,
+                          isOngoing: project.isOngoing,
+                        })}
+                      </div>
+                      {project.isOngoing && (
+                        <Badge className='border-green-500/30 bg-green-500/20 text-xs text-green-400'>
+                          Ongoing
+                        </Badge>
+                      )}
                     </div>
                   </div>
 
                   {/* Skills - limited display */}
                   {project.skillsUtilized.length > 0 && (
                     <div className='mb-4'>
-                      <div className='flex flex-wrap gap-1'>
+                      <div className='flex flex-wrap gap-2'>
                         {project.skillsUtilized.slice(0, 3).map(skill => (
                           <Badge
                             key={skill.id}
@@ -272,11 +280,6 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                                 ? 'default'
                                 : 'outline'
                             }
-                            className={`cursor-pointer text-xs transition-all ${
-                              selectedSkill === skill.name
-                                ? 'bg-space-accent border-space-accent hover:bg-space-stellar text-white'
-                                : 'border-white/20 text-white/80 hover:border-white/30 hover:bg-white/10 hover:text-white'
-                            }`}
                             onClick={() =>
                               setSelectedSkill(
                                 selectedSkill === skill.name
@@ -291,7 +294,7 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                         {project.skillsUtilized.length > 3 && (
                           <Badge
                             variant='outline'
-                            className='border-white/20 text-xs text-white/50'
+                            className='border-white/20 bg-white/5 text-xs text-white/60'
                           >
                             +{project.skillsUtilized.length - 3}
                           </Badge>
@@ -341,12 +344,17 @@ export function ProjectListClient({ projects }: ProjectListClientProps) {
                   {/* Management Actions - pushed to bottom */}
                   <div className='mt-auto border-t border-white/10 pt-4'>
                     <div className='flex items-center justify-between'>
-                      <Button size='sm' variant='outline' asChild>
+                      <Button
+                        size='sm'
+                        variant='outline'
+                        asChild
+                        className='mr-2 flex-1'
+                      >
                         <Link href={`/dashboard/projects/${project.id}`}>
                           View Details
                         </Link>
                       </Button>
-                      <div className='flex items-center gap-1'>
+                      <div className='flex items-center gap-2'>
                         <EditProjectDialog project={project}>
                           <Button size='sm' variant='stellar'>
                             <Edit className='h-3 w-3' />

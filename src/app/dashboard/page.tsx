@@ -12,7 +12,7 @@ export default async function DashboardPage() {
   const data = await getDashboardDataServer()
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-8'>
       {/* Header */}
       <DashboardPageHeader
         title='Dashboard Overview'
@@ -29,11 +29,11 @@ export default async function DashboardPage() {
       {/* Quick Stats Overview */}
       <QuickStatsOverview data={data} />
 
-      {/* Recent Activity */}
-      <RecentActivity data={data} />
-
-      {/* Insights and Recommendations */}
-      <InsightsRecommendations data={data} />
+      {/* Recent Activity & Insights Grid */}
+      <div className='grid gap-8 lg:grid-cols-2'>
+        <RecentActivity data={data} />
+        <InsightsRecommendations data={data} />
+      </div>
     </div>
   )
 }

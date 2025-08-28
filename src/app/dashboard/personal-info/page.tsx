@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import {
   getPersonalInfoServer,
   getPersonalInfoStats,
@@ -68,157 +67,173 @@ export default async function PersonalInfoPage() {
       />
 
       {/* Stats Overview */}
-      <div className='grid gap-4 md:grid-cols-3'>
-        <Card className='glass-nebula border-space-accent/30'>
-          <CardContent className='p-4'>
+      <div className='grid gap-6 md:grid-cols-3'>
+        <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+          <CardContent className='p-6'>
             <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-sm text-white/70'>Profile Status</p>
-                <p className='font-semibold text-white'>
+              <div className='space-y-1'>
+                <p className='text-sm font-medium text-white/70'>
+                  Profile Status
+                </p>
+                <p className='text-2xl font-bold text-white'>
                   {stats.personalInfoExists ? 'Active' : 'Not Set'}
                 </p>
+                <p className='text-xs text-white/60'>Profile completion</p>
               </div>
-              <Badge
-                variant='secondary'
-                className={
-                  stats.personalInfoExists
-                    ? 'border-green-500/30 bg-green-500/20 text-green-400'
-                    : 'border-yellow-500/30 bg-yellow-500/20 text-yellow-400'
-                }
-              >
-                {stats.personalInfoExists ? 'Complete' : 'Incomplete'}
-              </Badge>
+              <div className='bg-space-accent/20 rounded-full p-3'>
+                <Badge
+                  variant='secondary'
+                  className={
+                    stats.personalInfoExists
+                      ? 'border-green-500/30 bg-green-500/20 text-green-400'
+                      : 'border-yellow-500/30 bg-yellow-500/20 text-yellow-400'
+                  }
+                >
+                  {stats.personalInfoExists ? 'Complete' : 'Incomplete'}
+                </Badge>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className='glass-nebula border-space-accent/30'>
-          <CardContent className='p-4'>
+        <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+          <CardContent className='p-6'>
             <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-sm text-white/70'>Social Links</p>
-                <p className='font-semibold text-white'>
+              <div className='space-y-1'>
+                <p className='text-sm font-medium text-white/70'>
+                  Social Links
+                </p>
+                <p className='text-2xl font-bold text-white'>
                   {stats.socialLinksCount}
                 </p>
+                <p className='text-xs text-white/60'>Connected platforms</p>
               </div>
-              <Globe className='text-space-gold h-5 w-5' />
+              <div className='rounded-full bg-blue-500/20 p-3'>
+                <Globe className='h-6 w-6 text-blue-400' />
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className='glass-nebula border-space-accent/30'>
-          <CardContent className='p-4'>
+        <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+          <CardContent className='p-6'>
             <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-sm text-white/70'>Last Updated</p>
-                <p className='text-xs font-semibold text-white'>
+              <div className='space-y-1'>
+                <p className='text-sm font-medium text-white/70'>
+                  Last Updated
+                </p>
+                <p className='text-2xl font-bold text-white'>
                   {stats.lastUpdated
                     ? formatDistanceToNow(new Date(stats.lastUpdated), {
                         addSuffix: true,
-                      })
+                      }).split(' ')[0]
                     : 'Never'}
                 </p>
+                <p className='text-xs text-white/60'>
+                  {stats.lastUpdated ? 'ago' : 'No updates yet'}
+                </p>
               </div>
-              <Activity className='text-space-gold h-5 w-5' />
+              <div className='rounded-full bg-green-500/20 p-3'>
+                <Activity className='h-6 w-6 text-green-400' />
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {personalInfo ? (
-        <div className='grid gap-6 lg:grid-cols-2'>
+        <div className='grid gap-8 lg:grid-cols-2'>
           {/* Current Information Display */}
           <div className='space-y-6'>
             {/* Basic Info Card */}
-            <Card className='glass-nebula border-space-accent/30'>
-              <CardHeader>
-                <CardTitle className='flex items-center text-white'>
-                  <User className='text-space-gold mr-2 h-5 w-5' />
+            <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+              <CardHeader className='pb-4'>
+                <CardTitle className='flex items-center text-xl text-white'>
+                  <div className='bg-space-accent/20 mr-3 rounded-full p-2'>
+                    <User className='text-space-accent h-5 w-5' />
+                  </div>
                   Current Information
                 </CardTitle>
                 <CardDescription className='text-white/70'>
-                  Your active profile information
+                  Your active profile information across the cosmos
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-4'>
-                <div className='space-y-3'>
-                  <div className='flex items-center justify-between'>
-                    <span className='text-sm text-white/80'>Full Name</span>
-                    <span className='font-medium text-white'>
+                <div className='space-y-4'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='text-sm font-medium text-white/80'>
+                      Full Name
+                    </span>
+                    <span className='font-semibold text-white'>
                       {personalInfo.name}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-center justify-between'>
-                    <span className='text-sm text-white/80'>Title</span>
-                    <span className='max-w-[200px] text-right font-medium text-white'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='text-sm font-medium text-white/80'>
+                      Title
+                    </span>
+                    <span className='max-w-[200px] text-right font-semibold text-white'>
                       {personalInfo.title}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-start justify-between'>
-                    <span className='flex items-center text-sm text-white/80'>
+                  <div className='flex items-start justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='flex items-center text-sm font-medium text-white/80'>
                       <Mail className='mr-2 h-4 w-4' />
                       Email
                     </span>
-                    <span className='font-medium text-white'>
+                    <span className='font-semibold text-white'>
                       {personalInfo.email}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-center justify-between'>
-                    <span className='flex items-center text-sm text-white/80'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='flex items-center text-sm font-medium text-white/80'>
                       <MapPin className='mr-2 h-4 w-4' />
                       Location
                     </span>
-                    <span className='font-medium text-white'>
+                    <span className='font-semibold text-white'>
                       {personalInfo.location}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-center justify-between'>
-                    <span className='flex items-center text-sm text-white/80'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='flex items-center text-sm font-medium text-white/80'>
                       <Rocket className='mr-2 h-4 w-4' />
                       Professional Projects
                     </span>
-                    <span className='font-medium text-white'>
+                    <span className='font-semibold text-white'>
                       {heroStats?.professionalProjects ?? 0}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-center justify-between'>
-                    <span className='flex items-center text-sm text-white/80'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='flex items-center text-sm font-medium text-white/80'>
                       <Rocket className='mr-2 h-4 w-4' />
                       Personal Projects
                     </span>
-                    <span className='font-medium text-white'>
+                    <span className='font-semibold text-white'>
                       {heroStats?.personalProjects ?? 0}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-center justify-between'>
-                    <span className='flex items-center text-sm text-white/80'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='flex items-center text-sm font-medium text-white/80'>
                       <Zap className='mr-2 h-4 w-4' />
                       Verified Skills
                     </span>
-                    <span className='font-medium text-white'>
+                    <span className='font-semibold text-white'>
                       {heroStats?.verifiedSkills ?? 0}
                     </span>
                   </div>
-                  <Separator className='bg-white/10' />
 
-                  <div className='flex items-center justify-between'>
-                    <span className='flex items-center text-sm text-white/80'>
+                  <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                    <span className='flex items-center text-sm font-medium text-white/80'>
                       <Star className='mr-2 h-4 w-4' />
                       Years of Experience
                     </span>
-                    <span className='font-medium text-white'>
+                    <span className='font-semibold text-white'>
                       {heroStats?.yearsOfExperience
                         ? `${heroStats?.yearsOfExperience}+`
                         : 0}
@@ -226,33 +241,32 @@ export default async function PersonalInfoPage() {
                   </div>
 
                   {personalInfo.resumeUrl && (
-                    <>
-                      <Separator className='bg-white/10' />
-                      <div className='flex items-center justify-between'>
-                        <span className='flex items-center text-sm text-white/80'>
-                          <FileText className='mr-2 h-4 w-4' />
-                          Resume
-                        </span>
-                        <a
-                          href={personalInfo.resumeUrl}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='text-space-accent hover:text-space-accent/80 flex items-center text-sm'
-                        >
-                          View Resume
-                          <ExternalLink className='ml-1 h-3 w-3' />
-                        </a>
-                      </div>
-                    </>
+                    <div className='flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3'>
+                      <span className='flex items-center text-sm font-medium text-white/80'>
+                        <FileText className='mr-2 h-4 w-4' />
+                        Resume
+                      </span>
+                      <a
+                        href={personalInfo.resumeUrl}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='text-space-accent hover:text-space-accent/80 flex items-center text-sm font-medium transition-colors'
+                      >
+                        View Resume
+                        <ExternalLink className='ml-1 h-3 w-3' />
+                      </a>
+                    </div>
                   )}
                 </div>
 
                 {/* Bio Section */}
-                <div className='pt-4'>
-                  <h4 className='mb-2 font-medium text-white'>Bio</h4>
-                  <p className='text-sm leading-relaxed text-white/70'>
-                    {personalInfo.bio}
-                  </p>
+                <div className='border-t border-white/10 pt-4'>
+                  <h4 className='mb-3 font-semibold text-white'>Bio</h4>
+                  <div className='rounded-lg border border-white/10 bg-white/5 p-4'>
+                    <p className='text-sm leading-relaxed text-white/80'>
+                      {personalInfo.bio}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Timestamps */}
@@ -275,14 +289,16 @@ export default async function PersonalInfoPage() {
             {/* Social Links Card */}
             {personalInfo.socialLinks &&
               personalInfo.socialLinks.length > 0 && (
-                <Card className='glass-nebula border-space-accent/30'>
-                  <CardHeader>
-                    <CardTitle className='flex items-center text-white'>
-                      <Globe className='text-space-gold mr-2 h-5 w-5' />
+                <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+                  <CardHeader className='pb-4'>
+                    <CardTitle className='flex items-center text-xl text-white'>
+                      <div className='mr-3 rounded-full bg-blue-500/20 p-2'>
+                        <Globe className='h-5 w-5 text-blue-400' />
+                      </div>
                       Social Links
                     </CardTitle>
                     <CardDescription className='text-white/70'>
-                      Your connected social platforms
+                      Your connected social platforms and networks
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -292,12 +308,14 @@ export default async function PersonalInfoPage() {
                         return (
                           <div
                             key={link.id ?? index}
-                            className='border-space-accent/20 hover:border-space-gold/50 flex items-center justify-between rounded-lg border bg-white/5 p-3 transition-colors'
+                            className='hover:border-space-accent/30 flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:bg-white/10'
                           >
                             <div className='flex items-center space-x-3'>
-                              <IconComponent className='text-space-gold h-5 w-5' />
+                              <div className='bg-space-accent/20 rounded-full p-2'>
+                                <IconComponent className='text-space-accent h-4 w-4' />
+                              </div>
                               <div>
-                                <div className='font-medium text-white'>
+                                <div className='font-semibold text-white'>
                                   {link.name}
                                 </div>
                                 <div className='text-sm text-white/60'>
@@ -309,7 +327,7 @@ export default async function PersonalInfoPage() {
                               href={link.url}
                               target='_blank'
                               rel='noopener noreferrer'
-                              className='text-space-accent hover:text-space-accent/80 transition-colors'
+                              className='text-space-accent hover:text-space-accent/80 rounded-full p-2 transition-colors hover:bg-white/10'
                             >
                               <ExternalLink className='h-4 w-4' />
                             </a>
@@ -324,9 +342,11 @@ export default async function PersonalInfoPage() {
 
           {/* Edit Form */}
           <div>
-            <Card className='glass-nebula border-space-accent/30'>
-              <CardHeader>
-                <CardTitle className='text-white'>Edit Information</CardTitle>
+            <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+              <CardHeader className='pb-4'>
+                <CardTitle className='text-xl text-white'>
+                  Edit Information
+                </CardTitle>
                 <CardDescription className='text-white/70'>
                   Update your personal information and social links
                 </CardDescription>
@@ -345,18 +365,21 @@ export default async function PersonalInfoPage() {
       ) : (
         // No Personal Info - Show Create Form
         <div className='mx-auto max-w-4xl'>
-          <Card className='glass-nebula border-space-accent/30'>
-            <CardHeader className='text-center'>
-              <CardTitle className='flex items-center justify-center text-white'>
-                <User className='text-space-gold mr-2 h-6 w-6' />
+          <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+            <CardHeader className='pb-6 text-center'>
+              <div className='bg-space-accent/20 mx-auto mb-4 w-fit rounded-full p-4'>
+                <User className='text-space-accent h-12 w-12' />
+              </div>
+              <CardTitle className='mb-2 text-2xl text-white'>
                 Create Your Space Profile
               </CardTitle>
-              <CardDescription className='text-white/70'>
+              <CardDescription className='mx-auto max-w-2xl text-lg text-white/70'>
                 Set up your personal information to complete your space explorer
-                profile
+                profile and showcase your cosmic journey across the digital
+                universe
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className='pt-2'>
               <PersonalInfoForm />
             </CardContent>
           </Card>

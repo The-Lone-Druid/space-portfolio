@@ -32,84 +32,115 @@ export default async function ProjectsPage() {
       />
 
       {/* Stats Overview */}
-      <div className='grid gap-4 md:grid-cols-3'>
-        <Card className='glass-nebula border-space-accent/30'>
-          <CardContent className='p-4'>
+      <div className='grid gap-6 md:grid-cols-3'>
+        <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+          <CardContent className='p-6'>
             <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-sm text-white/70'>Total Projects</p>
-                <p className='font-semibold text-white'>
+              <div className='space-y-1'>
+                <p className='text-sm font-medium text-white/70'>
+                  Total Projects
+                </p>
+                <p className='text-2xl font-bold text-white'>
                   {stats.totalProjects}
                 </p>
+                <p className='text-xs text-white/60'>In your portfolio</p>
               </div>
-              <FolderOpen className='text-space-gold h-5 w-5' />
+              <div className='bg-space-accent/20 rounded-full p-3'>
+                <FolderOpen className='text-space-accent h-6 w-6' />
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className='glass-nebula border-space-accent/30'>
-          <CardContent className='p-4'>
+        <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+          <CardContent className='p-6'>
             <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-sm text-white/70'>Featured Projects</p>
-                <p className='font-semibold text-white'>
+              <div className='space-y-1'>
+                <p className='text-sm font-medium text-white/70'>
+                  Featured Projects
+                </p>
+                <p className='text-2xl font-bold text-white'>
                   {stats.featuredProjects}
                 </p>
+                <p className='text-xs text-white/60'>Highlighted works</p>
               </div>
-              <Star className='text-space-gold h-5 w-5' />
+              <div className='rounded-full bg-yellow-500/20 p-3'>
+                <Star className='h-6 w-6 text-yellow-400' />
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className='glass-nebula border-space-accent/30'>
-          <CardContent className='p-4'>
+        <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+          <CardContent className='p-6'>
             <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-sm text-white/70'>Last Updated</p>
-                <p className='font-semibold text-white'>
+              <div className='space-y-1'>
+                <p className='text-sm font-medium text-white/70'>
+                  Last Updated
+                </p>
+                <p className='text-2xl font-bold text-white'>
                   {stats.lastUpdated
                     ? formatDistanceToNow(stats.lastUpdated, {
                         addSuffix: true,
-                      })
+                      }).split(' ')[0]
                     : 'Never'}
                 </p>
+                <p className='text-xs text-white/60'>
+                  {stats.lastUpdated ? 'ago' : 'No updates yet'}
+                </p>
               </div>
-              <Calendar className='text-space-gold h-5 w-5' />
+              <div className='rounded-full bg-blue-500/20 p-3'>
+                <Calendar className='h-6 w-6 text-blue-400' />
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Projects List */}
-      <Card className='glass-nebula border-space-accent/30'>
-        <CardHeader>
+      <Card className='glass-cosmic border-white/10'>
+        <CardHeader className='pb-4'>
           <div className='flex items-center justify-between'>
-            <div>
-              <CardTitle className='text-white'>Project Portfolio</CardTitle>
+            <div className='space-y-2'>
+              <CardTitle className='text-xl text-white'>
+                Project Portfolio
+              </CardTitle>
               <CardDescription className='text-white/70'>
                 Your digital creations and contributions to the cosmos
               </CardDescription>
             </div>
             <CreateProjectDialog>
-              <Button variant='stellar'>
+              <Button variant='stellar' size='lg'>
                 <Plus className='mr-2 h-4 w-4' />
                 Add Project
               </Button>
             </CreateProjectDialog>
           </div>
+          {stats.lastUpdated && (
+            <div className='flex items-center gap-2 border-t border-white/10 pt-2 text-xs text-white/60'>
+              <Calendar className='h-3 w-3' />
+              <span>
+                Last updated:{' '}
+                {formatDistanceToNow(stats.lastUpdated, { addSuffix: true })}
+              </span>
+            </div>
+          )}
         </CardHeader>
-        <CardContent>
+        <CardContent className='pt-2'>
           {projects.length === 0 ? (
-            <div className='flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-dashed border-white/20 bg-white/5 p-8 text-center'>
-              <FolderOpen className='mb-4 h-12 w-12 text-white/40' />
-              <h3 className='mb-2 text-lg font-semibold text-white'>
+            <div className='flex min-h-[300px] flex-col items-center justify-center rounded-lg border border-dashed border-white/20 bg-white/5 p-8 text-center'>
+              <div className='mb-4 rounded-full bg-white/10 p-4'>
+                <FolderOpen className='h-12 w-12 text-white/40' />
+              </div>
+              <h3 className='mb-2 text-xl font-semibold text-white'>
                 No projects yet
               </h3>
-              <p className='mb-4 text-sm text-white/70'>
+              <p className='mb-6 max-w-md text-sm text-white/70'>
                 Start building your portfolio by adding your first project.
+                Showcase your digital creations and technical achievements.
               </p>
               <CreateProjectDialog>
-                <Button variant='space'>
+                <Button variant='stellar' size='lg'>
                   <Plus className='mr-2 h-4 w-4' />
                   Add Your First Project
                 </Button>

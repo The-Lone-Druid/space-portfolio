@@ -72,14 +72,16 @@ export function QuickActions({ data }: QuickActionsProps) {
   })
 
   return (
-    <Card className='glass-nebula border-space-accent/30'>
-      <CardHeader>
-        <CardTitle className='text-foreground flex items-center'>
-          <Zap className='text-space-gold mr-2 h-5 w-5' />
+    <Card className='glass-cosmic hover:border-space-accent/30 border-white/10 transition-colors'>
+      <CardHeader className='pb-4'>
+        <CardTitle className='flex items-center text-xl text-white'>
+          <div className='bg-space-accent/20 mr-3 rounded-full p-2'>
+            <Zap className='text-space-accent h-5 w-5' />
+          </div>
           Quick Actions
         </CardTitle>
       </CardHeader>
-      <CardContent className='space-y-3'>
+      <CardContent className='space-y-4'>
         <div className='flex flex-row flex-wrap gap-4'>
           {sortedActions.map((action, index) => {
             const IconComponent = action.icon
@@ -88,7 +90,7 @@ export function QuickActions({ data }: QuickActionsProps) {
                 key={index}
                 variant={action.variant}
                 className={cn(
-                  'h-auto flex-1',
+                  'h-auto flex-1 transition-all duration-300 hover:scale-[1.02]',
                   action.priority === 'high' &&
                     'border-yellow-400/50 ring-2 ring-yellow-400/30'
                 )}
@@ -100,7 +102,7 @@ export function QuickActions({ data }: QuickActionsProps) {
                       <IconComponent className='h-4 w-4' />
                     </div>
                     <div className='flex-1 text-left'>
-                      <div className='font-medium'>{action.title}</div>
+                      <div className='font-semibold'>{action.title}</div>
                       <div className='text-xs opacity-70'>
                         {action.description}
                       </div>
@@ -108,7 +110,7 @@ export function QuickActions({ data }: QuickActionsProps) {
                     {action.priority === 'high' && (
                       <div className='flex items-center gap-1'>
                         <div className='h-2 w-2 animate-pulse rounded-full bg-yellow-400' />
-                        <span className='text-xs text-yellow-400'>
+                        <span className='text-xs font-medium text-yellow-400'>
                           Priority
                         </span>
                       </div>
@@ -121,16 +123,16 @@ export function QuickActions({ data }: QuickActionsProps) {
         </div>
 
         {/* Quick Tip */}
-        <div className='rounded-lg border border-blue-500/30 bg-blue-500/10 p-3'>
-          <div className='flex items-start gap-2'>
-            <div className='mt-0.5 rounded-full bg-blue-500/20 p-1'>
-              <Zap className='h-3 w-3 text-blue-400' />
+        <div className='rounded-lg border border-blue-500/30 bg-blue-500/10 p-4 transition-all hover:bg-blue-500/15'>
+          <div className='flex items-start gap-3'>
+            <div className='mt-0.5 rounded-full bg-blue-500/20 p-2'>
+              <Zap className='h-4 w-4 text-blue-400' />
             </div>
-            <div className='text-xs text-blue-200'>
-              <p className='font-medium'>Pro Tip</p>
-              <p className='mt-1 text-blue-200/80'>
+            <div className='text-sm text-blue-200'>
+              <p className='font-semibold'>Pro Tip</p>
+              <p className='mt-1 leading-relaxed text-blue-200/80'>
                 Complete high-priority actions first to improve your portfolio
-                strength rating.
+                strength rating and showcase your cosmic achievements.
               </p>
             </div>
           </div>
