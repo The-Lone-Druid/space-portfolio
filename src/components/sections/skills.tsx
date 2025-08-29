@@ -51,14 +51,6 @@ function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
     return 'Beginner'
   }
 
-  const getSkillSlug = () => {
-    return skill.name
-      .toLowerCase()
-      .replace(/\./g, 'dot')
-      .replace(/\s+/g, '')
-      .replace(/[^a-z0-9]/g, '')
-  }
-
   return (
     <Card
       className={`group animate-fade-in glass-cosmic hover:shadow-space-accent/30 relative transform overflow-hidden border border-white/10 transition-all duration-500 hover:scale-105 hover:border-white/20 hover:shadow-xl`}
@@ -104,12 +96,12 @@ function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
           </div>
 
           {/* Central Icon Container - Enhanced presentation */}
-          <div className='absolute inset-4 z-10 flex items-center justify-center rounded-full bg-gradient-to-br from-white/20 to-white/5 shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:from-white/25 group-hover:to-white/10 group-hover:shadow-lg group-hover:shadow-white/20'>
+          <div className='absolute inset-4 z-10 flex items-center justify-center rounded-full shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:from-white/25 group-hover:to-white/10 group-hover:shadow-lg group-hover:shadow-white/20'>
             {/* Inner glow container for better icon visibility */}
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm transition-all duration-300 group-hover:ring-white/40'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full p-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm transition-all duration-300 group-hover:ring-white/40'>
               {!imageError ? (
                 <Image
-                  src={`https://cdn.simpleicons.org/${getSkillSlug()}`}
+                  src={`https://cdn.simpleicons.org/${skill.iconName}`}
                   alt={skill.name}
                   width={28}
                   height={28}

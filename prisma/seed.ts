@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Skill } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
@@ -28,16 +28,31 @@ async function main() {
   console.warn('✅ Admin user created')
 
   // Create Personal Info
-  const personalInfo = await prisma.personalInfo.create({
-    data: {
-      name: 'Zahid Shaikh',
-      title: 'Full Stack Developer & Tech Innovator',
-      bio: 'I craft modern web experiences and build scalable applications that drive user satisfaction. With a passion for clean code and innovative solutions, I transform ideas into powerful digital products.',
-      email: process.env.ADMIN_EMAIL,
-      location: 'Pune, Maharashtra',
-      resumeUrl: '#',
-    },
+  const existingPersonalInfo = await prisma.personalInfo.findFirst({
+    where: { email: process.env.ADMIN_EMAIL },
   })
+
+  const personalInfo = existingPersonalInfo
+    ? await prisma.personalInfo.update({
+        where: { id: existingPersonalInfo.id },
+        data: {
+          name: 'Zahid Shaikh',
+          title: 'Full Stack Developer & Tech Innovator',
+          bio: 'I craft modern web experiences and build scalable applications that drive user satisfaction. With a passion for clean code and innovative solutions, I transform ideas into powerful digital products.',
+          location: 'Pune, Maharashtra',
+          resumeUrl: '#',
+        },
+      })
+    : await prisma.personalInfo.create({
+        data: {
+          name: 'Zahid Shaikh',
+          title: 'Full Stack Developer & Tech Innovator',
+          bio: 'I craft modern web experiences and build scalable applications that drive user satisfaction. With a passion for clean code and innovative solutions, I transform ideas into powerful digital products.',
+          email: process.env.ADMIN_EMAIL,
+          location: 'Pune, Maharashtra',
+          resumeUrl: '#',
+        },
+      })
 
   console.warn('✅ Personal info created')
 
@@ -59,21 +74,54 @@ async function main() {
     },
   ]
 
-  await prisma.socialLink.createMany({
-    data: socialLinks,
-  })
+  for (const linkData of socialLinks) {
+    const existingLink = await prisma.socialLink.findFirst({
+      where: {
+        personalInfoId: personalInfo.id,
+        name: linkData.name,
+      },
+    })
+
+    if (existingLink) {
+      await prisma.socialLink.update({
+        where: { id: existingLink.id },
+        data: {
+          url: linkData.url,
+          icon: linkData.icon,
+          order: linkData.order,
+        },
+      })
+    } else {
+      await prisma.socialLink.create({
+        data: linkData,
+      })
+    }
+  }
 
   console.warn('✅ Social links created')
 
   // Create Hero Stats
-  await prisma.hero.create({
-    data: {
-      verifiedSkills: 25,
-      professionalProjects: 12,
-      personalProjects: 16,
-      yearsOfExperience: 5,
-    },
-  })
+  const existingHero = await prisma.hero.findFirst()
+  if (!existingHero) {
+    await prisma.hero.create({
+      data: {
+        verifiedSkills: 25,
+        professionalProjects: 12,
+        personalProjects: 16,
+        yearsOfExperience: 5,
+      },
+    })
+  } else {
+    await prisma.hero.update({
+      where: { id: existingHero.id },
+      data: {
+        verifiedSkills: 25,
+        professionalProjects: 12,
+        personalProjects: 16,
+        yearsOfExperience: 5,
+      },
+    })
+  }
 
   console.warn('✅ Hero stats created')
 
@@ -117,9 +165,425 @@ async function main() {
     },
   ]
 
-  await prisma.service.createMany({ data: services })
+  for (const serviceData of services) {
+    const existingService = await prisma.service.findFirst({
+      where: { name: serviceData.name },
+    })
+
+    if (existingService) {
+      await prisma.service.update({
+        where: { id: existingService.id },
+        data: {
+          icon: serviceData.icon,
+          desc: serviceData.desc,
+          order: serviceData.order,
+        },
+      })
+    } else {
+      await prisma.service.create({
+        data: serviceData,
+      })
+    }
+  }
 
   console.warn('✅ Services created')
+
+  // Create skills
+  const skills = [
+    // Frontend Technologies
+    {
+      name: 'HTML5',
+      iconName: 'html5',
+      category: 'Frontend',
+      level: 100,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'CSS3',
+      iconName: 'css',
+      category: 'Frontend',
+      level: 100,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'JavaScript',
+      iconName: 'javascript',
+      category: 'Frontend',
+      level: 100,
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'TypeScript',
+      iconName: 'typescript',
+      category: 'Frontend',
+      level: 100,
+      order: 3,
+      isActive: true,
+    },
+    {
+      name: 'React',
+      iconName: 'react',
+      category: 'Frontend',
+      level: 100,
+      order: 4,
+      isActive: true,
+    },
+    {
+      name: 'Next.js',
+      iconName: 'nextdotjs',
+      category: 'Frontend',
+      level: 95,
+      order: 5,
+      isActive: true,
+    },
+    {
+      name: 'Vue.js',
+      iconName: 'vuedotjs',
+      category: 'Frontend',
+      level: 85,
+      order: 6,
+      isActive: true,
+    },
+    {
+      name: 'Angular',
+      iconName: 'angular',
+      category: 'Frontend',
+      level: 90,
+      order: 7,
+      isActive: true,
+    },
+    {
+      name: 'Tailwind CSS',
+      iconName: 'tailwindcss',
+      category: 'Frontend',
+      level: 95,
+      order: 8,
+      isActive: true,
+    },
+    {
+      name: 'Sass/SCSS',
+      iconName: 'sass',
+      category: 'Frontend',
+      level: 90,
+      order: 9,
+      isActive: true,
+    },
+
+    // Backend Technologies
+    {
+      name: 'Node.js',
+      iconName: 'nodedotjs',
+      category: 'Backend',
+      level: 95,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'Express.js',
+      iconName: 'express',
+      category: 'Backend',
+      level: 95,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'Python',
+      iconName: 'python',
+      category: 'Backend',
+      level: 85,
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'Flask',
+      iconName: 'flask',
+      category: 'Backend',
+      level: 80,
+      order: 3,
+      isActive: true,
+    },
+    {
+      name: 'FastAPI',
+      iconName: 'fastapi',
+      category: 'Backend',
+      level: 75,
+      order: 4,
+      isActive: true,
+    },
+    {
+      name: 'GraphQL',
+      iconName: 'graphql',
+      category: 'Backend',
+      level: 80,
+      order: 5,
+      isActive: true,
+    },
+    {
+      name: 'REST APIs',
+      iconName: 'api',
+      category: 'Backend',
+      level: 100,
+      order: 6,
+      isActive: true,
+    },
+
+    // Databases
+    {
+      name: 'PostgreSQL',
+      iconName: 'postgresql',
+      category: 'Database',
+      level: 90,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'MongoDB',
+      iconName: 'mongodb',
+      category: 'Database',
+      level: 85,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'MySQL',
+      iconName: 'mysql',
+      category: 'Database',
+      level: 80,
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'Redis',
+      iconName: 'redis',
+      category: 'Database',
+      level: 75,
+      order: 3,
+      isActive: true,
+    },
+    {
+      name: 'Prisma ORM',
+      iconName: 'prisma',
+      category: 'Database',
+      level: 90,
+      order: 4,
+      isActive: true,
+    },
+
+    // DevOps & Tools
+    {
+      name: 'Git',
+      iconName: 'git',
+      category: 'DevOps',
+      level: 95,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'GitHub',
+      iconName: 'github',
+      category: 'DevOps',
+      level: 95,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'Bitbucket',
+      iconName: 'bitbucket',
+      category: 'DevOps',
+      level: 85,
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'Docker',
+      iconName: 'docker',
+      category: 'DevOps',
+      level: 80,
+      order: 3,
+      isActive: true,
+    },
+    {
+      name: 'AWS',
+      iconName: 'aws',
+      category: 'DevOps',
+      level: 75,
+      order: 4,
+      isActive: true,
+    },
+    {
+      name: 'Vercel',
+      iconName: 'vercel',
+      category: 'DevOps',
+      level: 90,
+      order: 5,
+      isActive: true,
+    },
+    {
+      name: 'Netlify',
+      iconName: 'netlify',
+      category: 'DevOps',
+      level: 85,
+      order: 6,
+      isActive: true,
+    },
+    {
+      name: 'CI/CD',
+      iconName: 'cicd',
+      category: 'DevOps',
+      level: 80,
+      order: 7,
+      isActive: true,
+    },
+
+    // Mobile Development
+    {
+      name: 'React Native',
+      iconName: 'react',
+      category: 'Mobile',
+      level: 90,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'Ionic Framework',
+      iconName: 'ionic',
+      category: 'Mobile',
+      level: 85,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'Capacitor.js',
+      iconName: 'capacitor',
+      category: 'Mobile',
+      level: 80,
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'Expo',
+      iconName: 'expo',
+      category: 'Mobile',
+      level: 85,
+      order: 3,
+      isActive: true,
+    },
+
+    // Desktop Development
+    {
+      name: 'Electron',
+      iconName: 'electron',
+      category: 'Desktop',
+      level: 80,
+      order: 0,
+      isActive: true,
+    },
+
+    // Testing
+    {
+      name: 'Jest',
+      iconName: 'jest',
+      category: 'Testing',
+      level: 80,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'Cypress',
+      iconName: 'cypress',
+      category: 'Testing',
+      level: 75,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'Playwright',
+      iconName: 'playwright',
+      category: 'Testing',
+      level: 70,
+      order: 2,
+      isActive: true,
+    },
+
+    // Other Tools
+    {
+      name: 'Webpack',
+      iconName: 'webpack',
+      category: 'Tools',
+      level: 85,
+      order: 0,
+      isActive: true,
+    },
+    {
+      name: 'Vite',
+      iconName: 'vite',
+      category: 'Tools',
+      level: 90,
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'ESLint',
+      iconName: 'eslint',
+      category: 'Tools',
+      level: 90,
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'Prettier',
+      iconName: 'prettier',
+      category: 'Tools',
+      level: 95,
+      order: 3,
+      isActive: true,
+    },
+    {
+      name: 'VS Code',
+      iconName: 'vscode',
+      category: 'Tools',
+      level: 100,
+      order: 4,
+      isActive: true,
+    },
+    {
+      name: 'Figma',
+      iconName: 'figma',
+      category: 'Design',
+      level: 85,
+      order: 0,
+      isActive: true,
+    },
+  ]
+
+  // Create skills with upsert logic
+  for (const skillData of skills) {
+    const existingSkill = await prisma.skill.findFirst({
+      where: { name: skillData.name },
+    })
+
+    if (existingSkill) {
+      await prisma.skill.update({
+        where: { id: existingSkill.id },
+        data: {
+          iconName: skillData.iconName,
+          category: skillData.category,
+          level: skillData.level,
+          order: skillData.order,
+          isActive: skillData.isActive,
+        },
+      })
+    } else {
+      await prisma.skill.create({
+        data: skillData,
+      })
+    }
+  }
+
+  console.warn('✅ Skills created')
 
   // Create some site settings
   const settings = [
@@ -144,9 +608,17 @@ async function main() {
     },
   ]
 
-  await prisma.siteSettings.createMany({
-    data: settings,
-  })
+  for (const settingData of settings) {
+    await prisma.siteSettings.upsert({
+      where: { key: settingData.key },
+      update: {
+        value: settingData.value,
+        description: settingData.description,
+        type: settingData.type,
+      },
+      create: settingData,
+    })
+  }
 
   console.warn('✅ Site settings created')
 

@@ -117,6 +117,7 @@ model Hero {
 model Skill {
   id        Int      @id @default(autoincrement())
   name      String
+  iconName  String   @default("")
   category  String // Frontend, Backend, Mobile, CMS, Design, Tools
   level     Int      @default(80) // 0-100 proficiency
   order     Int      @default(0)
