@@ -14,7 +14,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { Zap, Sparkles, Code, Search, X } from 'lucide-react'
+import { Zap, Sparkles, Code, Search, X, Rocket } from 'lucide-react'
 import { Skill } from '../../types'
 import { SectionHeader } from '../shared/section-header'
 
@@ -190,23 +190,27 @@ const Skills = ({ skills }: SkillProps) => {
                   <span className='text-space-gold'>({skills.length})</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 h-[95vh] max-h-[95vh] w-[98vw] max-w-[98vw] bg-gradient-to-br to-gray-900/80 p-0 shadow-2xl backdrop-blur-xl sm:h-[90vh] sm:w-[95vw] sm:max-w-[95vw] lg:h-[85vh] lg:w-[90vw] lg:max-w-[90vw] xl:max-w-7xl'>
-                <DialogHeader className='shadow-space-accent/10 p-3 shadow-sm sm:p-4 lg:p-6'>
-                  <DialogTitle className='flex items-center gap-3 text-xl font-bold text-white'>
-                    <div className='from-space-accent flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br to-purple-500'>
-                      <Code className='h-4 w-4 text-white' />
+              <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 flex h-screen max-h-screen w-screen min-w-screen flex-col gap-0 bg-gradient-to-br to-gray-900/80 p-0 shadow-2xl backdrop-blur-xl'>
+                <DialogHeader className='shadow-space-accent/10 flex-shrink-0 p-3 shadow-sm'>
+                  <DialogTitle className='flex flex-col gap-2 text-lg font-bold text-white sm:flex-row sm:items-center sm:gap-3 sm:text-xl'>
+                    <div className='flex items-center gap-2 sm:gap-3'>
+                      <div className='from-space-accent flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br to-purple-500 sm:h-8 sm:w-8'>
+                        <Code className='h-4 w-4 text-white' />
+                      </div>
+                      <span>
+                        All Skills
+                        <span className='text-space-gold ms-1'>
+                          ({filteredSkills.length})
+                        </span>
+                      </span>
                     </div>
-                    Complete Tech Arsenal
-                    <span className='text-space-gold'>
-                      ({filteredSkills.length})
-                    </span>
                   </DialogTitle>
                 </DialogHeader>
 
                 {/* Scrollable Content Area */}
-                <div className='flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6'>
+                <div className='flex-1 overflow-y-auto p-3'>
                   {filteredSkills.length > 0 ? (
-                    <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10'>
+                    <div className='grid grid-cols-3 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8'>
                       {filteredSkills.map((skill, index) => (
                         <SkillCardCompact
                           key={skill.id}
@@ -233,17 +237,16 @@ const Skills = ({ skills }: SkillProps) => {
                 </div>
 
                 {/* Enhanced Footer with Close Button */}
-                <div className='shadow-space-accent/10 flex justify-center p-3 shadow-sm sm:p-4 lg:p-6'>
+                <div className='shadow-space-accent/10 flex flex-shrink-0 justify-center p-3 shadow-sm'>
                   <DialogClose asChild>
                     <Button
                       variant='outline'
-                      size='sm'
                       className='group hover:bg-space-accent/20 hover:shadow-space-accent/20 relative w-full overflow-hidden text-white hover:shadow-lg sm:w-auto'
                     >
                       <div className='from-space-accent/10 absolute inset-0 bg-gradient-to-r to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100'></div>
                       <div className='relative z-10 flex items-center gap-2'>
                         <X className='h-4 w-4' />
-                        Close Arsenal
+                        Close Details
                       </div>
                     </Button>
                   </DialogClose>

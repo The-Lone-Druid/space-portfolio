@@ -58,8 +58,8 @@ const ProjectDetailsDialog = ({ project }: { project: ProjectWithDetails }) => {
   }
 
   return (
-    <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 flex h-screen max-h-screen w-screen min-w-screen flex-col bg-gradient-to-br to-gray-900/80 p-0 shadow-2xl backdrop-blur-xl'>
-      <DialogHeader className='shadow-space-accent/10 flex-shrink-0 p-3 shadow-sm sm:p-4 lg:p-6'>
+    <DialogContent className='from-space-cosmic/70 shadow-space-accent/20 flex h-screen max-h-screen w-screen min-w-screen flex-col gap-0 bg-gradient-to-br to-gray-900/80 p-0 shadow-2xl backdrop-blur-xl'>
+      <DialogHeader className='shadow-space-accent/10 flex-shrink-0 p-3 shadow-sm'>
         <DialogTitle className='flex flex-col gap-2 text-lg font-bold text-white sm:flex-row sm:items-center sm:gap-3 sm:text-xl'>
           <div className='flex items-center gap-2 sm:gap-3'>
             <div className='from-space-accent flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br to-purple-500 sm:h-8 sm:w-8'>
@@ -71,7 +71,7 @@ const ProjectDetailsDialog = ({ project }: { project: ProjectWithDetails }) => {
       </DialogHeader>
 
       {/* Scrollable Content Area */}
-      <div className='min-h-0 flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6'>
+      <div className='flex-1 overflow-y-auto p-3'>
         <div className='space-y-6'>
           {/* Project Header Section */}
           <div className='glass-cosmic rounded-2xl p-4 sm:p-6'>
@@ -238,11 +238,10 @@ const ProjectDetailsDialog = ({ project }: { project: ProjectWithDetails }) => {
       </div>
 
       {/* Enhanced Footer with Close Button */}
-      <div className='shadow-space-accent/10 flex flex-shrink-0 justify-center p-3 shadow-sm sm:p-4 lg:p-6'>
+      <div className='shadow-space-accent/10 flex flex-shrink-0 justify-center p-3 shadow-sm'>
         <DialogClose asChild>
           <Button
             variant='outline'
-            size='sm'
             className='group hover:bg-space-accent/20 hover:shadow-space-accent/20 relative w-full overflow-hidden text-white hover:shadow-lg sm:w-auto'
           >
             <div className='from-space-accent/10 absolute inset-0 bg-gradient-to-r to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100'></div>

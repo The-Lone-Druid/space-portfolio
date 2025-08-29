@@ -114,7 +114,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
 
           {/* Enhanced Bio */}
           <div className='relative'>
-            <p className='max-w-2xl rounded-lg bg-white/5 p-4 text-lg leading-relaxed text-gray-400 shadow-lg shadow-white/5 backdrop-blur-sm'>
+            <p className='max-w-2xl rounded-lg bg-white/5 p-4 text-lg leading-relaxed shadow-lg shadow-white/5 backdrop-blur-sm'>
               {personalInfo.bio}
             </p>
             <div className='border-space-gold absolute -top-2 -left-2 h-4 w-4 rounded-tl-lg border-t-2 border-l-2'></div>
@@ -122,7 +122,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
           </div>
 
           {/* Enhanced Contact Info */}
-          <div className='flex flex-col gap-4 text-gray-400 sm:flex-row'>
+          <div className='flex flex-col gap-4 sm:flex-row'>
             <div className='group hover:shadow-space-gold/20 flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-all duration-300 hover:bg-white/10 hover:shadow-md'>
               <div className='bg-space-gold/20 group-hover:bg-space-gold/30 rounded-full p-1 transition-colors'>
                 <Mail className='text-space-gold h-4 w-4' />

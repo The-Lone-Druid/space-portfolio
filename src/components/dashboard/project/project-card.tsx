@@ -44,7 +44,7 @@ const ProjectCard = ({ project, index, isVisible }: ProjectCardProps) => {
                 </div>
               )}
             </div>
-            <h3 className='group-hover:text-space-gold text-xl font-bold text-white transition-colors duration-300'>
+            <h3 className='group-hover:text-space-gold text-space-gold text-2xl font-bold text-white transition-colors duration-300'>
               {project.projectName}
             </h3>
             <p className='mt-1 flex items-center gap-1 text-sm text-gray-400'>
@@ -86,9 +86,8 @@ const ProjectCard = ({ project, index, isVisible }: ProjectCardProps) => {
         <div className='flex flex-wrap gap-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:translate-y-0 md:opacity-100'>
           {project.projectLink && (
             <Button
-              size='sm'
               variant='cosmic'
-              className='h-9 flex-1'
+              className='flex-1'
               onClick={() => window.open(project.projectLink!, '_blank')}
             >
               <ExternalLink className='mr-2 h-4 w-4' />
@@ -97,9 +96,8 @@ const ProjectCard = ({ project, index, isVisible }: ProjectCardProps) => {
           )}
           {project.githubLink && (
             <Button
-              size='sm'
               variant='stellar'
-              className='h-9 flex-1'
+              className='flex-1'
               onClick={() => window.open(project.githubLink!, '_blank')}
             >
               <Github className='mr-2 h-4 w-4' />
@@ -108,7 +106,7 @@ const ProjectCard = ({ project, index, isVisible }: ProjectCardProps) => {
           )}
           <Dialog>
             <DialogTrigger asChild>
-              <Button size='sm' variant='nebula' className='w-full'>
+              <Button variant='nebula' className='w-full'>
                 <Eye className='mr-2 h-4 w-4' />
                 Details
               </Button>

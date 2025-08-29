@@ -104,7 +104,7 @@ export default async function Page() {
 
         {/* Contact Section */}
         <section
-          className='pt-24'
+          className='py-24'
           id='contact'
           aria-label='Contact information and form'
         >

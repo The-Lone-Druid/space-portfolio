@@ -31,8 +31,8 @@ export const ContactMethodCard = ({
       onClick={handleClick}
     >
       <div className='flex items-center space-x-2 sm:space-x-3'>
-        <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md shadow-md sm:h-8 sm:w-8 sm:rounded-lg md:h-10 md:w-10 md:rounded-xl'>
-          <Icon className='h-3 w-3 text-white sm:h-4 sm:w-4 md:h-5 md:w-5' />
+        <div className='bg-gradient-cosmic group-hover:animate-pulse-cosmic flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg sm:h-12 sm:w-12 sm:rounded-xl md:h-14 md:w-14'>
+          <Icon className='h-5 w-5 text-white sm:h-6 sm:w-6 md:h-7 md:w-7' />
         </div>
 
         <div className='min-w-0 flex-1'>

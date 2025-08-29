@@ -110,7 +110,7 @@ const Contact = ({ personalInfo }: ContactProps) => {
             {/* Contact Info Sidebar */}
             <div className='col-span-12 space-y-4 sm:space-y-6 lg:col-span-4'>
               {/* Quick Contact */}
-              <Card className='glass-cosmic group w-full transition-all duration-500 hover:scale-[1.02] hover:shadow-xl'>
+              <Card className='glass-cosmic group w-full hover:shadow-xl'>
                 <CardHeader className='px-3 pt-3 pb-2 sm:px-4 sm:pt-4 sm:pb-3 md:px-6 md:pt-6 md:pb-4'>
                   <div className='mb-1 flex items-center gap-2 sm:mb-2 sm:gap-3'>
                     <div className='from-space-accent flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br to-purple-600 shadow-md transition-transform duration-300 group-hover:scale-110 sm:h-8 sm:w-8 sm:rounded-lg md:h-10 md:w-10'>
