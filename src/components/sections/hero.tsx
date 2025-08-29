@@ -83,10 +83,11 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
             {/* Greeting with enhanced styling */}
             <div className='relative'>
               <p className='text-space-gold flex items-center gap-2 text-lg font-medium'>
-                <span className='animate-bounce text-2xl'>👋</span>
+                <span className='animate-pulse text-2xl'>✨</span>
                 <span className='text-space-gold'>
-                  Hello! Welcome to my portfolio
+                  Welcome to humble cosmos
                 </span>
+                <span className='animate-pulse text-2xl'>💫</span>
               </p>
               <div className='from-space-gold absolute -top-1 -left-2 h-8 w-1 rounded-full bg-gradient-to-b to-transparent'></div>
             </div>

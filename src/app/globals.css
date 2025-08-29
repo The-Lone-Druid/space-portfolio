@@ -505,7 +505,7 @@ select:focus-visible {
 }
 
 /* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
+/* @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-pulse-cosmic,
   .transition-all,
@@ -515,7 +515,7 @@ select:focus-visible {
     animation: none !important;
     transition: none !important;
   }
-}
+} */
 
 /* Orbital Ring Animations for Skills */
 .orbital-ring-outer {
