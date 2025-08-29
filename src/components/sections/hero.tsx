@@ -85,7 +85,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               <p className='text-space-gold flex items-center gap-2 text-lg font-medium'>
                 <span className='animate-pulse text-2xl'>✨</span>
                 <span className='text-space-gold'>
-                  Welcome to humble cosmos
+                  Welcome to my humble cosmos
                 </span>
                 <span className='animate-pulse text-2xl'>💫</span>
               </p>
