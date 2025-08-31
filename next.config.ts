@@ -1,19 +1,16 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  // Enhanced performance optimizations
+  // Performance optimizations
   compress: true,
   poweredByHeader: false,
-  swcMinify: true,
 
-  // Image optimization for better performance
+  // Image optimization
   images: {
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 31536000, // 1 year cache
+    minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
   // Headers for SEO and security
@@ -76,47 +73,9 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  // Enhanced experimental features for performance
+  // Experimental features for performance
   experimental: {
-    ppr: false, // Disable partial prerendering for stability
-    optimizePackageImports: ['lucide-react', '@prisma/client'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
-
-  // Webpack optimizations
-  webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          // Separate vendor bundle
-          vendor: {
-            chunks: 'all',
-            test: /node_modules/,
-            name: 'vendors',
-            priority: 20,
-          },
-          // Common chunks
-          common: {
-            chunks: 'all',
-            minChunks: 2,
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-        },
-      }
-    }
-    return config
+    optimizePackageImports: ['lucide-react'],
   },
 }
 

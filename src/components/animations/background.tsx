@@ -1,34 +1,162 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+// Constants for better performance - moved outside component to avoid re-creation
+const CONSTANTS = {
+  FRAME_INTERVAL: 1000 / 60,
+  MAX_ASTEROIDS: 4,
+  MAX_TRAIL_LENGTH: 20,
+  STAR_DENSITY: 20000,
+  ASTEROID_SPAWN_CHANCE: 0.5,
+  MIN_SPAWN_INTERVAL: 800,
+  MAX_SPAWN_INTERVAL: 2300,
+  COLORS: ['#ffffff', '#ffffcc', '#fff700', '#ffd700', '#f0f0f0'] as const,
+  PI2: Math.PI * 2,
+}
 
 const SpaceBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isClient, setIsClient] = useState(false)
   const animationIdRef = useRef<number>(0)
   const spawnTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const lastTimeRef = useRef<number>(0)
-  const isVisibleRef = useRef<boolean>(true)
+
+  // Performance refs
+  const canvasSizeRef = useRef({ width: 0, height: 0 })
+  const starsRef = useRef<
+    Array<{
+      x: number
+      y: number
+      size: number
+      opacity: number
+      twinkleSpeed: number
+      driftSpeed: number
+    }>
+  >([])
+  const asteroidsRef = useRef<
+    Array<{
+      x: number
+      y: number
+      vx: number
+      vy: number
+      size: number
+      opacity: number
+      color: string
+      glowSize: number
+      trail: Array<{ x: number; y: number; opacity: number }>
+    }>
+  >([])
+
+  // Memoized resize handler
+  const resizeCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const { innerWidth, innerHeight } = window
+    canvas.width = innerWidth
+    canvas.height = innerHeight
+    canvasSizeRef.current = { width: innerWidth, height: innerHeight }
+  }, [])
+
+  // Optimized star creation
+  const createStars = useCallback(() => {
+    const { width, height } = canvasSizeRef.current
+    const numStars = Math.floor((width * height) / CONSTANTS.STAR_DENSITY)
+    const stars = starsRef.current
+
+    stars.length = 0
+    stars.length = numStars // Pre-allocate array size
+
+    for (let i = 0; i < numStars; i++) {
+      stars[i] = {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.8 + 0.2,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        driftSpeed: Math.random() * 0.4 + 0.2,
+      }
+    }
+  }, [])
+
+  // Optimized asteroid creation
+  const createAsteroid = useCallback(() => {
+    const { width, height } = canvasSizeRef.current
+    const side = Math.floor(Math.random() * 4)
+    let x: number, y: number, vx: number, vy: number
+
+    switch (side) {
+      case 0: // From top
+        x = Math.random() * width
+        y = -10
+        vx = (Math.random() - 0.5) * 4
+        vy = Math.random() * 3 + 2
+        break
+      case 1: // From right
+        x = width + 10
+        y = Math.random() * height
+        vx = -(Math.random() * 3 + 2)
+        vy = (Math.random() - 0.5) * 4
+        break
+      case 2: // From bottom
+        x = Math.random() * width
+        y = height + 10
+        vx = (Math.random() - 0.5) * 4
+        vy = -(Math.random() * 3 + 2)
+        break
+      default: // From left
+        x = -10
+        y = Math.random() * height
+        vx = Math.random() * 3 + 2
+        vy = (Math.random() - 0.5) * 4
+        break
+    }
+
+    return {
+      x,
+      y,
+      vx,
+      vy,
+      size: Math.random() * 4 + 1.5,
+      opacity: Math.random() * 0.9 + 0.3,
+      color:
+        CONSTANTS.COLORS[Math.floor(Math.random() * CONSTANTS.COLORS.length)],
+      glowSize: Math.random() * 10 + 6,
+      trail: [],
+    }
+  }, [])
+
+  // Optimized asteroid spawning
+  const spawnAsteroid = useCallback(() => {
+    const asteroids = asteroidsRef.current
+
+    if (
+      asteroids.length < CONSTANTS.MAX_ASTEROIDS &&
+      Math.random() < CONSTANTS.ASTEROID_SPAWN_CHANCE
+    ) {
+      asteroids.push(createAsteroid())
+    }
+
+    spawnTimeoutRef.current = setTimeout(
+      spawnAsteroid,
+      Math.random() *
+        (CONSTANTS.MAX_SPAWN_INTERVAL - CONSTANTS.MIN_SPAWN_INTERVAL) +
+        CONSTANTS.MIN_SPAWN_INTERVAL
+    )
+  }, [createAsteroid])
+
+  // Visibility change handler
+  const handleVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      if (spawnTimeoutRef.current) {
+        clearTimeout(spawnTimeoutRef.current)
+        spawnTimeoutRef.current = null
+      }
+    }
+  }, [])
 
   useEffect(() => {
     setIsClient(true)
-
-    // Handle visibility changes to prevent asteroid buildup
-    const handleVisibilityChange = () => {
-      isVisibleRef.current = !document.hidden
-
-      if (document.hidden) {
-        // Clear any pending spawn timeout when tab becomes hidden
-        if (spawnTimeoutRef.current) {
-          clearTimeout(spawnTimeoutRef.current)
-          spawnTimeoutRef.current = null
-        }
-      } else {
-        // Reset spawn timing when tab becomes visible again
-        lastTimeRef.current = Date.now()
-      }
-    }
-
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
@@ -40,7 +168,7 @@ const SpaceBackground = () => {
         cancelAnimationFrame(animationIdRef.current)
       }
     }
-  }, [])
+  }, [handleVisibilityChange])
 
   useEffect(() => {
     if (!isClient) return
@@ -51,191 +179,69 @@ const SpaceBackground = () => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Set canvas size
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
-
-    // Stars array with drift velocity for rightward movement
-    const stars: Array<{
-      x: number
-      y: number
-      size: number
-      opacity: number
-      twinkleSpeed: number
-      driftSpeed: number // Added for slow rightward movement
-    }> = []
-
-    // Asteroid showers array
-    const asteroids: Array<{
-      x: number
-      y: number
-      vx: number
-      vy: number
-      size: number
-      opacity: number
-      color: string
-      glowSize: number
-      trail: Array<{ x: number; y: number; opacity: number }>
-    }> = []
-
-    // Create stars with slow rightward drift - further optimized for performance
-    const createStars = () => {
-      const numStars = Math.floor((canvas.width * canvas.height) / 20000) // Further reduced for mobile
-      stars.length = 0
-
-      for (let i = 0; i < numStars; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 1.5 + 0.5, // Slightly larger stars for better twinkling
-          opacity: Math.random() * 0.8 + 0.2, // Better opacity range for twinkling
-          twinkleSpeed: Math.random() * 0.02 + 0.005, // Faster, more noticeable twinkling
-          driftSpeed: Math.random() * 0.4 + 0.2, // Faster rightward drift (0.2-0.6 pixels/frame)
-        })
-      }
-    }
-
     createStars()
 
-    // Create asteroid showers
-    const createAsteroid = () => {
-      const colors = ['#ffffff', '#ffffcc', '#fff700', '#ffd700', '#f0f0f0']
-      const side = Math.floor(Math.random() * 4) // 0=top, 1=right, 2=bottom, 3=left
-
-      let x, y, vx, vy
-
-      switch (side) {
-        case 0: // From top
-          x = Math.random() * canvas.width
-          y = -10
-          vx = (Math.random() - 0.5) * 4
-          vy = Math.random() * 3 + 2
-          break
-        case 1: // From right
-          x = canvas.width + 10
-          y = Math.random() * canvas.height
-          vx = -(Math.random() * 3 + 2)
-          vy = (Math.random() - 0.5) * 4
-          break
-        case 2: // From bottom
-          x = Math.random() * canvas.width
-          y = canvas.height + 10
-          vx = (Math.random() - 0.5) * 4
-          vy = -(Math.random() * 3 + 2)
-          break
-        default: // From left
-          x = -10
-          y = Math.random() * canvas.height
-          vx = Math.random() * 3 + 2
-          vy = (Math.random() - 0.5) * 4
-          break
-      }
-
-      asteroids.push({
-        x,
-        y,
-        vx,
-        vy,
-        size: Math.random() * 4 + 1.5, // Slightly larger asteroids (1.5-5.5px)
-        opacity: Math.random() * 0.9 + 0.3, // Higher opacity range (0.3-1.2)
-        color: colors[Math.floor(Math.random() * colors.length)],
-        glowSize: Math.random() * 10 + 6, // Larger glow effect
-        trail: [],
-      })
-    }
-
-    // Spawn asteroids randomly - with visibility control
-    const spawnAsteroid = () => {
-      // Only spawn if tab is visible and not too many asteroids
-      if (
-        isVisibleRef.current &&
-        asteroids.length < 4 && // Reduced from 15 to 8
-        Math.random() < 0.5 // Reduced from 0.8 to 0.5 (50% chance)
-      ) {
-        createAsteroid()
-      }
-
-      // Only set new timeout if tab is visible
-      if (isVisibleRef.current) {
-        spawnTimeoutRef.current = setTimeout(
-          spawnAsteroid,
-          Math.random() * 1500 + 800 // Increased from 800+300 to 1500+800 (0.8-2.3s)
-        )
-      }
-    }
-
-    // Create initial asteroids immediately (but limit them)
-    const initialCount = Math.min(2, 3) // Further reduced from 3 to 2
+    // Create initial asteroids
+    const initialCount = 2
     for (let i = 0; i < initialCount; i++) {
       setTimeout(() => {
-        if (isVisibleRef.current) {
-          createAsteroid()
-        }
-      }, i * 400) // Increased delay from 200ms to 400ms
+        asteroidsRef.current.push(createAsteroid())
+      }, i * 400)
     }
 
-    // Start the spawning process
-    lastTimeRef.current = Date.now()
     spawnAsteroid()
 
-    // Animation loop with frame rate limiting for performance
+    // Optimized animation loop
     let lastFrameTime = 0
-    const targetFPS = 60 // Limit to 30fps for better performance
-    const frameInterval = 1000 / targetFPS
 
-    const animate = (currentTime: number) => {
-      // Only animate if tab is visible
-      if (!isVisibleRef.current) {
-        animationIdRef.current = requestAnimationFrame(animate)
-        return
-      }
-
+    const animate = (timestamp: number) => {
       // Frame rate limiting
-      if (currentTime - lastFrameTime < frameInterval) {
+      if (timestamp - lastFrameTime < CONSTANTS.FRAME_INTERVAL) {
         animationIdRef.current = requestAnimationFrame(animate)
         return
       }
-      lastFrameTime = currentTime
+      lastFrameTime = timestamp
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const { width, height } = canvasSizeRef.current
+      ctx.clearRect(0, 0, width, height)
 
-      // Draw stars with enhanced twinkling and rightward drift
-      stars.forEach(star => {
-        ctx.save()
+      // Optimized star rendering
+      const stars = starsRef.current
+      const time = timestamp * 0.001 // Convert to seconds for performance
 
-        // Enhanced twinkling with size variation
+      for (let i = 0; i < stars.length; i++) {
+        const star = stars[i]
+
+        // Enhanced twinkling with optimized math
         const twinkleIntensity =
-          Math.sin(Date.now() * star.twinkleSpeed) * 0.3 + 0.7
+          Math.sin(time * star.twinkleSpeed * 1000) * 0.3 + 0.7
         const twinkleSize = star.size * (0.8 + twinkleIntensity * 0.4)
 
         ctx.globalAlpha = star.opacity * twinkleIntensity
         ctx.fillStyle = '#ffffff'
 
-        // Add subtle glow for brighter stars
+        // Add glow only for larger stars
         if (star.size > 1) {
           ctx.shadowColor = '#ffffff'
           ctx.shadowBlur = 3
+        } else {
+          ctx.shadowBlur = 0
         }
 
         ctx.beginPath()
-        ctx.arc(star.x, star.y, twinkleSize, 0, Math.PI * 2)
+        ctx.arc(star.x, star.y, twinkleSize, 0, CONSTANTS.PI2)
         ctx.fill()
-        ctx.restore()
 
-        // Faster rightward movement
+        // Update star position
         star.x += star.driftSpeed
-        // Wrap around when star goes off-screen
-        if (star.x > canvas.width + 10) {
+        if (star.x > width + 10) {
           star.x = -10
-          star.y = Math.random() * canvas.height // Random Y when wrapping
+          star.y = Math.random() * height
         }
 
-        // Enhanced twinkling effect with opacity bounds
+        // Update twinkling
         star.opacity += star.twinkleSpeed
         if (star.opacity > 1) {
           star.opacity = 1
@@ -244,10 +250,17 @@ const SpaceBackground = () => {
           star.opacity = 0.2
           star.twinkleSpeed = Math.abs(star.twinkleSpeed)
         }
-      })
+      }
 
-      // Draw and update asteroids
-      asteroids.forEach((asteroid, index) => {
+      // Reset styles after stars
+      ctx.shadowBlur = 0
+      ctx.globalAlpha = 1
+
+      // Optimized asteroid rendering
+      const asteroids = asteroidsRef.current
+      for (let i = asteroids.length - 1; i >= 0; i--) {
+        const asteroid = asteroids[i]
+
         // Update position
         asteroid.x += asteroid.vx
         asteroid.y += asteroid.vy
@@ -258,25 +271,25 @@ const SpaceBackground = () => {
           y: asteroid.y,
           opacity: asteroid.opacity,
         })
-        if (asteroid.trail.length > 20) {
-          // Much longer trails for dramatic effect
+        if (asteroid.trail.length > CONSTANTS.MAX_TRAIL_LENGTH) {
           asteroid.trail.shift()
         }
 
-        // Draw trail
-        asteroid.trail.forEach((point, i) => {
-          const trailOpacity =
-            ((point.opacity * (i + 1)) / asteroid.trail.length) * 0.5
-          ctx.save()
+        // Draw trail (optimized)
+        const trail = asteroid.trail
+        const trailLength = trail.length
+        for (let j = 0; j < trailLength; j++) {
+          const point = trail[j]
+          const trailOpacity = ((point.opacity * (j + 1)) / trailLength) * 0.5
+
           ctx.globalAlpha = trailOpacity
           ctx.fillStyle = asteroid.color
           ctx.beginPath()
-          ctx.arc(point.x, point.y, asteroid.size * 0.5, 0, Math.PI * 2)
+          ctx.arc(point.x, point.y, asteroid.size * 0.5, 0, CONSTANTS.PI2)
           ctx.fill()
-          ctx.restore()
-        })
+        }
 
-        // Draw glow effect
+        // Draw glow effect (optimized)
         const gradient = ctx.createRadialGradient(
           asteroid.x,
           asteroid.y,
@@ -285,46 +298,45 @@ const SpaceBackground = () => {
           asteroid.y,
           asteroid.glowSize
         )
-        gradient.addColorStop(0, asteroid.color + '80') // Semi-transparent center
+        gradient.addColorStop(0, asteroid.color + '80')
         gradient.addColorStop(0.5, asteroid.color + '40')
-        gradient.addColorStop(1, asteroid.color + '00') // Fully transparent edge
+        gradient.addColorStop(1, asteroid.color + '00')
 
-        ctx.save()
         ctx.globalAlpha = asteroid.opacity * 0.6
         ctx.fillStyle = gradient
         ctx.beginPath()
-        ctx.arc(asteroid.x, asteroid.y, asteroid.glowSize, 0, Math.PI * 2)
+        ctx.arc(asteroid.x, asteroid.y, asteroid.glowSize, 0, CONSTANTS.PI2)
         ctx.fill()
-        ctx.restore()
 
         // Draw main asteroid
-        ctx.save()
         ctx.globalAlpha = asteroid.opacity
         ctx.fillStyle = asteroid.color
         ctx.shadowColor = asteroid.color
         ctx.shadowBlur = 6
         ctx.beginPath()
-        ctx.arc(asteroid.x, asteroid.y, asteroid.size, 0, Math.PI * 2)
+        ctx.arc(asteroid.x, asteroid.y, asteroid.size, 0, CONSTANTS.PI2)
         ctx.fill()
-        ctx.restore()
 
-        // Remove asteroids that are off screen
+        // Remove off-screen asteroids (using reverse iteration for safe removal)
         if (
           asteroid.x < -50 ||
-          asteroid.x > canvas.width + 50 ||
+          asteroid.x > width + 50 ||
           asteroid.y < -50 ||
-          asteroid.y > canvas.height + 50
+          asteroid.y > height + 50
         ) {
-          asteroids.splice(index, 1)
+          asteroids.splice(i, 1)
         }
-      })
+      }
+
+      // Reset context state
+      ctx.globalAlpha = 1
+      ctx.shadowBlur = 0
+
       animationIdRef.current = requestAnimationFrame(animate)
     }
 
-    // Start animation loop
     animationIdRef.current = requestAnimationFrame(animate)
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas)
       if (spawnTimeoutRef.current) {
@@ -334,7 +346,7 @@ const SpaceBackground = () => {
         cancelAnimationFrame(animationIdRef.current)
       }
     }
-  }, [isClient])
+  }, [isClient, resizeCanvas, createStars, createAsteroid, spawnAsteroid])
 
   return (
     <>

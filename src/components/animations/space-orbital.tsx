@@ -1,16 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
 const SpaceOrbital = () => {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
   return (
     <div className='relative'>
       {/* Orbital Asteroid Ring System */}

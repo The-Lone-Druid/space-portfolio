@@ -13,54 +13,6 @@ interface HeroProps {
 }
 
 const Hero = ({ personalInfo, heroStats }: HeroProps) => {
-  const [counts, setCounts] = useState({
-    skills: 0,
-    professionalProjects: 0,
-    personalProjects: 0,
-  })
-
-  useEffect(() => {
-    // Trigger entrance animations
-
-    // Simplified, performance-optimized counters
-    const animateCounters = () => {
-      const duration = 1000 // Faster animation
-      const steps = 30 // Fewer steps for better performance
-      const stepTime = duration / steps
-
-      let currentStep = 0
-
-      const timer = setInterval(() => {
-        currentStep++
-        // Simple linear easing for better performance
-        const progress = currentStep / steps
-
-        setCounts({
-          skills: Math.floor(heroStats.verifiedSkills * progress),
-          professionalProjects: Math.floor(
-            heroStats.professionalProjects * progress
-          ),
-          personalProjects: Math.floor(heroStats.personalProjects * progress),
-        })
-
-        if (currentStep >= steps) {
-          setCounts({
-            skills: heroStats.verifiedSkills,
-            professionalProjects: heroStats.professionalProjects,
-            personalProjects: heroStats.personalProjects,
-          })
-          clearInterval(timer)
-        }
-      }, stepTime)
-    }
-
-    // Start immediately for faster perceived performance
-    const timeout = setTimeout(animateCounters, 100)
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [heroStats])
-
   const handleScrollToProjects = () => {
     scrollToSection('#projects')
   }
@@ -209,7 +161,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
             <div className='group glass-nebula hover:shadow-space-gold/20 rounded-xl p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl'>
               <div className='relative'>
                 <div className='text-space-gold from-space-gold bg-gradient-to-br to-yellow-300 bg-clip-text text-3xl font-bold text-transparent md:text-4xl'>
-                  {counts.skills}+
+                  {heroStats.verifiedSkills}+
                 </div>
                 <div className='bg-space-gold/10 absolute inset-0 rounded-lg opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
               </div>
@@ -222,7 +174,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
             <div className='group glass-nebula hover:shadow-space-accent/20 rounded-xl p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl'>
               <div className='relative'>
                 <div className='text-space-accent from-space-accent bg-gradient-to-br to-purple-300 bg-clip-text text-3xl font-bold text-transparent md:text-4xl'>
-                  {counts.professionalProjects}+
+                  {heroStats.professionalProjects}+
                 </div>
                 <div className='bg-space-accent/10 absolute inset-0 rounded-lg opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
               </div>
@@ -235,7 +187,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
             <div className='group glass-nebula rounded-xl p-5 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20'>
               <div className='relative'>
                 <div className='bg-gradient-to-br from-blue-400 to-cyan-300 bg-clip-text text-3xl font-bold text-transparent md:text-4xl'>
-                  {counts.personalProjects}+
+                  {heroStats.personalProjects}+
                 </div>
                 <div className='absolute inset-0 rounded-lg bg-blue-500/10 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
               </div>
