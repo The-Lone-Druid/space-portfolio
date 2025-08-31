@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  // Performance optimizations
+  // Enhanced performance optimizations
   compress: true,
   poweredByHeader: false,
   swcMinify: true,
@@ -76,9 +76,18 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  // Experimental features for performance
+  // Enhanced experimental features for performance
   experimental: {
     ppr: false, // Disable partial prerendering for stability
+    optimizePackageImports: ['lucide-react', '@prisma/client'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
 
   // Webpack optimizations

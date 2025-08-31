@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ArrowDown, Mail, MapPin, Sparkles } from 'lucide-react'
+import { ArrowDown, Mail, MapPin } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { scrollToSection } from '../../lib/utils'
 import type { Hero as HeroType, PersonalInfo } from '../../types'
@@ -18,32 +18,29 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
     professionalProjects: 0,
     personalProjects: 0,
   })
-  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     // Trigger entrance animations
-    setIsVisible(true)
 
-    // Animated counters with optimized performance
+    // Simplified, performance-optimized counters
     const animateCounters = () => {
-      const duration = 2000 // Reduced duration for faster loading
-      const steps = 60 // Reduced steps for better performance
+      const duration = 1000 // Faster animation
+      const steps = 30 // Fewer steps for better performance
       const stepTime = duration / steps
 
       let currentStep = 0
 
       const timer = setInterval(() => {
         currentStep++
-        // Simplified easing function
+        // Simple linear easing for better performance
         const progress = currentStep / steps
-        const easeOut = 1 - Math.pow(1 - progress, 3)
 
         setCounts({
-          skills: Math.floor(heroStats.verifiedSkills * easeOut),
+          skills: Math.floor(heroStats.verifiedSkills * progress),
           professionalProjects: Math.floor(
-            heroStats.professionalProjects * easeOut
+            heroStats.professionalProjects * progress
           ),
-          personalProjects: Math.floor(heroStats.personalProjects * easeOut),
+          personalProjects: Math.floor(heroStats.personalProjects * progress),
         })
 
         if (currentStep >= steps) {
@@ -57,7 +54,8 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
       }, stepTime)
     }
 
-    const timeout = setTimeout(animateCounters, 300) // Reduced delay
+    // Start immediately for faster perceived performance
+    const timeout = setTimeout(animateCounters, 100)
     return () => {
       clearTimeout(timeout)
     }
@@ -75,67 +73,55 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
     <>
       <div className='relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
         {/* Left Content */}
-        <div
-          className={`transform space-y-6 transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}
-        >
+        <div className={`space-y-6 transition-opacity duration-500`}>
           <div className='space-y-4'>
-            {/* Greeting with enhanced styling */}
+            {/* Simplified Greeting */}
             <div className='relative'>
               <p className='text-space-gold flex items-center gap-2 text-lg font-medium'>
-                <span className='animate-pulse text-2xl'>✨</span>
+                <span>✨</span>
                 <span className='text-space-gold'>
                   Welcome to my humble cosmos
                 </span>
-                <span className='animate-pulse text-2xl'>💫</span>
+                <span>💫</span>
               </p>
-              <div className='from-space-gold absolute -top-1 -left-2 h-8 w-1 rounded-full bg-gradient-to-b to-transparent'></div>
             </div>
 
-            {/* Enhanced Name Display */}
+            {/* Simplified Name Display */}
             <div className='relative'>
               <h1 className='text-4xl leading-tight font-bold text-white md:text-6xl lg:text-7xl'>
                 I&apos;m{' '}
-                <span className='text-space-gold relative'>
-                  {personalInfo.name}
-                  <div className='via-space-gold absolute right-0 -bottom-2 left-0 h-1 rounded-full bg-gradient-to-r from-transparent to-transparent'></div>
-                </span>
+                <span className='text-space-gold'>{personalInfo.name}</span>
               </h1>
-              {/* Sparkle effects around name */}
-              <div className='text-space-gold absolute -top-4 -right-4 h-6 w-6 animate-pulse'>
-                <Sparkles className='h-full w-full' />
-              </div>
             </div>
 
-            {/* Enhanced Title */}
+            {/* Title */}
             <h2 className='text-xl font-medium text-gray-300 md:text-2xl lg:text-3xl'>
               {personalInfo.title}
             </h2>
           </div>
 
-          {/* Enhanced Bio */}
+          {/* Simplified Bio */}
           <div className='relative'>
-            <p className='max-w-2xl rounded-lg bg-white/5 p-4 text-lg leading-relaxed shadow-lg shadow-white/5 backdrop-blur-sm'>
+            <p className='max-w-2xl rounded-lg bg-white/5 p-4 text-lg leading-relaxed'>
               {personalInfo.bio}
             </p>
-            <div className='border-space-gold absolute -top-2 -left-2 h-4 w-4 rounded-tl-lg border-t-2 border-l-2'></div>
-            <div className='border-space-gold absolute -right-2 -bottom-2 h-4 w-4 rounded-br-lg border-r-2 border-b-2'></div>
           </div>
 
-          {/* Enhanced Contact Info */}
+          {/* Simplified Contact Info */}
           <div className='flex flex-col gap-4 sm:flex-row'>
-            <div className='group hover:shadow-space-gold/20 flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-all duration-300 hover:bg-white/10 hover:shadow-md'>
-              <div className='bg-space-gold/20 group-hover:bg-space-gold/30 rounded-full p-1 transition-colors'>
+            <div className='flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-colors hover:bg-white/10'>
+              <div className='bg-space-gold/20 rounded-full p-1'>
                 <Mail className='text-space-gold h-4 w-4' />
               </div>
               <a
                 href={`mailto:${personalInfo.email}`}
-                className='hover:text-space-gold text-sm font-medium transition-colors duration-300'
+                className='hover:text-space-gold text-sm font-medium transition-colors'
               >
                 {personalInfo.email}
               </a>
             </div>
-            <div className='group hover:shadow-space-accent/20 flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-all duration-300 hover:bg-white/10 hover:shadow-md'>
-              <div className='bg-space-accent/20 group-hover:bg-space-accent/30 rounded-full p-1 transition-colors'>
+            <div className='flex items-center space-x-3 rounded-full bg-white/5 px-4 py-2 transition-colors hover:bg-white/10'>
+              <div className='bg-space-accent/20 rounded-full p-1'>
                 <MapPin className='text-space-accent h-4 w-4' />
               </div>
               <span className='text-sm font-medium'>
@@ -144,35 +130,33 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
             </div>
           </div>
 
-          {/* Enhanced CTA Buttons */}
+          {/* Simplified CTA Buttons */}
           <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
             <Button
               variant='cosmic'
               size='lg'
               onClick={handleScrollToProjects}
-              className='group relative overflow-hidden'
+              className='group'
             >
-              <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full'></div>
-              <span className='relative z-10'>View My Work</span>
-              <ArrowDown className='relative z-10 ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-y-1' />
+              <span>View My Work</span>
+              <ArrowDown className='ml-2 h-5 w-5 transition-transform group-hover:translate-y-1' />
             </Button>
 
             <Button
               variant='stellar'
               size='lg'
               onClick={handleScrollToContact}
-              className='group relative overflow-hidden'
+              className='group'
             >
-              <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full'></div>
-              <Mail className='relative z-10 mr-2 h-5 w-5 transition-transform duration-300 group-hover:scale-110' />
-              <span className='relative z-10'>Get In Touch</span>
+              <Mail className='mr-2 h-5 w-5 transition-transform group-hover:scale-110' />
+              <span>Get In Touch</span>
             </Button>
           </div>
         </div>
 
         {/* Right Content - Enhanced Stats & Visual */}
         <div
-          className={`mt-16 transform space-y-8 transition-all delay-300 duration-1000 lg:mt-0 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+          className={`mt-16 space-y-8 transition-all delay-300 duration-1000 lg:mt-0`}
         >
           {/* Enhanced Main Visual Element */}
           <div className='group relative'>
