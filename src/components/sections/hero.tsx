@@ -24,27 +24,26 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
     // Trigger entrance animations
     setIsVisible(true)
 
-    // Animated counters with enhanced easing
+    // Animated counters with optimized performance
     const animateCounters = () => {
-      const duration = 2500 // Slightly longer for better effect
-      const steps = 80
+      const duration = 2000 // Reduced duration for faster loading
+      const steps = 60 // Reduced steps for better performance
       const stepTime = duration / steps
 
       let currentStep = 0
 
       const timer = setInterval(() => {
         currentStep++
-        // Easing function for smoother animation
-        const easeOutQuart = 1 - Math.pow(1 - currentStep / steps, 4)
+        // Simplified easing function
+        const progress = currentStep / steps
+        const easeOut = 1 - Math.pow(1 - progress, 3)
 
         setCounts({
-          skills: Math.floor(heroStats.verifiedSkills * easeOutQuart),
+          skills: Math.floor(heroStats.verifiedSkills * easeOut),
           professionalProjects: Math.floor(
-            heroStats.professionalProjects * easeOutQuart
+            heroStats.professionalProjects * easeOut
           ),
-          personalProjects: Math.floor(
-            heroStats.personalProjects * easeOutQuart
-          ),
+          personalProjects: Math.floor(heroStats.personalProjects * easeOut),
         })
 
         if (currentStep >= steps) {
@@ -58,7 +57,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
       }, stepTime)
     }
 
-    const timeout = setTimeout(animateCounters, 500)
+    const timeout = setTimeout(animateCounters, 300) // Reduced delay
     return () => {
       clearTimeout(timeout)
     }
@@ -212,7 +211,7 @@ const Hero = ({ personalInfo, heroStats }: HeroProps) => {
               </div>
             </div>
             <div
-              className='animate-float absolute right-4 bottom-1/4 z-30'
+              className='animate-float absolute right-12 bottom-1/4 z-30'
               style={{ animationDelay: '1.5s' }}
             >
               <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/30'>

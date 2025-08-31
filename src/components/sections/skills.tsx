@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -13,8 +12,9 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog'
+import { SimpleIcon } from '@/components/ui/simple-icon'
 import { useState } from 'react'
-import { Zap, Sparkles, Code, Search, X, Rocket } from 'lucide-react'
+import { Zap, Sparkles, Code, Search, X } from 'lucide-react'
 import { Skill } from '../../types'
 import { SectionHeader } from '../shared/section-header'
 
@@ -28,8 +28,6 @@ interface SkillCardCompactProps {
 }
 
 function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
-  const [imageError, setImageError] = useState(false)
-
   // Proficiency level for badge color
   const getProficiencyColor = (level: number) => {
     if (level >= 90)
@@ -99,19 +97,11 @@ function SkillCardCompact({ skill, index }: SkillCardCompactProps) {
           <div className='absolute inset-4 z-10 flex items-center justify-center rounded-full shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:from-white/25 group-hover:to-white/10 group-hover:shadow-lg group-hover:shadow-white/20'>
             {/* Inner glow container for better icon visibility */}
             <div className='flex h-10 w-10 items-center justify-center rounded-full p-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm transition-all duration-300 group-hover:ring-white/40'>
-              {!imageError ? (
-                <Image
-                  src={`https://cdn.simpleicons.org/${skill.iconName}`}
-                  alt={skill.name}
-                  width={28}
-                  height={28}
-                  className='h-full w-full object-contain transition-all duration-300 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-md'
-                  onError={() => setImageError(true)}
-                  unoptimized
-                />
-              ) : (
-                <Code className='h-6 w-6 text-white' />
-              )}
+              <SimpleIcon
+                iconName={skill.iconName}
+                className='h-full w-full object-contain transition-all duration-300 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-md'
+                fallback={<Code className='h-6 w-6 text-white' />}
+              />
             </div>
           </div>
         </div>

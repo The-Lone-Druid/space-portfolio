@@ -60,13 +60,14 @@ const SpaceBackground = () => {
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Stars array
+    // Stars array with drift velocity for rightward movement
     const stars: Array<{
       x: number
       y: number
       size: number
       opacity: number
       twinkleSpeed: number
+      driftSpeed: number // Added for slow rightward movement
     }> = []
 
     // Asteroid showers array
@@ -82,18 +83,19 @@ const SpaceBackground = () => {
       trail: Array<{ x: number; y: number; opacity: number }>
     }> = []
 
-    // Create stars - reduced number for better performance
+    // Create stars with slow rightward drift - further optimized for performance
     const createStars = () => {
-      const numStars = Math.floor((canvas.width * canvas.height) / 12000) // Reduced from 8000
+      const numStars = Math.floor((canvas.width * canvas.height) / 20000) // Further reduced for mobile
       stars.length = 0
 
       for (let i = 0; i < numStars; i++) {
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 1.5 + 0.5, // Smaller stars
-          opacity: Math.random() * 0.8 + 0.2, // More visible range
-          twinkleSpeed: Math.random() * 0.015 + 0.005, // Slower animation
+          size: Math.random() * 1.5 + 0.5, // Slightly larger stars for better twinkling
+          opacity: Math.random() * 0.8 + 0.2, // Better opacity range for twinkling
+          twinkleSpeed: Math.random() * 0.02 + 0.005, // Faster, more noticeable twinkling
+          driftSpeed: Math.random() * 0.4 + 0.2, // Faster rightward drift (0.2-0.6 pixels/frame)
         })
       }
     }
@@ -181,30 +183,66 @@ const SpaceBackground = () => {
     lastTimeRef.current = Date.now()
     spawnAsteroid()
 
-    // Animation loop
-    const animate = () => {
+    // Animation loop with frame rate limiting for performance
+    let lastFrameTime = 0
+    const targetFPS = 60 // Limit to 30fps for better performance
+    const frameInterval = 1000 / targetFPS
+
+    const animate = (currentTime: number) => {
       // Only animate if tab is visible
       if (!isVisibleRef.current) {
         animationIdRef.current = requestAnimationFrame(animate)
         return
       }
 
+      // Frame rate limiting
+      if (currentTime - lastFrameTime < frameInterval) {
+        animationIdRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastFrameTime = currentTime
+
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Draw stars
+      // Draw stars with enhanced twinkling and rightward drift
       stars.forEach(star => {
         ctx.save()
-        ctx.globalAlpha = star.opacity
+
+        // Enhanced twinkling with size variation
+        const twinkleIntensity =
+          Math.sin(Date.now() * star.twinkleSpeed) * 0.3 + 0.7
+        const twinkleSize = star.size * (0.8 + twinkleIntensity * 0.4)
+
+        ctx.globalAlpha = star.opacity * twinkleIntensity
         ctx.fillStyle = '#ffffff'
+
+        // Add subtle glow for brighter stars
+        if (star.size > 1) {
+          ctx.shadowColor = '#ffffff'
+          ctx.shadowBlur = 3
+        }
+
         ctx.beginPath()
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
+        ctx.arc(star.x, star.y, twinkleSize, 0, Math.PI * 2)
         ctx.fill()
         ctx.restore()
 
-        // Twinkling effect
+        // Faster rightward movement
+        star.x += star.driftSpeed
+        // Wrap around when star goes off-screen
+        if (star.x > canvas.width + 10) {
+          star.x = -10
+          star.y = Math.random() * canvas.height // Random Y when wrapping
+        }
+
+        // Enhanced twinkling effect with opacity bounds
         star.opacity += star.twinkleSpeed
-        if (star.opacity > 1 || star.opacity < 0.1) {
-          star.twinkleSpeed = -star.twinkleSpeed
+        if (star.opacity > 1) {
+          star.opacity = 1
+          star.twinkleSpeed = -Math.abs(star.twinkleSpeed)
+        } else if (star.opacity < 0.2) {
+          star.opacity = 0.2
+          star.twinkleSpeed = Math.abs(star.twinkleSpeed)
         }
       })
 
@@ -280,11 +318,11 @@ const SpaceBackground = () => {
           asteroids.splice(index, 1)
         }
       })
-
       animationIdRef.current = requestAnimationFrame(animate)
     }
 
-    animate()
+    // Start animation loop
+    animationIdRef.current = requestAnimationFrame(animate)
 
     // Cleanup
     return () => {
